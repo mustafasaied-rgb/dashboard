@@ -1,0 +1,67 @@
+@layer components {
+  /* Scope everything to the Content article */
+  .content-typography:where(article, div) {
+    max-width: 100%;
+    word-wrap: break-word;
+  }
+
+  /* Headings */
+  .content-typography :where(h1){ font-weight:700; line-height:1.15; font-size:clamp(28px,4vw,40px); }
+  .content-typography :where(h2){ font-weight:700; line-height:1.2;  font-size:clamp(24px,3.2vw,34px); }
+  .content-typography :where(h3){ font-weight:600; line-height:1.25; font-size:clamp(22px,2.8vw,28px); }
+  .content-typography :where(h4){ font-weight:600; line-height:1.3;  font-size:clamp(20px,2.2vw,24px); }
+  .content-typography :where(h5){ font-weight:600; line-height:1.35; font-size:clamp(18px,1.8vw,20px); }
+  .content-typography :where(h6){ font-weight:600; line-height:1.4;  font-size:clamp(16px,1.6vw,18px); }
+
+  /* Paragraphs & emphasis */
+  .content-typography :where(p){ margin: 0; }
+  .content-typography :where(strong){ font-weight:700; }
+  .content-typography :where(em){ font-style:italic; }
+  .content-typography :where(u){ text-decoration:underline; text-underline-offset: 3px; }
+  .content-typography :where(s){ text-decoration:line-through; }
+  .content-typography :where(sub){ vertical-align:sub; font-size:0.8em; }
+  .content-typography :where(sup){ vertical-align:super; font-size:0.8em; }
+
+  /* Lists */
+  .content-typography :where(ul,ol){ margin: 0; padding: 0; }
+  .content-typography :where(li){ margin: 0; }
+
+  /* Blockquote & hr */
+  .content-typography :where(blockquote){
+    border-inline-start: 4px solid rgba(0,0,0,.1);
+    margin: 0; padding-inline: 1rem; padding-block: .25rem;
+    font-style: italic;
+  }
+  .content-typography :where(hr){ border:0; border-top:1px solid rgba(0,0,0,.15); margin: 0; }
+
+  /* Code */
+  .content-typography :where(code){ font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.9em; background: rgba(0,0,0,.04); padding:.15em .35em; border-radius:.25rem; }
+  .content-typography :where(pre){ overflow:auto; padding:.75rem 1rem; background: rgba(0,0,0,.045); border-radius:.5rem; }
+  .content-typography :where(pre>code){ background: transparent; padding: 0; }
+
+  /* Links & images */
+  .content-typography :where(a){ text-decoration: underline; text-underline-offset: 3px; }
+  .content-typography :where(img){ max-width: 100%; height:auto; display:block; border-radius:.5rem; }
+
+  /* Alignments produced by editors */
+  .content-typography :where(.ql-align-center){ text-align:center; }
+  .content-typography :where(.ql-align-right){ text-align:right; }
+  .content-typography[dir="rtl"] :where(.ql-align-right){ text-align:left; } /* optional tweak for RTL */
+
+  /* Indentation (Quill emits ql-indent-1..n) */
+  .content-typography :where(.ql-indent-1){ margin-inline-start: 1.5rem; }
+  .content-typography :where(.ql-indent-2){ margin-inline-start: 3rem; }
+  .content-typography :where(.ql-indent-3){ margin-inline-start: 4.5rem; }
+  .content-typography :where(.ql-indent-4){ margin-inline-start: 6rem; }
+  .content-typography :where(.ql-indent-5){ margin-inline-start: 7.5rem; }
+
+  /* Sizes (Quill emits ql-size-small|large|huge) */
+  .content-typography :where(.ql-size-small){ font-size: .875em; }
+  .content-typography :where(.ql-size-large){ font-size: 1.25em; }
+  .content-typography :where(.ql-size-huge){  font-size: 1.5em; }
+
+  /* Iframe (only allowed providers via hook) */
+  .content-typography :where(iframe){
+    width: 100%; aspect-ratio: 16/9; height: auto; display:block; border: 0; border-radius:.5rem;
+  }
+}

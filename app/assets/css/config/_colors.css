@@ -1,0 +1,24 @@
+:root {
+    /* Light Mode */
+    --background: 255 255 255; /* white */
+    --foreground: 17 24 39;    /* gray-900 */
+    
+    /* Primary */
+    --primary: 79 70 229;     /* indigo-600 */
+    --primary-foreground: 255 255 255;
+    
+    /* Destructive */
+    --destructive: 220 38 38; /* red-600 */
+    
+    /* Muted */
+    --muted: 243 244 246;     /* gray-100 */
+  }
+
+  .dark {
+    /* Dark Mode */
+    --background: 3 7 18;      /* gray-950 */
+    --foreground: 249 250 251; /* gray-50 */
+    
+    --primary: 99 102 241;     /* indigo-500 */
+    --muted: 31 41 55;         /* gray-800 */
+  }

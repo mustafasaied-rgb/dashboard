@@ -1,0 +1,37 @@
+export default {
+  explore: 'Explore',
+  contact: 'Contact',
+  address: 'Address',
+  all_news: 'all news',
+  map: 'Map',
+  get_from_airport: 'Get from the airport',
+  hotels_around: 'Hotels around',
+  nearest_metro_station: 'Nearest metro station',
+  build_route: 'Build a route',
+  integrated: 'Integrated {type}',
+  lets_talk: 'Let’s Talk',
+  email: 'E-mail',
+  phone: 'Phone',
+  name: 'Name',
+  position_in_the_company: 'Position in the company',
+  company_name: 'Company name',
+  get_the_files: 'Get the files',
+  by_submitting_your_data_you_agree: 'By submitting your data, you agree',
+  to_the: 'to the',
+  privacy_policy: 'Privacy Policy',
+  terms_and_conditions: 'Terms and Conditions',
+  leave_your_contacts_to_receive_all_the_files_on_the_project:
+    'Leave your contacts to receive all the files on the project',
+  news: 'news',
+  more_news: 'more news',
+  error: {
+    404: { title: 'Page not found', desc: 'We couldn’t find the page you’re looking for.' },
+    401: { title: 'You need to sign in', desc: 'This page requires authentication.' },
+    403: { title: 'Access denied', desc: 'You don’t have permission to view this page.' },
+    '4xx': { title: 'Something went wrong', desc: 'There was a problem with your request.' },
+    '5xx': { title: 'Server error', desc: 'It’s not you—it’s us. Please try again in a moment.' },
+    default: { title: 'Unexpected error', desc: 'An unexpected error occurred.' },
+    actions: { home: 'Go home', clear: 'Clear errors' },
+    debug: 'Debug details'
+  }
+}

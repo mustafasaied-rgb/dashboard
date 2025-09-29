@@ -1,0 +1,41 @@
+:root {
+  /* Spacing */
+  --space-4xs: 0.125rem; /* 2px */
+  --space-3xs: 0.25rem; /* 4px */
+  --space-2xs: 0.5rem; /* 8px */
+  --space-xs: 0.75rem; /* 12px */
+
+  /* Containers */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-pe-lg-screens: 27.3vw;
+  --container-ps: 19px;
+  --container-pe: 18px;
+  @media (min-width: 1280px) {
+    --container-ps: 41px;
+    --container-pe: 40px;
+  }
+  @media (min-width: 1920px) {
+    --container-ps: 70px;
+    --container-pe: 70px;
+  }
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+
+  --footer-gap: 114px;
+  @media (min-width: 1024px) {
+    --footer-gap: 142px;
+  }
+  @media (min-width: 1600px) {
+    --footer-gap: 121px;
+  }
+
+  --header-pt: 38px;
+  --header-height: calc(var(--header-pt) + 43.86px);
+  @media (min-width: 1024px) {
+    --header-height: calc(var(--header-pt) + 68px);
+  }
+}

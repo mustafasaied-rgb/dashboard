@@ -1,0 +1,37 @@
+export default {
+  explore: 'أستكشف',
+  contact: 'اتصل بنا',
+  address: 'العنوان',
+  all_news: 'كل الأخبار',
+  map: 'الخريطة',
+  get_from_airport: 'الوصول من المطار',
+  hotels_around: 'الفنادق القريبة',
+  nearest_metro_station: 'أقرب محطة مترو',
+  build_route: 'بناء طريق',
+  integrated: '{type} المتكاملة',
+  lets_talk: 'لنتحدث',
+  email: 'البريد الإلكتروني',
+  phone: 'الهاتف',
+  name: 'الاسم',
+  position_in_the_company: 'الوظيفة في الشركة',
+  company_name: 'اسم الشركة',
+  get_the_files: 'احصل على الملفات',
+  by_submitting_your_data_you_agree: 'من خلال إرسال بياناتك، فإنك توافق',
+  to_the: 'على',
+  privacy_policy: 'سياسة الخصوصية',
+  terms_and_conditions: 'الشروط والأحكام',
+  leave_your_contacts_to_receive_all_the_files_on_the_project:
+    'اترك بيانات الاتصال الخاصة بك لتلقي جميع الملفات المتعلقة بالمشروع',
+  news: 'الأخبار',
+  more_news: 'المزيد من الأخبار',
+  error: {
+    404: { title: 'الصفحة غير موجودة', desc: 'تعذّر العثور على الصفحة المطلوبة.' },
+    401: { title: 'يلزم تسجيل الدخول', desc: 'هذه الصفحة تتطلب مصادقة.' },
+    403: { title: 'تم رفض الوصول', desc: 'ليست لديك صلاحية لعرض هذه الصفحة.' },
+    '4xx': { title: 'حدث خطأ ما', desc: 'حدثت مشكلة في طلبك.' },
+    '5xx': { title: 'خطأ في الخادم', desc: 'المشكلة من جهتنا. حاول مرة أخرى بعد قليل.' },
+    default: { title: 'خطأ غير متوقع', desc: 'حدث خطأ غير متوقع.' },
+    actions: { home: 'العودة إلى الرئيسية', clear: 'مسح الأخطاء' },
+    debug: 'تفاصيل التصحيح'
+  }
+}

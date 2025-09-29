@@ -1,0 +1,57 @@
+@layer utilities {
+  /* Fluid typography */
+  .fluid-text {
+    font-size: clamp(1rem, 4vw, 1.25rem);
+  }
+
+  /* Aspect ratios */
+  .aspect-video {
+    aspect-ratio: 16/9;
+  }
+
+  /* Scrollbar styling */
+  .thin-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.gray.400') transparent;
+  }
+
+  .app-container {
+    padding-left: var(--container-ps);
+    padding-right: var(--container-pe);
+  }
+  .app-container-small {
+    padding-inline-start: var(--container-ps);
+    padding-inline-end: var(--container-pe);
+    @media (min-width: 1280px) {
+      padding-inline-start: 41px;
+      padding-inline-end: var(--container-pe-lg-screens);
+    }
+    @media (min-width: 1600px) {
+      padding-inline-start: 438px;
+      padding-inline-end: 586px;
+    }
+  }
+}
+.text-truncate-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-truncate-multi {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4; /* Number of lines before truncation */
+  @media (min-width: 1024px) {
+    -webkit-line-clamp: 3;
+  }
+}
+.gray-overlay {
+  filter: brightness(0) saturate(100%) invert(76%) sepia(6%) saturate(285%) hue-rotate(185deg)
+    brightness(97%) contrast(86%);
+  opacity: 0.95;
+}
+.white-filter {
+  filter: brightness(0) invert(1); /* black → white */
+}

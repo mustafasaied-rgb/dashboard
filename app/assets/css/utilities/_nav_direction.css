@@ -1,0 +1,8 @@
+.navbar-dir {
+  direction: ltr !important;
+}
+@media (min-width: 1280px) {
+  .navbar-dir {
+    direction: inherit !important;
+  }
+}

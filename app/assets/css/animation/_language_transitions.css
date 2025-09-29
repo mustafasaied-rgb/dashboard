@@ -1,0 +1,92 @@
+/* assets/css/transitions.css
+ *
+ * This stylesheet defines the locale switch transition behaviour for application.
+ * In addition to the original classes (`.text-transition` and `.content-transition`),
+ * it now provides a global rule that applies the same fade‑and‑slide effect to
+ * common text elements automatically.  When the `<html>` tag has the
+ * `.transition-active` class (toggled by your LanguageSwitcher), all headings,
+ * paragraphs, spans and list items will animate without requiring you to
+ * manually add a `.text-transition` class to each element.
+ */
+
+/* Base transition styles */
+html.transition-active {
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+html.transition-active body {
+  overflow: hidden;
+  position: relative;
+}
+
+/*-------------text-transition------------Text fade animation---------------------------------------------*/
+
+/*---text-transition--global---*/
+/* html.transition-active :is(h1, h2, h3, h4, h5, h6, p, span, li, button, figcaption) {
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+html:not(.transition-active) :is(h1, h2, h3, h4, h5, h6, p, span, li, button, figcaption) {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s,
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s;
+} */
+
+/*---text-transition--manual control---*/
+.transition-active .text-transition {
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+html:not(.transition-active) .text-transition {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s,
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s;
+}
+
+/*------------------- -Content wrapper animation----------------------------------------*/
+/* .content-transition {
+  transition:
+    opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+html.transition-active .content-transition {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+html[dir='ltr'].transition-active .content-transition {
+  transform: translateX(20px);
+}
+
+html[dir='rtl'].transition-active .content-transition {
+  transform: translateX(-20px);
+} */
+/*------------------- -general animation----------------------------------------*/
+
+/* Preserve text sharpness during transition */
+html.transition-active * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}

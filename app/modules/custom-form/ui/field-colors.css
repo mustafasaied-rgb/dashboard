@@ -1,0 +1,33 @@
+.cf-theme {
+  --cf-bg: #f1f4f7;
+  --cf-fg: #000000;
+  --cf-placeholder: #999fa3;
+
+  --cf-border: #d1d5db;
+  --cf-border-focus: #9999994d;
+  --cf-border-active: #9999994d;
+
+  --cf-bg-focus: #ffffff;
+  --cf-bg-active: #ffffff;
+
+  --cf-error: #ef4444;
+  --cf-desc: #6b7280;
+  --cf-err: #dc2626;
+}
+
+.cf-theme--dark {
+  --cf-bg: #0b1220;
+  --cf-fg: #f8fafc;
+  --cf-placeholder: #94a3b8;
+
+  --cf-border: #1f2937;
+  --cf-border-focus: #334155;
+  --cf-border-active: #334155;
+
+  --cf-bg-focus: #0f172a;
+  --cf-bg-active: #0f172a;
+
+  --cf-error: #f87171;
+  --cf-desc: #94a3b8;
+  --cf-err: #fca5a5;
+}

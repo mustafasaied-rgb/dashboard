@@ -1,0 +1,20 @@
+@import './base/_reset.css';
+@import './base/_typography.css';
+@import './base/_root.css';
+@import './base/_inputs.css';
+@import './base/_content-typography.css';
+
+@import './animation/_language_transitions.css';
+@import './animation/_navigation_transitions.css';
+@import './animation/_fade_animation.css';
+
+@import './config/_colors.css';
+@import './config/_sizes.css';
+@import './config/_breakpoints.css';
+
+@import './utilities/_mixins.css';
+@import './utilities/_scrollbar.css';
+@import './utilities/_nav_direction.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
