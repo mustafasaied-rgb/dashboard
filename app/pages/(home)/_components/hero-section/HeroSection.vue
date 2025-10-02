@@ -25,7 +25,7 @@
         id="myVideo"
         class="absolute left-1/2 top-0 -z-10 max-h-screen w-[150%] -translate-x-1/2 xl:w-full"
       >
-        <source src="/videos/main_head.mp4" type="video/mp4" />
+        <source :src="main_head" type="video/mp4" />
       </video>
 
       <div
@@ -76,6 +76,7 @@
 </template>
 
 <script setup lang="ts">
+import main_head from '~/assets/videos/main_head.mp4'
 import ServicesSlider from '~/pages/(home)/_components/hero-section/services-slider/ServicesSlider.vue'
 const ASC_Logo_Main = '/Icons/ASC_Logo_Main.svg'
 const { locale } = useI18n()

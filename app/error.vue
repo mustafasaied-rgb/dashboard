@@ -13,7 +13,7 @@
       id="myVideo"
       class="absolute left-1/2 top-0 -z-10 max-h-screen w-[150%] -translate-x-1/2 xl:w-full"
     >
-      <source src="/videos/main_head.mp4" type="video/mp4" />
+      <source :src="main_head" type="video/mp4" />
     </video>
 
     <div
@@ -67,6 +67,7 @@ import { useHead } from '#imports'
 import { clearError } from '#app'
 import type { NuxtError } from '#app'
 import { useI18n } from 'vue-i18n'
+import main_head from '~/assets/videos/main_head.mp4'
 
 const props = defineProps<{ error: NuxtError & { statusCode?: number } }>()
 const statusCode = computed(() => Number(props.error?.statusCode ?? 500))
