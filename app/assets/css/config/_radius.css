@@ -1,0 +1,10 @@
+:root {
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+}
+/* Radius (instead of theme.extend.borderRadius) */
+
+@theme {
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+}

@@ -1,0 +1,20 @@
+:root {
+  --breakpoint-xs: 415px;
+  --breakpoint-sm: 834px;
+  --breakpoint-md: 1200px;
+  --breakpoint-lg: 1440px;
+  --breakpoint-xl: 1920px;
+}
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-2xsm: 375px;
+  --breakpoint-xsm: 425px;
+  --breakpoint-3xl: 2000px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  /* --breakpoint-xs: 375px;
+  --breakpoint-3xl: 1600px; */
+}

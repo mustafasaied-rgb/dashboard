@@ -1,0 +1,9 @@
+@theme {
+  /* Fonts (maps to font-sans, font-zarid, font-durke, font-roboto) */
+  --font-sans: 29LT Zarid Sans AL, Zarid-Fallback, system-ui, sans-serif;
+  --font-zarid: 29LT Zarid Sans AL, Zarid-Fallback, system-ui, sans-serif;
+  --font-durke: 'Druk Wide';
+  --font-roboto: Roboto, system-ui, sans-serif;
+  /* --font-*: initial; */
+  --font-outfit: Outfit, sans-serif;
+}

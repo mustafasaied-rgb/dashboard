@@ -1,3 +1,5 @@
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
   ssr: true, // SSR is default, but be explicit
   compatibilityDate: '2024-05-07',
@@ -21,10 +23,12 @@ export default defineNuxtConfig({
     }
   },
   // Merge small CSS files into one to remove multiple render-blocking requests
+  css: ['~/assets/css/main.css'],
   vite: {
     build: {
       cssCodeSplit: false
-    }
+    },
+    plugins: [tailwindcss()]
   },
   app: {
     pageTransition: {
@@ -54,7 +58,6 @@ export default defineNuxtConfig({
     '~/modules/custom-form',
     // '~/modules/lib-form',
     '@nuxt/image',
-    '@nuxtjs/tailwindcss',
     'nuxt-svgo',
     '@nuxtjs/i18n',
     'vue-sonner/nuxt'
@@ -77,10 +80,6 @@ export default defineNuxtConfig({
       redirectOn: 'root',
       alwaysRedirect: false
     }
-  },
-  tailwindcss: {
-    cssPath: '~/assets/css/main.css',
-    configPath: '~/tailwind.config.js'
   },
   svgo: {
     autoImportPath: './assets/icons/', // Path to your SVG folder
