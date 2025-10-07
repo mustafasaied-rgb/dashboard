@@ -1,7 +1,7 @@
 <template>
   <aside
     :class="[
-      'fixed left-0 top-0 z-[999] mt-16 flex h-screen flex-col border-r border-gray-200 bg-white px-5 text-gray-900 transition-all duration-300 ease-in-out dark:border-gray-800 dark:bg-gray-900 lg:mt-0',
+      'fixed top-0 left-0 z-[999] mt-16 flex h-screen flex-col border-r border-gray-200 bg-white px-5 text-gray-900 transition-all duration-300 ease-in-out lg:mt-0 dark:border-gray-800 dark:bg-gray-900',
       {
         'lg:w-[290px]': isExpanded || isMobileOpen || isHovered,
         'lg:w-[90px]': !isExpanded && !isHovered,
@@ -40,7 +40,7 @@
           <div v-for="(menuGroup, groupIndex) in menuGroups" :key="groupIndex">
             <h2
               :class="[
-                'mb-4 flex text-xs uppercase leading-[20px] text-gray-400',
+                'mb-4 flex text-xs leading-[20px] text-gray-400 uppercase',
                 !isExpanded && !isHovered ? 'lg:justify-center' : 'justify-start'
               ]"
             >
@@ -50,63 +50,19 @@
               <HorizontalDots v-else />
             </h2>
             <ul class="flex flex-col gap-4">
-              <li v-for="(item, index) in menuGroup.items" :key="item.name">
-                <button
-                  v-if="item.subItems"
-                  @click="toggleSubmenu(groupIndex, index)"
-                  :class="[
-                    'menu-item group w-full',
-                    {
-                      'menu-item-active': isSubmenuOpen(groupIndex, index),
-                      'menu-item-inactive': !isSubmenuOpen(groupIndex, index)
-                    },
-                    !isExpanded && !isHovered ? 'lg:justify-center' : 'lg:justify-start'
-                  ]"
-                >
-                  <span
-                    :class="[
-                      isSubmenuOpen(groupIndex, index)
-                        ? 'menu-item-icon-active'
-                        : 'menu-item-icon-inactive'
-                    ]"
-                  >
-                    <component :is="item.icon" />
-                  </span>
-                  <span v-if="isExpanded || isHovered || isMobileOpen" class="menu-item-text">{{
-                    item.name
-                  }}</span>
-                  <ChevronDownIcon
-                    v-if="isExpanded || isHovered || isMobileOpen"
-                    :class="[
-                      'ml-auto h-5 w-5 transition-transform duration-200',
-                      {
-                        'text-brand-500 rotate-180': isSubmenuOpen(groupIndex, index)
-                      }
-                    ]"
-                  />
-                </button>
-                <NuxtLink
-                  v-else-if="item.path"
-                  :to="item.path"
-                  :class="[
-                    'menu-item group',
-                    {
-                      'menu-item-active': isActive(item.path),
-                      'menu-item-inactive': !isActive(item.path)
-                    }
-                  ]"
-                >
-                  <span
-                    :class="[
-                      isActive(item.path) ? 'menu-item-icon-active' : 'menu-item-icon-inactive'
-                    ]"
-                  >
-                    <component :is="item.icon" />
-                  </span>
-                  <span v-if="isExpanded || isHovered || isMobileOpen" class="menu-item-text">{{
-                    item.name
-                  }}</span>
-                </NuxtLink>
+              <MenuItem
+                v-for="(item, index) in menuGroup.items"
+                :key="item.name"
+                :icon="item.icon"
+                :name="item.name"
+                :path="item.path"
+                :sub-items="item.subItems"
+                :is-open="isSubmenuOpen(groupIndex, index)"
+                :is-active="item.path ? isActive(item.path) : false"
+                :collapsed="!isExpanded && !isHovered && !isMobileOpen"
+                @toggle="toggleSubmenu(groupIndex, index)"
+              >
+                <!-- nested submenu goes here -->
                 <transition
                   @enter="startTransition"
                   @after-enter="endTransition"
@@ -118,51 +74,20 @@
                       isSubmenuOpen(groupIndex, index) && (isExpanded || isHovered || isMobileOpen)
                     "
                   >
-                    <ul class="ml-9 mt-2 space-y-1">
-                      <li v-for="subItem in item.subItems" :key="subItem.name">
-                        <NuxtLink
-                          :to="subItem.path"
-                          :class="[
-                            'menu-dropdown-item',
-                            {
-                              'menu-dropdown-item-active': isActive(subItem.path),
-                              'menu-dropdown-item-inactive': !isActive(subItem.path)
-                            }
-                          ]"
-                        >
-                          {{ subItem.name }}
-                          <span class="ml-auto flex items-center gap-1">
-                            <span
-                              v-if="subItem.new"
-                              :class="[
-                                'menu-dropdown-badge',
-                                {
-                                  'menu-dropdown-badge-active': isActive(subItem.path),
-                                  'menu-dropdown-badge-inactive': !isActive(subItem.path)
-                                }
-                              ]"
-                            >
-                              new
-                            </span>
-                            <span
-                              v-if="subItem.pro"
-                              :class="[
-                                'menu-dropdown-badge',
-                                {
-                                  'menu-dropdown-badge-active': isActive(subItem.path),
-                                  'menu-dropdown-badge-inactive': !isActive(subItem.path)
-                                }
-                              ]"
-                            >
-                              pro
-                            </span>
-                          </span>
-                        </NuxtLink>
-                      </li>
+                    <ul class="mt-2 ml-9 space-y-1">
+                      <MenuItem
+                        v-for="sub in item.subItems"
+                        :key="sub.name"
+                        :icon="undefined"
+                        :name="sub.name"
+                        :path="sub.path"
+                        :is-active="isActive(sub.path)"
+                        :collapsed="!isExpanded && !isHovered && !isMobileOpen"
+                      />
                     </ul>
                   </div>
                 </transition>
-              </li>
+              </MenuItem>
             </ul>
           </div>
         </div>
