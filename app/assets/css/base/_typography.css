@@ -44,9 +44,3 @@ html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
-.font-figma-300 {
-  font-weight: 200 !important;
-}
-.font-figma-400 {
-  font-weight: 300 !important;
-}
