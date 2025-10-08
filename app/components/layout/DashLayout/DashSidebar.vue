@@ -15,7 +15,7 @@
   >
     <div :class="['flex py-8', !isExpanded && !isHovered ? 'lg:justify-center' : 'justify-start']">
       <NuxtLink to="/">
-        <!-- <img
+        <img
           v-if="isExpanded || isHovered || isMobileOpen"
           class="dark:hidden"
           src="/images/logo/logo.svg"
@@ -30,8 +30,8 @@
           alt="Logo"
           width="150"
           height="40"
-        /> -->
-        <img   src="/images/logo/logo-icon.svg" alt="Logo" width="32" height="32" />
+        />
+        <img v-else src="/images/logo/logo-icon.svg" alt="Logo" width="32" height="32" />
       </NuxtLink>
     </div>
     <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
@@ -119,23 +119,23 @@ const menuGroups = [
       {
         icon: CalenderIcon,
         name: 'Calendar',
-        path: '/calendar'
+        path: '/dashboard/calendar'
       },
       {
         icon: UserCircleIcon,
         name: 'User Profile',
-        path: '/profile'
+        path: '/dashboard/profile'
       },
 
       {
         name: 'Forms',
         icon: ListIcon,
-        subItems: [{ name: 'Form Elements', path: '/form-elements', pro: false }]
+        subItems: [{ name: 'Form Elements', path: '/dashboard/form-elements', pro: false }]
       },
       {
         name: 'Tables',
         icon: TableIcon,
-        subItems: [{ name: 'Basic Tables', path: '/basic-tables', pro: false }]
+        subItems: [{ name: 'Basic Tables', path: '/dashboard/basic-tables', pro: false }]
       },
       {
         name: 'Pages',
@@ -154,20 +154,20 @@ const menuGroups = [
         icon: PieChartIcon,
         name: 'Charts',
         subItems: [
-          { name: 'Line Chart', path: '/line-chart', pro: false },
-          { name: 'Bar Chart', path: '/bar-chart', pro: false }
+          { name: 'Line Chart', path: '/dashboard/line-chart', pro: false },
+          { name: 'Bar Chart', path: '/dashboard/bar-chart', pro: false }
         ]
       },
       {
         icon: PieChartIcon,
         name: 'Ui Elements',
         subItems: [
-          { name: 'Alerts', path: '/alerts', pro: false },
-          { name: 'Avatars', path: '/avatars', pro: false },
-          { name: 'Badge', path: '/badge', pro: false },
-          { name: 'Buttons', path: '/buttons', pro: false },
-          { name: 'Images', path: '/images', pro: false },
-          { name: 'Videos', path: '/videos', pro: false }
+          { name: 'Alerts', path: '/dashboard/alerts', pro: false },
+          { name: 'Avatars', path: '/dashboard/avatars', pro: false },
+          { name: 'Badge', path: '/dashboard/badge', pro: false },
+          { name: 'Buttons', path: '/dashboard/buttons', pro: false },
+          { name: 'Images', path: '/dashboard/images', pro: false },
+          { name: 'Videos', path: '/dashboard/videos', pro: false }
         ]
       },
       {

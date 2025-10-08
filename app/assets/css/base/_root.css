@@ -1,19 +1,10 @@
-:root {
-  --min-viewport: 320px;
-  --max-viewport: 1280px;
-
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
-  --transition-default: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
 
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 4rem;
 }
 
-body {
-  background-color: white;
-}
+
 
 *,
 ::after,

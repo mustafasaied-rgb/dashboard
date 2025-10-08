@@ -6,20 +6,18 @@
     @open-change="onOpenChange"
   >
     <template #trigger="{ toggle }">
-      <button
-        class="hover:text-dark-900 relative flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-        @click="toggle"
-      >
+      <Button @click="toggle" rounded variant="outline" size="icon" class="bg-transparent">
         <span
           :class="{ hidden: !notifying, flex: notifying }"
           class="absolute top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-orange-400"
         >
           <span
             class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"
-          ></span>
+          >
+          </span>
         </span>
         <BellIcon />
-      </button>
+      </Button>
     </template>
 
     <template #default="{ closeFn }">
@@ -39,13 +37,7 @@
             @click.prevent="closeFn"
             class="flex gap-3 rounded-lg border-b border-gray-100 p-3 px-4.5 py-3 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-white/5"
           >
-            <span class="relative z-1 block h-10 w-full max-w-10 rounded-full">
-              <img :src="n.userImage" :alt="n.userName" class="overflow-hidden rounded-full" />
-              <span
-                :class="n.status === 'online' ? 'bg-success-500' : 'bg-error-500'"
-                class="absolute right-0 bottom-0 z-10 h-2.5 w-full max-w-2.5 rounded-full border-[1.5px] border-white dark:border-gray-900"
-              ></span>
-            </span>
+            <Avatar class="w-full" :status="n.status" :src="n.userImage" size="medium" />
             <span class="block">
               <span class="text-theme-sm mb-1.5 block text-gray-500 dark:text-gray-400">
                 <span class="font-medium text-gray-800 dark:text-white/90">{{ n.userName }}</span>

@@ -1,13 +1,13 @@
 <template>
   <Dropdown ref="dropdownRef" placement="bottom-end" :offset="17" :panel-class="'w-[260px]'">
     <template #trigger="{ open, toggle }">
-      <button class="flex items-center text-gray-700 dark:text-gray-400" @click.prevent="toggle">
-        <span class="mr-3 h-11 w-11 overflow-hidden rounded-full">
-          <img src="/images/user/owner.jpg" alt="User" />
-        </span>
-        <span class="text-theme-sm mr-1 block font-medium">Musharof</span>
+      <Button variant="none" size="sm" class="!flex items-center !p-0" @click.prevent="toggle">
+        <template #start>
+          <Avatar class="overflow-hidden" :src="'/images/user/owner.jpg'" size="medium" />
+        </template>
+        <span class="text-theme-sm me-1 block font-medium">Musharof</span>
         <ChevronDownIcon :class="{ 'rotate-180': open }" />
-      </button>
+      </Button>
     </template>
 
     <template #default="{ closeFn }">

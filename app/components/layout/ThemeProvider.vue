@@ -24,6 +24,7 @@ useHead({
   htmlAttrs: {
     class: computed(() => (isDarkMode.value ? 'dark' : undefined))
   },
+  bodyAttrs: { class: 'dark:bg-gray-900' },
   meta: [{ name: 'color-scheme', content: 'dark light' }]
 })
 
