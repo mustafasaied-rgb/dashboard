@@ -1,9 +1,9 @@
 <template>
   <ThemeProvider>
     <SidebarProvider>
-      <admin-layout>
+      <dash-layout>
         <slot />
-      </admin-layout>
+      </dash-layout>
     </SidebarProvider>
   </ThemeProvider>
 </template>

@@ -48,7 +48,6 @@
           </svg>
         </button>
         <HeaderLogo />
-        <h2 class="text-xl-heading ">fds</h2>
         <button
           @click="toggleApplicationMenu"
           class="z-[999] flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 hover:bg-gray-100 lg:hidden dark:text-gray-400 dark:hover:bg-gray-800"
@@ -89,10 +88,10 @@
 import { ref } from 'vue'
 import { useSidebar } from '@/composables/useSidebar'
 import ThemeToggler from '~/components/common/ThemeToggler.vue'
-import SearchBar from '~/components/layout/AdminLayout/header/SearchBar.vue'
-import HeaderLogo from '~/components/layout/AdminLayout/header/HeaderLogo.vue'
-import NotificationMenu from '~/components/layout/AdminLayout/header/NotificationMenu.vue'
-import UserMenu from '~/components/layout/AdminLayout/header/UserMenu.vue'
+import SearchBar from '~/components/layout/DashLayout/header/SearchBar.vue'
+import HeaderLogo from '~/components/layout/DashLayout/header/HeaderLogo.vue'
+import NotificationMenu from '~/components/layout/DashLayout/header/NotificationMenu.vue'
+import UserMenu from '~/components/layout/DashLayout/header/UserMenu.vue'
 
 const { toggleSidebar, toggleMobileSidebar, isMobileOpen } = useSidebar()
 

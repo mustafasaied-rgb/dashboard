@@ -1,19 +1,3 @@
-<script setup lang="ts">
-import { ChevronDownIcon } from '~/components/icons'
-
-const props = defineProps<{
-  icon: any
-  name: string
-  path?: string
-  subItems?: any[]
-  isOpen?: boolean
-  isActive?: boolean
-  collapsed?: boolean
-}>()
-
-const emit = defineEmits<{ (e: 'toggle'): void }>()
-</script>
-
 <template>
   <li>
     <!-- Parent item (button) -->
@@ -30,7 +14,6 @@ const emit = defineEmits<{ (e: 'toggle'): void }>()
     >
       <span :class="[isOpen ? 'menu-item-icon-active' : 'menu-item-icon-inactive']">
         <component v-if="icon" :is="icon" />
-        <i v-else>*</i>
       </span>
 
       <span v-if="!collapsed" class="menu-item-text">{{ name }}</span>
@@ -51,7 +34,7 @@ const emit = defineEmits<{ (e: 'toggle'): void }>()
     >
       <span :class="[isActive ? 'menu-item-icon-active' : 'menu-item-icon-inactive']">
         <component v-if="icon" :is="icon" />
-        <i v-else>*</i>
+        <DotIcon v-else />
       </span>
       <span v-if="!collapsed" class="menu-item-text">{{ name }}</span>
     </NuxtLink>
@@ -60,3 +43,17 @@ const emit = defineEmits<{ (e: 'toggle'): void }>()
     <slot v-if="subItems" />
   </li>
 </template>
+<script setup lang="ts">
+import { ChevronDownIcon } from '~/components/icons'
+
+const props = defineProps<{
+  icon: any
+  name: string
+  path?: string
+  subItems?: any[]
+  isOpen?: boolean
+  isActive?: boolean
+  collapsed?: boolean
+}>()
+const emit = defineEmits<{ (e: 'toggle'): void }>()
+</script>

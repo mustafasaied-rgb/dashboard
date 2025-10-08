@@ -15,7 +15,7 @@
   >
     <div :class="['flex py-8', !isExpanded && !isHovered ? 'lg:justify-center' : 'justify-start']">
       <NuxtLink to="/">
-        <img
+        <!-- <img
           v-if="isExpanded || isHovered || isMobileOpen"
           class="dark:hidden"
           src="/images/logo/logo.svg"
@@ -30,8 +30,8 @@
           alt="Logo"
           width="150"
           height="40"
-        />
-        <img v-else src="/images/logo/logo-icon.svg" alt="Logo" width="32" height="32" />
+        /> -->
+        <img   src="/images/logo/logo-icon.svg" alt="Logo" width="32" height="32" />
       </NuxtLink>
     </div>
     <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
@@ -63,30 +63,22 @@
                 @toggle="toggleSubmenu(groupIndex, index)"
               >
                 <!-- nested submenu goes here -->
-                <transition
-                  @enter="startTransition"
-                  @after-enter="endTransition"
-                  @before-leave="startTransition"
-                  @after-leave="endTransition"
+                <ul
+                  v-show="
+                    isSubmenuOpen(groupIndex, index) && (isExpanded || isHovered || isMobileOpen)
+                  "
+                  class="mt-2 ml-9 space-y-1"
                 >
-                  <div
-                    v-show="
-                      isSubmenuOpen(groupIndex, index) && (isExpanded || isHovered || isMobileOpen)
-                    "
-                  >
-                    <ul class="mt-2 ml-9 space-y-1">
-                      <MenuItem
-                        v-for="sub in item.subItems"
-                        :key="sub.name"
-                        :icon="undefined"
-                        :name="sub.name"
-                        :path="sub.path"
-                        :is-active="isActive(sub.path)"
-                        :collapsed="!isExpanded && !isHovered && !isMobileOpen"
-                      />
-                    </ul>
-                  </div>
-                </transition>
+                  <MenuItem
+                    v-for="sub in item.subItems"
+                    :key="sub.name"
+                    :icon="undefined"
+                    :name="sub.name"
+                    :path="sub.path"
+                    :is-active="isActive(sub.path)"
+                    :collapsed="!isExpanded && !isHovered && !isMobileOpen"
+                  />
+                </ul>
               </MenuItem>
             </ul>
           </div>
@@ -98,15 +90,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
-
 import {
   GridIcon,
   CalenderIcon,
   UserCircleIcon,
   PieChartIcon,
-  ChevronDownIcon,
   HorizontalDots,
   PageIcon,
   TableIcon,
@@ -126,7 +114,7 @@ const menuGroups = [
       {
         icon: GridIcon,
         name: 'Dashboard',
-        subItems: [{ name: 'Ecommerce', path: '/', pro: false }]
+        subItems: [{ name: 'Ecommerce', path: '/dashboard', pro: false }]
       },
       {
         icon: CalenderIcon,
@@ -216,17 +204,5 @@ const isSubmenuOpen = (groupIndex, itemIndex) => {
     (isAnySubmenuRouteActive.value &&
       menuGroups[groupIndex].items[itemIndex].subItems?.some((subItem) => isActive(subItem.path)))
   )
-}
-
-const startTransition = (el) => {
-  el.style.height = 'auto'
-  const height = el.scrollHeight
-  el.style.height = '0px'
-  el.offsetHeight // force reflow
-  el.style.height = height + 'px'
-}
-
-const endTransition = (el) => {
-  el.style.height = ''
 }
 </script>
