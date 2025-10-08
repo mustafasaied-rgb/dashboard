@@ -1,11 +1,16 @@
 <template>
   <span :class="[baseStyles, sizeClass, colorStyles]">
-    <span v-if="startIcon" class="mr-1">
-      <component :is="startIcon" />
+    <span v-if="hasStart || startIcon" class="me-1" aria-hidden="true">
+      <slot name="start">
+        <component :is="startIcon" v-if="startIcon" />
+      </slot>
     </span>
     <slot></slot>
-    <span v-if="endIcon" class="ml-1">
-      <component :is="endIcon" />
+
+    <span v-if="hasEnd || endIcon" class="ms-1" aria-hidden="true">
+      <slot name="end">
+        <component :is="endIcon" v-if="endIcon" />
+      </slot>
     </span>
   </span>
 </template>
@@ -28,7 +33,7 @@ interface BadgeProps {
 const props = withDefaults(defineProps<BadgeProps>(), {
   variant: 'light',
   color: 'primary',
-  size: 'md',
+  size: 'md'
 })
 
 const baseStyles =
@@ -36,7 +41,7 @@ const baseStyles =
 
 const sizeStyles = {
   sm: 'text-theme-xs',
-  md: 'text-sm',
+  md: 'text-sm'
 }
 
 const variants = {
@@ -47,7 +52,7 @@ const variants = {
     warning: 'bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400',
     info: 'bg-blue-light-50 text-blue-light-500 dark:bg-blue-light-500/15 dark:text-blue-light-500',
     light: 'bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80',
-    dark: 'bg-gray-500 text-white dark:bg-white/5 dark:text-white',
+    dark: 'bg-gray-500 text-white dark:bg-white/5 dark:text-white'
   },
   solid: {
     primary: 'bg-brand-500 text-white dark:text-white',
@@ -56,10 +61,14 @@ const variants = {
     warning: 'bg-warning-500 text-white dark:text-white',
     info: 'bg-blue-light-500 text-white dark:text-white',
     light: 'bg-gray-400 dark:bg-white/5 text-white dark:text-white/80',
-    dark: 'bg-gray-700 text-white dark:text-white',
-  },
+    dark: 'bg-gray-700 text-white dark:text-white'
+  }
 }
 
 const sizeClass = computed(() => sizeStyles[props.size])
 const colorStyles = computed(() => variants[props.variant][props.color])
+
+const slots = useSlots()
+const hasStart = computed(() => !!slots.start)
+const hasEnd = computed(() => !!slots.end)
 </script>
