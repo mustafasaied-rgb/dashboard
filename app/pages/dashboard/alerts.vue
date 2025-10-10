@@ -74,13 +74,6 @@
 definePageMeta({
   layout: 'dashboard'
 })
-const images2 = ['/images/grid-image/image-02.png', '/images/grid-image/image-03.png']
-const images3 = [
-  '/images/grid-image/image-04.png',
-  '/images/grid-image/image-05.png',
-  '/images/grid-image/image-06.png'
-]
-const images_n = [...images2, ...images3]
 </script>
 
 <style></style>

@@ -1,24 +1,22 @@
 <template>
-  <div
-    :class="[
-      'relative h-full w-full rounded-[24px]',
-      isYouTube && isPlaying ? 'overflow-visible' : 'overflow-hidden'
-    ]"
-  >
+  <div :class="['relative overflow-hidden rounded-lg', aspectRatioClass]">
+    <!-- YouTube -->
     <iframe
       v-if="isYouTube"
-      class="my-2 block h-full w-full bg-black object-cover"
+      class="absolute inset-0 h-full w-full bg-black object-cover"
       :src="iframeSrc"
-      title="YouTube video"
+      :title="title"
       frameborder="0"
       allow="autoplay; encrypted-media; picture-in-picture"
       referrerpolicy="origin-when-cross-origin"
       allowfullscreen
     ></iframe>
 
+    <!-- Native video -->
     <video
       v-else
       ref="videoEl"
+      class="absolute inset-0 h-full w-full bg-black object-cover"
       :src="canUseSrc ? src : undefined"
       :poster="poster || undefined"
       :controls="isPlaying"
@@ -27,11 +25,11 @@
       :loop="loop"
       :playsinline="playsinline"
       :preload="preload"
-      class="block h-full w-full bg-black object-cover"
       @play="isPlaying = true"
       @ended="onEnded"
-    />
+    ></video>
 
+    <!-- Overlay (poster + play button) -->
     <button
       v-if="showOverlay"
       type="button"
@@ -49,7 +47,7 @@
       />
       <span
         :class="[
-          'w-[40px] -translate-x-1/2 absolute left-1/2 top-1/2 inline-flex h-[40px] -translate-y-1/2 items-center justify-center rounded-full bg-[#F1F1F1B2] text-2xl text-black transition-colors hover:bg-[#F1F1F1]',
+          'absolute top-1/2 left-1/2 inline-flex h-[40px] w-[40px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#F1F1F1B2] text-2xl text-black transition-colors hover:bg-[#F1F1F1]',
           'lg:h-[80px] lg:w-[80px]'
         ]"
         aria-hidden="true"
@@ -62,11 +60,20 @@
 </template>
 
 <script setup lang="ts">
-import { isHls, getNativeHls, getYouTubeId } from '~/utils/videoFns'
+import { computed, nextTick, onMounted, ref, withDefaults } from 'vue'
+
+type AspectRatio = '16:9' | '4:3' | '21:9' | '1:1'
+
+/** Props mirror your original features, plus aspect ratio + optional explicit yt id */
 const props = withDefaults(
   defineProps<{
+    /** Accept a full URL (YouTube or direct file / HLS) */
     src: string
+    /** Optional explicit YouTube id; if omitted we try to extract from src */
+    videoId?: string
     poster?: string
+    title?: string
+    aspectRatio?: AspectRatio
     autoplay?: boolean
     muted?: boolean
     loop?: boolean
@@ -74,6 +81,8 @@ const props = withDefaults(
     preload?: 'none' | 'metadata' | 'auto'
   }>(),
   {
+    title: 'YouTube video',
+    aspectRatio: '16:9',
     autoplay: false,
     muted: false,
     loop: false,
@@ -82,16 +91,33 @@ const props = withDefaults(
   }
 )
 
+/* ------------------ helpers (inline, no external utils) ------------------ */
+const YT_REGEX =
+  /(?:youtu\.be\/|youtube\.com\/(?:shorts\/|watch\?v=|embed\/|v\/))([A-Za-z0-9_-]{11})/
+
+const getYouTubeId = (input: string) => {
+  if (props.videoId) return props.videoId
+  const m = input.match(YT_REGEX)
+  return m ? m[1] : ''
+}
+
+const isHls = (u: string) => /\.m3u8(\?|$)/i.test(u)
+const getNativeHls = () => {
+  const v = document.createElement('video')
+  return !!(v.canPlayType && v.canPlayType('application/vnd.apple.mpegurl'))
+}
+
+/* ------------------ state ------------------ */
 const videoEl = ref<HTMLVideoElement | null>(null)
 const isPlaying = ref(false)
 const autoplayFailed = ref(false)
 
-/* ------------ YouTube detection + embed URL --------------- */
+/* ------------------ YouTube detection + URL ------------------ */
 const ytId = computed(() => getYouTubeId(props.src || ''))
 const isYouTube = computed(() => !!ytId.value)
 
 const ytParams = computed(() => {
-  const params = new URLSearchParams({
+  const p = new URLSearchParams({
     autoplay: '1',
     mute: props.autoplay || props.muted ? '1' : '0',
     controls: '1',
@@ -100,46 +126,54 @@ const ytParams = computed(() => {
     playsinline: '1'
   })
   if (props.loop) {
-    params.set('loop', '1')
-    params.set('playlist', ytId.value) // required by YT for single-video loops
+    p.set('loop', '1')
+    p.set('playlist', ytId.value || '')
   }
-  // enablejsapi optional; not needed for simple autoplay
-  return params.toString()
+  return p.toString()
 })
+
 const ytEmbedUrl = computed(() =>
   isYouTube.value ? `https://www.youtube.com/embed/${ytId.value}?${ytParams.value}` : ''
 )
 
-// We defer assigning iframe src until we actually “play”
+/** we defer iframe src until playback to preserve overlay behavior */
 const iframeSrc = ref('')
 const iframeActive = computed(() => !!iframeSrc.value)
 
-/* ------------ Native video support (MP4/WebM/HLS) ---------- */
+/* ------------------ Native src / HLS capability ------------------ */
 const nativeHls = getNativeHls()
 const canUseSrc = computed(() => props.src && (!isHls(props.src) || nativeHls))
 
-/* ------------ Overlay visibility --------------------------- */
+/* ------------------ Aspect ratio classes (Tailwind) -------------- */
+const aspectRatioClass = computed(() => {
+  const map: Record<AspectRatio, string> = {
+    '16:9': 'aspect-video',
+    '4:3': 'aspect-4/3',
+    '21:9': 'aspect-21/9',
+    '1:1': 'aspect-square'
+  }
+  return map[props.aspectRatio]
+})
+
+/* ------------------ Overlay visibility ------------------ */
 const showOverlay = computed(() => {
-  // When using YouTube with controls, don’t keep an overlay on top while active/autoplaying
   if (isYouTube.value) {
     return !(iframeActive.value || props.autoplay) && !isPlaying.value
   }
-  // Native video rules
   if (autoplayFailed.value) return !isPlaying.value
   return !isPlaying.value && !props.autoplay
 })
 
-/* ------------ Poster/thumbnail for overlay ----------------- */
+/* ------------------ Poster logic ------------------ */
 const posterToShow = computed(() => {
   if (props.poster) return props.poster
-  if (isYouTube.value) {
-    // YouTube thumbnail fallback (maxres may not exist; hqdefault is safe)
+  if (isYouTube.value && ytId.value) {
     return `https://i.ytimg.com/vi/${ytId.value}/hqdefault.jpg`
   }
-  return '' // else we keep overlay transparent
+  return ''
 })
 
-/* ------------ Playback handlers ---------------------------- */
+/* ------------------ Playback handlers ------------------ */
 async function startPlayback({ reset = false } = {}) {
   if (isYouTube.value) {
     iframeSrc.value = ytEmbedUrl.value
@@ -157,7 +191,7 @@ async function startPlayback({ reset = false } = {}) {
     return
   }
 
-  // Make autoplay policy happy
+  // Satisfy autoplay policies (muted if auto)
   if (props.autoplay && !props.muted) el.muted = true
   if (reset) {
     try {
@@ -182,7 +216,7 @@ function handlePlay() {
 
 async function onEnded() {
   if (props.autoplay) {
-    await startPlayback({ reset: true }) // loops native video; YouTube loops via URL params
+    await startPlayback({ reset: true })
     return
   }
   isPlaying.value = false
