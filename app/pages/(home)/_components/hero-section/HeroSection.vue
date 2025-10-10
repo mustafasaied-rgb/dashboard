@@ -1,7 +1,7 @@
 <template>
   <section
     :class="[
-      'flex w-full flex-col justify-between gap-[105px] overflow-y-auto overflow-x-hidden pb-[108.3px] font-zarid text-[#465ae5]',
+      'font-zarid flex w-full flex-col justify-between gap-[105px] overflow-x-hidden overflow-y-auto pb-[108.3px] text-[#465ae5]',
       'lg:justify-start lg:gap-[162px] lg:pb-[126px]',
       '3xl:gap-0 3xl:pb-[175px]'
     ]"
@@ -21,9 +21,8 @@
         disablePictureInPicture
         disableRemotePlayback
         preload="metadata"
-        fetchpriority="high"
         id="myVideo"
-        class="absolute left-1/2 top-0 -z-10 max-h-screen w-[150%] -translate-x-1/2 xl:w-full"
+        class="absolute top-0 left-1/2 -z-10 max-h-screen w-[150%] -translate-x-1/2 xl:w-full"
       >
         <source :src="main_head" type="video/mp4" />
       </video>
@@ -53,9 +52,9 @@
 
         <h1
           :class="[
-            'mt-0 flex flex-col items-center gap-0 text-center text-[20px] font-normal leading-[105%] tracking-[0.3px] text-[#18264a]',
-            'lg:items-start lg:self-end lg:text-[32px] lg:font-[350] lg:leading-[100%] lg:tracking-[0.4px]',
-            'xl:text-start xl:text-xl-heading xl:font-light xl:leading-[95%] xl:tracking-[0.52px]'
+            'mt-0 flex flex-col items-center gap-0 text-center text-[20px] leading-[105%] font-normal tracking-[0.3px] text-[#18264a]',
+            'lg:items-start lg:self-end lg:text-[32px] lg:leading-[100%] lg:font-[350] lg:tracking-[0.4px]',
+            'xl:text-xl-heading xl:text-start xl:leading-[95%] xl:font-light xl:tracking-[0.52px]'
           ]"
         >
           <span :class="['inline-block font-[400]', 'xl:font-[300]']">

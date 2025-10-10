@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-5 sm:space-y-6">
-    <PageBreadcrumb :pageTitle="currentPageTitle" />
+    <PageBreadcrumb page-title="Badges" />
     <ComponentCard title="With Light Background">
       <div class="flex flex-wrap gap-4 sm:items-center sm:justify-center">
         <Badge v-for="color in colors" :key="color" :color="color">
@@ -72,13 +72,10 @@
 
 <script setup lang="ts">
 import { PlusIcon } from '~/components/icons'
-
 definePageMeta({
   layout: 'dashboard'
 })
 const colors = ['primary', 'success', 'error', 'warning', 'info', 'light', 'dark'] as const
-
-const currentPageTitle = ref('Badges')
 </script>
 
 <style></style>

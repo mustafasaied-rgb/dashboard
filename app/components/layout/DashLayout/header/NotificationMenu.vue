@@ -3,7 +3,6 @@
     placement="bottom-end"
     :offset="17"
     :panel-class="'flex h-[480px] w-[350px] flex-col sm:w-[361px]'"
-    @open-change="onOpenChange"
   >
     <template #trigger="{ toggle }">
       <Button @click="toggle" rounded variant="outline" size="icon" class="bg-transparent">

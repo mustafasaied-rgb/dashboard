@@ -1,8 +1,7 @@
 <template>
   <div
     :class="[
-      'rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]',
-      className,
+      'rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]'
     ]"
   >
     <!-- Card Header -->
@@ -16,7 +15,7 @@
     </div>
 
     <!-- Card Body -->
-    <div class="p-4 border-t border-gray-100 dark:border-gray-800 sm:p-6">
+    <div class="border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800">
       <div class="space-y-5">
         <slot></slot>
       </div>
@@ -25,11 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
-
 interface Props {
   title: string
-  className?: string
   desc?: string
 }
 

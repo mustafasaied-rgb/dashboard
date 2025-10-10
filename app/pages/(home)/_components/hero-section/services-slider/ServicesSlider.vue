@@ -18,7 +18,6 @@
         :placeholder="category?.image?.avif"
         class="h-full w-full object-cover transition-transform group-hover:scale-110"
         :alt="`Image representing service`"
-        preload="metadata"
         fetchpriority="high"
       />
       <figcaption

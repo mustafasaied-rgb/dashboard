@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-5 sm:space-y-6">
-    <PageBreadcrumb :pageTitle="currentPageTitle" />
+    <PageBreadcrumb page-title="Buttons" />
     <ComponentCard title="Primary Button">
       <div class="flex items-center gap-5">
         <Button size="sm" variant="primary"> Button Text </Button>
@@ -83,7 +83,6 @@ import { BoxIcon } from '~/components/icons'
 definePageMeta({
   layout: 'dashboard'
 })
-const currentPageTitle = ref('Buttons')
 </script>
 
 <style></style>
