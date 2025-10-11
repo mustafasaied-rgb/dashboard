@@ -5,7 +5,7 @@
     :panel-class="'flex h-[480px] w-[350px] flex-col sm:w-[361px]'"
   >
     <template #trigger="{ toggle }">
-      <Button @click="toggle" rounded variant="outline" size="icon" class="bg-transparent">
+      <Button @click="toggle" rounded variant="outline" size="icon" class="!bg-transparent">
         <span
           :class="{ hidden: !notifying, flex: notifying }"
           class="absolute top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-orange-400"

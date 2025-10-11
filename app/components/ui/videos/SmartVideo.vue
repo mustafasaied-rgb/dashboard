@@ -103,6 +103,7 @@ const getYouTubeId = (input: string) => {
 
 const isHls = (u: string) => /\.m3u8(\?|$)/i.test(u)
 const getNativeHls = () => {
+   if (typeof document === 'undefined') return false
   const v = document.createElement('video')
   return !!(v.canPlayType && v.canPlayType('application/vnd.apple.mpegurl'))
 }

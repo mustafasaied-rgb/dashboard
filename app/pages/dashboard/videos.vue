@@ -66,7 +66,6 @@ definePageMeta({
   layout: 'dashboard'
 })
 import SmartVideo from '~/components/ui/videos/SmartVideo.vue'
-
 </script>
 
 <style></style>
