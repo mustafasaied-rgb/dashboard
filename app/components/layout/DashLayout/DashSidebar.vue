@@ -34,7 +34,7 @@
         <img v-else src="/images/logo/logo-icon.svg" alt="Logo" width="32" height="32" />
       </NuxtLink>
     </div>
-    <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+    <div class="no-scrollbar !mb-10 flex flex-col overflow-y-auto duration-300 ease-linear">
       <nav class="mb-6">
         <div class="flex flex-col gap-4">
           <div v-for="(menuGroup, groupIndex) in menuGroups" :key="groupIndex">
@@ -168,7 +168,7 @@ const menuGroups = [
           { name: 'Buttons', path: '/dashboard/buttons', pro: false },
           { name: 'Images', path: '/dashboard/images', pro: false },
           { name: 'Videos', path: '/dashboard/videos', pro: false },
-          { name: 'Sliders', path: '/dashboard/sliders', pro: false },
+          { name: 'Sliders', path: '/dashboard/sliders', pro: false }
         ]
       },
       {
