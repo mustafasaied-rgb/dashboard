@@ -20,9 +20,9 @@
       @click="scrollBy(-1)"
       :disabled="atStart"
       aria-label="Previous slide"
-      class="absolute start-0 top-1/2 z-10 hidden h-[60px] w-[60px] -translate-y-1/2 place-items-center rounded-full bg-white/70 p-2 shadow backdrop-blur-sm transition-colors hover:bg-white lg:grid xl:h-[80px] xl:w-[80px]"
+      class="nav-btn start-0"
     >
-      <ArrowIcon aria-hidden="true" ltrLeft />
+      <ArrowIcon :width="24" :height="20" aria-hidden="true" ltrLeft />
     </button>
 
     <!-- Next Button -->
@@ -32,11 +32,11 @@
       @click="scrollBy(1)"
       :disabled="atEnd"
       aria-label="Next slide"
-      class="absolute end-0 top-1/2 z-10 hidden h-[60px] w-[60px] -translate-y-1/2 place-items-center rounded-full bg-white/70 p-2 shadow backdrop-blur-sm transition-colors hover:bg-white lg:grid xl:h-[80px] xl:w-[80px]"
+      class="nav-btn end-0"
     >
       <span v-if="isLoading" class="animate-spin">⟳</span>
       <span v-else>
-        <ArrowIcon aria-hidden="true" ltrRight />
+        <ArrowIcon :width="24" :height="20" aria-hidden="true" ltrRight />
       </span>
     </button>
   </div>
@@ -130,11 +130,15 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+@reference "~/assets/css/main.css";
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+.nav-btn {
+  @apply absolute top-1/2 z-10 hidden h-[40px] w-[40px] -translate-y-1/2 place-items-center rounded-full bg-white/70 p-2 shadow backdrop-blur-sm transition-colors hover:bg-white lg:grid xl:h-[50px] xl:w-[50px];
 }
 </style>
