@@ -130,7 +130,10 @@ const menuGroups = [
       {
         name: 'Forms',
         icon: ListIcon,
-        subItems: [{ name: 'Form Elements', path: '/dashboard/form-elements', pro: false }]
+        subItems: [
+          { name: 'Form Elements', path: '/dashboard/form-elements', pro: false },
+          { name: 'Form Layout', path: '/dashboard/form-layout', pro: false }
+        ]
       },
       {
         name: 'Tables',

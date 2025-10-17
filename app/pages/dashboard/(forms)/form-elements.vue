@@ -320,7 +320,7 @@
                 :multiple="true"
                 :maxFiles="8"
                 :maxSizeMB="32"
-                @invalid="({ file, reason }) => console.warn('invalid', file.name, reason)"
+                @error="(e, file) => console.warn('invalid', file)"
                 @added="(f) => console.log('added', f.name)"
                 @removed="(f) => console.log('removed', f.name)"
               />
