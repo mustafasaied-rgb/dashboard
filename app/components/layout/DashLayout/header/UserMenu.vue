@@ -1,7 +1,7 @@
 <template>
   <Dropdown ref="dropdownRef" placement="bottom-end" :offset="17" :panel-class="'w-[260px]'">
-    <template #trigger="{ open, toggle }">
-      <Button variant="none" size="sm" class="!flex items-center !p-0" @click.prevent="toggle">
+    <template #trigger="{ open }">
+      <Button variant="none" size="sm" color="gray" class="!flex items-center !p-0">
         <template #start>
           <Avatar class="overflow-hidden" :src="'/images/user/owner.jpg'" size="medium" />
         </template>
@@ -49,7 +49,7 @@ import {
   ChevronDownIcon,
   InfoCircleIcon
 } from '~/components/icons/index'
-const dropdownRef = ref(null)
+// const dropdownRef = ref(null)
 const menuItems = [
   { href: '/profile', icon: UserCircleIcon, text: 'Edit profile' },
   { href: '/chat', icon: SettingsIcon, text: 'Account settings' },
@@ -57,6 +57,6 @@ const menuItems = [
 ]
 const signOut = () => {
   console.log('Signing out...')
-  dropdownRef.value.closeFn()
+  // dropdownRef.value.closeFn()
 }
 </script>

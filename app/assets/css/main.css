@@ -11,6 +11,8 @@
 
 /* 2) Components (reusable blocks) */
 @import './components/_content-typography.css';
+@import './components/_flatpickr.css';
+@import './components/_input.css';
 
 /* 3) Tailwind (generate utilities LAST so they win) */
 @import 'tailwindcss';

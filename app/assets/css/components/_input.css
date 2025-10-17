@@ -1,0 +1,393 @@
+/* =========================
+   TOKENS (Tailwind v4)
+   ========================= */
+@theme {
+  /* shape */
+  --ds-input-radius: var(--radius-lg);
+
+  /* heights */
+  --ds-input-h-sm: 2.5rem; /* 40px */
+  --ds-input-h-md: 2.75rem; /* 44px */
+
+  /* paddings */
+  --ds-input-py: 0.625rem; /* 10px */
+  --ds-input-px: 0.75rem; /* 12px */
+
+  /* borders */
+  --ds-input-border: var(--color-gray-300);
+  --ds-input-border-dark: var(--color-gray-700);
+  --ds-input-divider: var(--color-gray-200);
+  --ds-input-divider-dark: var(--color-gray-800);
+
+  /* rings */
+  --ds-ring-brand: color-mix(in oklab, var(--color-brand-500) 10%, transparent);
+  --ds-ring-success: color-mix(in oklab, var(--color-success-500) 10%, transparent);
+  --ds-ring-error: color-mix(in oklab, var(--color-error-500) 10%, transparent);
+
+  /* statuses */
+  --ds-border-success: var(--color-success-300);
+  --ds-border-success-dark: var(--color-success-700);
+  --ds-border-error: var(--color-error-300);
+  --ds-border-error-dark: var(--color-error-700);
+
+  /* text & placeholder */
+  --ds-text: var(--color-gray-900);
+  --ds-text-dark: #ffffffe6; /* white/90 */
+  --ds-ph: var(--color-gray-400);
+  --ds-ph-dark: color-mix(in oklab, white 30%, transparent);
+
+  /* surfaces */
+  --ds-bg-muted: color-mix(in oklab, var(--color-gray-100) 40%, transparent);
+  --ds-bg-dark: var(--color-gray-900);
+}
+
+/* runtime dark overrides */
+.dark {
+  --ds-input-border: var(--ds-input-border-dark);
+  --ds-border-success: var(--ds-border-success-dark);
+  --ds-border-error: var(--ds-border-error-dark);
+  --ds-ph: var(--ds-ph-dark);
+  --ds-text: var(--ds-text-dark);
+}
+
+/* =========================
+   LABEL & HELPERS
+   ========================= */
+@layer components {
+  .ds-label {
+    @apply mb-1.5 block text-sm font-medium text-[var(--color-gray-700)] dark:text-[var(--color-gray-400)];
+  }
+
+  .ds-helper {
+    @apply mt-1.5 text-xs;
+  }
+  .ds-helper--default {
+    @apply text-[var(--color-gray-500)] dark:text-[var(--color-gray-400)];
+  }
+  .ds-helper--success {
+    @apply text-[var(--color-success-500)];
+  }
+  .ds-helper--error {
+    @apply text-[var(--color-error-500)];
+  }
+}
+
+/* =========================
+   CONTAINER (Input shell)
+   Variants via [data-variant]:
+     - outlined (default)
+     - soft     (muted bg, subtle border)
+     - plain    (no border)
+   Status via [data-status]: default | success | error
+   Size via [data-size]: sm | md
+   Disabled via [data-disabled]: "true" | "false"
+   ========================= */
+@layer components {
+  .ds-input {
+    @apply relative flex items-stretch overflow-hidden rounded-[var(--ds-input-radius)] transition-[box-shadow,border-color,background-color] duration-150 ease-in-out;
+  }
+
+  /* outlined (default) */
+  .ds-input[data-variant='outlined'],
+  .ds-input:not([data-variant]) {
+    @apply border border-[var(--ds-input-border)] bg-transparent dark:border-[var(--ds-input-border-dark)] dark:bg-[var(--ds-bg-dark)];
+  }
+
+  .ds-input[data-variant='outlined']:focus-within {
+    @apply border-brand-300 dark:border-brand-800 border ring-3 ring-[var(--ds-ring-brand)];
+  }
+
+  /* soft */
+  .ds-input[data-variant='soft'] {
+    @apply border border-[var(--ds-input-border)] bg-[var(--ds-bg-muted)] dark:border-[var(--ds-input-border-dark)] dark:bg-white/5;
+  }
+  .ds-input[data-variant='soft']:focus-within {
+    @apply ring-3 ring-[var(--ds-ring-brand)];
+  }
+
+  /* plain */
+  .ds-input[data-variant='plain'] {
+    @apply border-transparent bg-transparent;
+  }
+  .ds-input[data-variant='plain']:focus-within {
+    @apply ring-3 ring-[var(--ds-ring-brand)];
+  }
+
+  /* statuses */
+  .ds-input[data-status='success'] {
+    @apply border-[var(--ds-border-success)];
+  }
+  .ds-input[data-status='success']:focus-within {
+    @apply border-[var(--ds-border-success)] ring-[var(--ds-ring-success)];
+  }
+  .dark .ds-input[data-status='success'] {
+    @apply border-[var(--ds-border-success-dark)];
+  }
+
+  .ds-input[data-status='error'] {
+    @apply border-[var(--ds-border-error)];
+  }
+  .ds-input[data-status='error']:focus-within {
+    @apply border-[var(--ds-border-error)] ring-[var(--ds-ring-error)];
+  }
+  .dark .ds-input[data-status='error'] {
+    @apply border-[var(--ds-border-error-dark)];
+  }
+
+  /* sizes */
+  .ds-input[data-size='sm'] {
+    @apply min-h-[var(--ds-input-h-sm)];
+  }
+  .ds-input[data-size='md'] {
+    @apply min-h-[var(--ds-input-h-md)];
+  }
+  .ds-input[data-fixedsize='sm'] {
+    @apply h-[var(--ds-input-h-sm)];
+  }
+  .ds-input[data-fixedsize='md'] {
+    @apply h-[var(--ds-input-h-md)];
+  }
+
+  /* disabled */
+  .ds-input[data-disabled='true'] {
+    @apply opacity-60;
+  }
+}
+
+/* =========================
+   INLINE ADORNMENTS (start/end)
+   ========================= */
+@layer components {
+  .ds-adorn {
+    @apply flex items-center self-stretch px-3 text-[var(--color-gray-500)];
+    @apply dark:text-[var(--color-gray-400)];
+  }
+  .ds-adorn--start.bordered {
+    @apply border-e border-[var(--ds-input-divider)] dark:border-[var(--ds-input-divider-dark)];
+  }
+  .ds-adorn--end.bordered {
+    @apply border-s border-[var(--ds-input-divider)] dark:border-[var(--ds-input-divider-dark)];
+  }
+}
+
+/* =========================
+   CONTROL (input / textarea)
+   ========================= */
+@layer components {
+  .ds-control {
+    @apply min-w-0 flex-1 appearance-none border-0 bg-transparent px-3 py-[var(--ds-input-py)] text-sm leading-5 text-[var(--ds-text)] outline-none placeholder:text-[var(--ds-ph)] focus:ring-0 dark:text-[var(--ds-text-dark)] dark:placeholder:text-[var(--ds-ph-dark)];
+  }
+  .ds-control--textarea {
+    @apply resize-y; /* allow vertical resize; remove if you want fixed height */
+  }
+}
+
+/* =========================
+   CHECKBOX (reuses existing input tokens)
+   ========================= */
+@layer components {
+  /* clickable label wrapper */
+  .ds-check {
+    @apply inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-[var(--color-gray-700)] select-none dark:text-[var(--color-gray-400)];
+  }
+  .ds-check[data-disabled='true'] {
+    @apply cursor-not-allowed opacity-60;
+  }
+
+  /* the real input (screen-reader only) */
+  .ds-check__input {
+    @apply sr-only;
+  }
+
+  /* visual box (uses ds-input tokens) */
+  .ds-check__box {
+    @apply grid h-5 w-5 place-items-center rounded-[var(--radius-md)] border border-[var(--ds-input-border)] bg-transparent transition-[box-shadow,background-color,border-color,opacity,transform] duration-150 ease-in-out dark:border-[var(--ds-input-border-dark)] dark:bg-[var(--ds-bg-dark)];
+  }
+
+  /* keyboard focus ring */
+  .ds-check__input:focus-visible + .ds-check__box {
+    @apply ring-3 ring-[var(--ds-ring-brand)];
+  }
+
+  /* checked styles (brand) */
+  .ds-check__input:checked + .ds-check__box {
+    @apply border-[var(--color-brand-500)] bg-[var(--color-brand-500)];
+  }
+
+  /* disabled styles (derive from existing divider/bg tokens) */
+  .ds-check__input[disabled] + .ds-check__box {
+    @apply border-[var(--ds-input-divider)] bg-[color-mix(in_oklab,_white_40%,_transparent)] dark:border-[var(--ds-input-divider-dark)] dark:bg-white/5;
+  }
+
+  /* optional status override on checked */
+  .ds-check[data-status='success'] .ds-check__input:checked + .ds-check__box {
+    @apply border-[var(--color-success-500)] bg-[var(--color-success-500)];
+  }
+  .ds-check[data-status='error'] .ds-check__input:checked + .ds-check__box {
+    @apply border-[var(--color-error-500)] bg-[var(--color-error-500)];
+  }
+
+  /* size variants (no new tokens; just utilities) */
+  .ds-check[data-size='sm'] .ds-check__box {
+    @apply h-4 w-4;
+  }
+
+  /* icon inside the box */
+  .ds-check__icon {
+    @apply pointer-events-none text-white opacity-0;
+    /* default md size icon */
+    width: 14px;
+    height: 14px;
+  }
+  .ds-check[data-size='sm'] .ds-check__icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* reveal icon when checked */
+  .ds-check__input:checked + .ds-check__box .ds-check__icon {
+    @apply opacity-100;
+  }
+
+  /* indeterminate (if you set input.indeterminate=true in JS) */
+  .ds-check__dash {
+    @apply pointer-events-none rounded-sm bg-white opacity-0;
+    width: 10px;
+    height: 2px;
+  }
+  .ds-check[data-size='sm'] .ds-check__dash {
+    width: 8px;
+    height: 2px;
+  }
+  /* show the dash when you add a helper class to the label: .is-indeterminate */
+  .ds-check.is-indeterminate .ds-check__dash {
+    @apply opacity-100;
+  }
+  .ds-check.is-indeterminate .ds-check__icon {
+    @apply opacity-0;
+  }
+}
+
+/* =========================
+   RADIO (reuses input tokens)
+   ========================= */
+@layer components {
+  /* clickable label */
+  .ds-radio {
+    @apply inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-[var(--color-gray-700)] select-none dark:text-[var(--color-gray-400)];
+  }
+  .ds-radio[data-disabled='true'] {
+    @apply cursor-not-allowed opacity-60;
+  }
+  .ds-radio[data-size='sm'] .ds-radio__outer {
+    @apply h-4 w-4;
+  }
+  .ds-radio[data-size='md'] .ds-radio__outer {
+    @apply h-5 w-5;
+  }
+
+  /* native input */
+  .ds-radio__input {
+    @apply sr-only;
+  }
+
+  /* visual outer circle */
+  .ds-radio__outer {
+    @apply grid place-items-center rounded-full border border-[var(--ds-input-border)] bg-transparent transition-[box-shadow,background-color,border-color,opacity,transform] duration-150 ease-in-out dark:border-[var(--ds-input-border-dark)] dark:bg-[var(--ds-bg-dark)];
+  }
+
+  /* focus ring */
+  .ds-radio__input:focus-visible + .ds-radio__outer {
+    @apply ring-3 ring-[var(--ds-ring-brand)];
+  }
+
+  /* checked state (brand disc) */
+  .ds-radio__input:checked + .ds-radio__outer {
+    @apply border-[var(--color-brand-500)] bg-[var(--color-brand-500)];
+  }
+
+  /* inner dot (default icon) */
+  .ds-radio__dot {
+    @apply rounded-full bg-white;
+    width: 0.55em;
+    height: 0.55em; /* scales with outer via em */
+  }
+  /* show only when checked */
+  .ds-radio__input:not(:checked) + .ds-radio__outer .ds-radio__dot {
+    @apply opacity-0;
+  }
+  .ds-radio__input:checked + .ds-radio__outer .ds-radio__dot {
+    @apply opacity-100;
+  }
+
+  /* disabled colors */
+  .ds-radio__input[disabled] + .ds-radio__outer {
+    @apply border-[var(--ds-input-divider)] bg-[color-mix(in_oklab,_white_40%,_transparent)] dark:border-[var(--ds-input-divider-dark)] dark:bg-white/5;
+  }
+}
+
+/* =========================
+   SWITCH / TOGGLE
+   Reuses input tokens:
+   --ds-input-border(_dark), --ds-input-divider(_dark)
+   --ds-ring-brand, --ds-bg-muted, --color-brand-500
+   ========================= */
+@layer components {
+  /* clickable label wrapper */
+  .ds-switch {
+    @apply inline-flex cursor-pointer items-center gap-3 text-sm font-medium text-[var(--color-gray-700)] select-none dark:text-[var(--color-gray-400)];
+  }
+  .ds-switch[data-disabled='true'] {
+    @apply cursor-not-allowed opacity-60;
+  }
+
+  /* native control (keeps a11y + keyboard) */
+  .ds-switch__input {
+    @apply sr-only;
+  }
+
+  /* track */
+  .ds-switch__track {
+    @apply relative block rounded-full bg-[var(--color-gray-200)] transition-colors duration-200 ease-linear dark:bg-white/10;
+  }
+
+  /* thumb */
+  .ds-switch__thumb {
+    @apply shadow-theme-sm absolute top-0.5 left-0.5 translate-x-0 rounded-full bg-white transition-transform duration-200 ease-linear;
+  }
+
+  /* sizes */
+  .ds-switch[data-size='sm'] .ds-switch__track {
+    @apply h-5 w-9;
+  } /* 20px x 36px */
+  .ds-switch[data-size='sm'] .ds-switch__thumb {
+    @apply h-4 w-4;
+  } /* 16px */
+  .ds-switch[data-size='md'] .ds-switch__track {
+    @apply h-6 w-11;
+  } /* 24px x 44px */
+  .ds-switch[data-size='md'] .ds-switch__thumb {
+    @apply h-5 w-5;
+  } /* 20px */
+
+  /* focus ring on keyboard nav */
+  .ds-switch__input:focus-visible + .ds-switch__track {
+    @apply ring-3 ring-[var(--ds-ring-brand)];
+  }
+
+  /* ON state (brand track + moved thumb) */
+  .ds-switch__input:checked + .ds-switch__track {
+    @apply bg-[var(--color-brand-500)];
+  }
+  .ds-switch[data-size='sm'] .ds-switch__input:checked + .ds-switch__track .ds-switch__thumb {
+    @apply translate-x-4;
+  }
+  .ds-switch[data-size='md'] .ds-switch__input:checked + .ds-switch__track .ds-switch__thumb {
+    @apply translate-x-5;
+  }
+
+  /* Disabled colors (fallback to muted/divider) */
+  .ds-switch__input[disabled] + .ds-switch__track {
+    @apply bg-[var(--ds-bg-muted)] dark:bg-[color-mix(in_oklab,white_8%,transparent)];
+  }
+}

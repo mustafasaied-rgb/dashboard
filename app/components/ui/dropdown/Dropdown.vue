@@ -1,25 +1,38 @@
 <template>
-  <div class="relative" ref="root">
-    <slot name="trigger" :open="isOpen" :toggle="toggle" :openFn="openFn" :closeFn="closeFn" />
+  <FloatingWrapper
+    v-model="internalOpen"
+    :placement="placement"
+    :offset="6"
+    :matchWidth="true"
+    :closeOnClickOutside="true"
+  >
+    <template #trigger="{ open, toggle, openFn, close }">
+      <slot name="trigger" :open="open" :toggle="toggle" :openFn="openFn" :close="close" />
+    </template>
 
-    <transition name="fade" appear>
+    <template #floating="{ open, close }">
       <div
-        v-show="isOpen"
-        class="shadow-theme-lg dark:bg-gray-dark absolute z-[999] mt-[var(--dd-offset)] rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800"
-        :class="[placeClass, panelClass, sameWidth ? 'w-full' : '']"
-        :style="{ '--dd-offset': `${offset}px` }"
+        v-show="open"
+        class="shadow-theme-lg dark:bg-gray-dark rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800"
+        :class="[panelClass, sameWidth ? 'w-full' : '']"
       >
-        <slot :open="isOpen" :closeFn="closeFn" />
+        <slot :open="open" :closeFn="close" />
       </div>
-    </transition>
-  </div>
+    </template>
+  </FloatingWrapper>
 </template>
 
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
     open?: boolean
-    placement?: 'bottom-start' | 'bottom-end' | 'bottom-center'
+    placement?:
+      | 'bottom-start'
+      | 'bottom-end'
+      | 'top-start'
+      | 'top-end'
+      | 'right-start'
+      | 'left-start'
     sameWidth?: boolean
     offset?: number // vertical gap in px
     panelClass?: string // extra classes for panel
@@ -42,76 +55,6 @@ const emit = defineEmits<{
   (e: 'open-change', v: boolean): void
 }>()
 
-const root = ref<HTMLElement | null>(null)
 const internalOpen = ref(false)
-const isControlled = computed(() => props.open !== undefined)
-const isOpen = computed({
-  get: () => (isControlled.value ? !!props.open : internalOpen.value),
-  set: (v) => {
-    if (isControlled.value) emit('update:open', v)
-    else internalOpen.value = v
-    emit('open-change', v)
-  }
-})
-
-const openFn = () => (isOpen.value = true)
-const closeFn = () => (isOpen.value = false)
-const toggle = () => (isOpen.value = !isOpen.value)
-
-const onDocClick = (e: MouseEvent) => {
-  if (!props.closeOnClickOutside || !isOpen.value) return
-  const el = root.value
-  if (el && !el.contains(e.target as Node)) closeFn()
-}
-
-const onKey = (e: KeyboardEvent) => {
-  if (!props.closeOnEsc || !isOpen.value) return
-  if (e.key === 'Escape') closeFn()
-}
-
-onMounted(() => {
-  document.addEventListener('click', onDocClick)
-  document.addEventListener('keydown', onKey)
-})
-onBeforeUnmount(() => {
-  document.removeEventListener('click', onDocClick)
-  document.removeEventListener('keydown', onKey)
-})
-
-watch(
-  () => props.open,
-  (v) => {
-    if (isControlled.value && typeof v === 'boolean') emit('open-change', v)
-  }
-)
-
-const placeClass = computed(() => {
-  switch (props.placement) {
-    case 'bottom-start':
-      return 'left-0'
-    case 'bottom-center':
-      return 'left-1/2 -translate-x-1/2'
-    case 'bottom-end':
-    default:
-      return 'right-0'
-  }
-})
-defineExpose({
-  closeFn,
-  openFn,
-  toggle
-})
 </script>
-<style scoped>
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-4px);
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition:
-    opacity 0.15s,
-    transform 0.15s;
-}
-</style>
+<style scoped></style>
