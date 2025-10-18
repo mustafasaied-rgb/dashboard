@@ -38,6 +38,7 @@
           hasStart ? 'pl-3' : 'pl-4',
           'pr-3'
         ]"
+        @on-ready="onReady"
       />
 
       <!-- end adornment (calendar icon by default) -->
@@ -129,10 +130,15 @@ const baseConfig = {
   //  disable: ["2025-01-30", "2025-02-21", "2025-03-08", new Date(2025, 4, 9) ],
 }
 const computedConfig = computed(() => ({ ...baseConfig, ...props.config }))
-</script>
 
-<script lang="ts">
-export default {
-  components: { FlatPickr }
+
+/** ✅ Expose the real INPUT element used by flatpickr (altInput or input) */
+const nativeEl = shallowRef<HTMLInputElement | null>(null)
+function onReady(_selected: any, _dateStr: string, instance: any) {
+  // Prefer altInput when altInput:true, else fallback to the raw input
+  nativeEl.value = (instance?.altInput ?? instance?._input ?? instance?.input) as HTMLInputElement | null
 }
+defineExpose({ nativeEl })
+export type ElExpose = { nativeEl: typeof nativeEl }
 </script>
+ 

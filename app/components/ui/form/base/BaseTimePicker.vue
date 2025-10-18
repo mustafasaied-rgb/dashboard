@@ -34,12 +34,13 @@
         :placeholder="placeholder"
         class="ds-control"
         :class="[hasStart ? 'pl-3' : 'pl-4', 'pr-3']"
+        @on-ready="onReady"
       />
 
       <!-- end adornment (clock icon default) -->
       <span class="ds-adorn ds-adorn--end" :class="{ bordered: borderedEnd }">
         <slot name="end">
-          <clock-icon/>
+          <clock-icon />
         </slot>
       </span>
     </div>
@@ -115,10 +116,12 @@ const baseConfig = {
   allowInput: false
 }
 const computedConfig = computed(() => ({ ...baseConfig, ...props.config }))
-</script>
-
-<script lang="ts">
-export default {
-  components: { FlatPickr }
+const nativeEl = shallowRef<HTMLInputElement | null>(null)
+function onReady(_selected: any, _dateStr: string, instance: any) {
+  nativeEl.value = (instance?.altInput ??
+    instance?._input ??
+    instance?.input) as HTMLInputElement | null
 }
+defineExpose({ nativeEl })
+export type ElExpose = { nativeEl: typeof nativeEl }
 </script>

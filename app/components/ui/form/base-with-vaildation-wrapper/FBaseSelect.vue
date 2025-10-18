@@ -15,9 +15,10 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, onMounted, ref, shallowRef, useAttrs } from 'vue'
 import BaseSelect from '@/components/ui/form/base/BaseSelect.vue'
+import type { ElExpose } from '@/components/ui/form/base/BaseSelect.vue'
+
 import { useFormField } from '@/validation/useFormField'
 import { ValidateOn } from '@/validation/types'
-
 type Status = 'default' | 'success' | 'error'
 /** Use a DIFFERENT name and include object case to match BaseSelect */
 type SelectValue = string | number | null | Record<string, any>
@@ -56,15 +57,7 @@ const passthroughAttrs = computed(() => attrs)
 
 const inst = getCurrentInstance()
 const baseId = computed(() => props.id ?? `form-select-${inst?.uid ?? '0'}`)
-
-const inner = ref<InstanceType<typeof BaseSelect> | null>(null)
-type Native = HTMLSelectElement
-const nativeEl = shallowRef<Native | null>(null)
-
-onMounted(() => {
-  const root = inner.value?.$el as HTMLElement | undefined
-  nativeEl.value = (root?.querySelector('select') as Native | null) ?? null
-})
+const inner = ref<(InstanceType<typeof BaseSelect> & Partial<ElExpose>) | null>(null)
 
 const placeholderPresent = computed<boolean>(() => Boolean((attrs as any)?.placeholder))
 
@@ -74,7 +67,7 @@ const modelProxy = computed<SelectValue>({
 })
 
 const field = useFormField(baseId.value, modelProxy as any, props.rules ?? [], {
-  nativeEl,
+  nativeEl: computed(() => inner.value?.selectEl ?? null) as any,
   nativeMessages: props.nativeMessages,
   validateOn: props.validateOn,
   realtimeMs: props.realtimeMs
@@ -106,7 +99,7 @@ function onBlur(e: FocusEvent) {
 }
 
 defineExpose({
-  focus: () => nativeEl.value?.focus(),
-  getNativeEl: () => nativeEl.value
+  focus: () => inner.value?.selectEl?.focus(),
+  getNativeEl: () => inner.value?.selectEl
 })
 </script>

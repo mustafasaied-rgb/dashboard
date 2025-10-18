@@ -12,25 +12,18 @@
 
 <script setup lang="ts">
 /**
- * Validation wrapper for BaseFileInput
+ * Validation wrapper for BaseFileInput:
  * - Forwards all non-validation props/attrs (label, placeholder, buttonLabel, multiple, size, variant, disabled, required…)
- * - Uses the native <input type="file"> inside BaseFileInput as `nativeEl` for focus/blur + native required validity
- * - Validates on change; also validates on blur via a passive DOM listener
+ * - Uses the exposed inputEl (native <input type="file">) for focus/scroll + native messages
+ * - Validates on change and on blur (handled by useFormField based on validateOn)
  */
 
-import {
-  computed,
-  getCurrentInstance,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  shallowRef,
-  useAttrs
-} from 'vue'
+import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
 import BaseFileInput from '@/components/ui/form/base/BaseFileInput.vue'
+import type { ElExpose } from '@/components/ui/form/base/BaseFileInput.vue'
 import { useFormField } from '@/validation/useFormField'
 import { ValidateOn } from '@/validation/types'
-import type { ElExpsoe } from '~/components/ui/form/base/BaseFileInput.vue'
 
 type Status = 'default' | 'success' | 'error'
 
@@ -56,7 +49,7 @@ const props = withDefaults(
     message: '',
     validateOn: ValidateOn.Submit,
     realtimeMs: 150,
-    nativeMessages: true, // file inputs support nice native messages for required
+    nativeMessages: true, // file inputs have good native validity messages
     showSuccess: false
   }
 )
@@ -67,7 +60,7 @@ const emit = defineEmits<{
   (e: 'focus', ev: FocusEvent): void
 }>()
 
-/** Pass-through everything else (label, placeholder, buttonLabel, multiple, size, variant, disabled, required…) */
+/** Pass-through everything else to BaseFileInput */
 const attrs = useAttrs()
 const passthroughAttrs = computed(() => attrs)
 
@@ -75,8 +68,11 @@ const passthroughAttrs = computed(() => attrs)
 const inst = getCurrentInstance()
 const baseId = computed(() => props.id ?? `form-file-${inst?.uid ?? '0'}`)
 
-/** refs */
-const inner = ref<ComponentPublicInstance<ElExpsoe> | null>(null)
+/** ref to the base component (which exposes inputEl: Ref<HTMLInputElement|null>) */
+const inner = ref<ComponentPublicInstance<ElExpose> | null>(null)
+
+/** supply the ACTUAL element to the validator (ComputedRef<HTMLInputElement|null>) */
+const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.inputEl?.value ?? null)
 
 /** v-model proxy */
 const filesProxy = computed<File[]>({
@@ -86,16 +82,18 @@ const filesProxy = computed<File[]>({
 
 /** validation */
 const field = useFormField(baseId.value, filesProxy as any, props.rules ?? [], {
-  nativeEl: inner?.value?.inputEl, // Ref<HTMLInputElement | null>
+  nativeEl, // ✅ correct shape for focusing/scrolling to invalid
   nativeMessages: props.nativeMessages,
   validateOn: props.validateOn,
   realtimeMs: props.realtimeMs
 })
 
+/** derived status/message */
 const effectiveMessage = computed<string | null>(() => {
   if (props.message) return props.message
   return field.error.value ?? null
 })
+
 const effectiveStatus = computed<Status>(() => {
   if (props.status && props.status !== 'default') return props.status
   if (effectiveMessage.value) return 'error'

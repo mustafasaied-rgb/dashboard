@@ -25,6 +25,7 @@
     >
       <!-- Select field -->
       <select
+        ref="selectEl"
         :id="id"
         v-model="model"
         :disabled="disabled"
@@ -124,4 +125,7 @@ const model = computed({
 })
 
 const describedById = computed(() => (props.id ? `${props.id}__desc` : undefined))
+const selectEl = ref<HTMLSelectElement | null>(null)
+defineExpose({ selectEl })
+export type ElExpose = { selectEl: typeof selectEl }
 </script>

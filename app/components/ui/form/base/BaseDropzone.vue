@@ -12,6 +12,7 @@
     <!-- Dropzone shell -->
     <div
       :id="dropzoneId"
+      ref="regionEl"
       class="ds-input ds-dropzone relative flex cursor-pointer flex-col items-center justify-center !overflow-visible border-dashed"
       :data-variant="variant"
       :data-size="size"
@@ -23,6 +24,7 @@
       @keydown.enter.prevent="!disabled && openSystemPicker()"
       @keydown.space.prevent="!disabled && openSystemPicker()"
       @click="!disabled && openSystemPicker()"
+      @blur="$emit('blur', $event)"
       aria-label="Upload images"
     >
       <!-- Message -->
@@ -174,11 +176,13 @@ const emit = defineEmits<{
   (e: 'added', file: File): void
   (e: 'removed', file: File): void
   (e: 'error', file: File | null, err: unknown): void
+  (e: 'blur', ev: FocusEvent): void // ✅ to bubble blur if wrapper listens
 }>()
 
 /** internal */
 const dropzoneId = `dz-${Math.random().toString(36).slice(2)}`
 const root = ref<HTMLDivElement | null>(null)
+const regionEl = ref<HTMLDivElement | null>(null) // ✅ exposed focus target
 const nativeInput = ref<HTMLInputElement | null>(null)
 const previewTplEl = ref<HTMLDivElement | null>(null)
 const isDragging = ref(false)
@@ -307,6 +311,8 @@ onBeforeUnmount(() => {
   for (const f of files.value) revokeIfBlob(f)
   dz?.destroy()
 })
+defineExpose({ regionEl, nativeInput })
+export type ElExpose = { regionEl: typeof regionEl; nativeInput: typeof nativeInput }
 </script>
 
 <style scoped>

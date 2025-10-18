@@ -36,11 +36,10 @@
  */
 
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
-import BaseInput from '@/components/ui/form/base/BaseInput.vue' // <- your original component
-import { useFormField } from '@/validation/useFormField'
+ import { useFormField } from '@/validation/useFormField'
 import { ValidateOn } from '@/validation/types'
-import type { ElExpsoe } from '~/components/ui/form/base/BaseInput.vue'
-
+ import BaseInput from '@/components/ui/form/base/BaseInput.vue'
+import type { ElExpose } from '@/components/ui/form/base/BaseInput.vue'
 type Status = 'default' | 'success' | 'error'
 
 const props = withDefaults(
@@ -92,7 +91,7 @@ const baseId = computed(() => props.id ?? `vinput-${inst?.uid ?? '0'}`)
 
 /** Native input ref: we’ll pass it to the validator for focus/scroll, etc. */
 
-const inner = ref<ComponentPublicInstance<ElExpsoe> | null>(null) // We don’t control BaseInput’s internal input ref, but the composable can
+const inner = ref<ComponentPublicInstance<ElExpose> | null>(null) // We don’t control BaseInput’s internal input ref, but the composable can
 // still validate on events we trigger from here (input/blur).
 const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.inputEl?.value ?? null)
 

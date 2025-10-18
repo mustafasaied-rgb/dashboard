@@ -24,6 +24,7 @@
 
       <!-- The textarea control -->
       <textarea
+        ref="inputEl"
         :id="id"
         v-bind="$attrs"
         :rows="rows"
@@ -102,4 +103,7 @@ const emit = defineEmits<{
 
 const describedById = computed(() => (props.id ? `${props.id}__desc` : undefined))
 const onInput = (e: Event) => emit('update:modelValue', (e.target as HTMLTextAreaElement).value)
+const inputEl = ref<HTMLTextAreaElement | null>(null)
+defineExpose({ inputEl })
+export type ElExpose = { inputEl: typeof inputEl }
 </script>

@@ -139,11 +139,7 @@ const onInput = (e: Event) => emit('update:modelValue', (e.target as HTMLInputEl
 
  
 
-const inputEl = ref<HTMLInputElement | null>(null) // make sure this exists
-const elExpsoe = {
-  inputEl,
-  focus: () => inputEl.value?.focus()
-}
-defineExpose(elExpsoe)
-export type ElExpsoe = typeof elExpsoe
+const inputEl = ref<HTMLInputElement | null>(null)
+defineExpose({ inputEl })
+export type ElExpose = { inputEl: typeof inputEl }
 </script>

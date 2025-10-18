@@ -279,10 +279,6 @@ function remove(v: Value) {
 }
 const describedById = computed(() => (props.id ? `${props.id}__desc` : undefined))
 const triggerEl = ref<HTMLElement | null>(null)
-
-const elExpsoe = {
-  triggerEl
-}
-defineExpose(elExpsoe)
-export type ElExpsoe = typeof elExpsoe
+defineExpose({ triggerEl })
+export type ElExpose = { triggerEl: typeof triggerEl }
 </script>
