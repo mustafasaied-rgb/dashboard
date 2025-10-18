@@ -1,10 +1,13 @@
+# Example usage
+
+```vue
 <template>
   <div class="space-y-5 sm:space-y-6">
     <PageBreadcrumb pageTitle="Form Elements" />
     <div>
-      <FBaseForm ref="formRef" @submit.prevent="handleSubmit">
+      <VBaseForm ref="formRef" @submit.prevent="handleSubmit">
         <div class="space-y-5">
-          <FBaseInput
+          <VBaseInput
             required
             v-model="formData.email"
             label="Email"
@@ -12,7 +15,7 @@
             :rules="[rules.required, rules.email]"
           />
           <!-- Password -->
-          <FBaseInput
+          <VBaseInput
             required
             v-model="formData.password"
             label="Password"
@@ -21,7 +24,7 @@
             placeholder="Enter your password"
             :rules="[rules.required]"
           />
-          <FBaseSelect
+          <VBaseSelect
             name="companySize"
             required
             v-model="formData.companySize"
@@ -35,7 +38,7 @@
             ]"
             :rules="[rules.required]"
           />
-          <FBaseCombobox
+          <VBaseCombobox
             name="skills"
             v-model="formData.skills"
             label="Skills"
@@ -44,7 +47,7 @@
             required
             :rules="[rules.required]"
           />
-          <FBaseFileInput
+          <VBaseFileInput
             required
             name="attachments"
             v-model="formData.attachments"
@@ -53,7 +56,7 @@
             multiple
             :rules="[rules.required, rules.maxFiles(3), rules.maxFileSize(10)]"
           />
-          <FBaseRadioGroup
+          <VBaseRadioGroup
             name="notify"
             v-model="formData.notify"
             label="Notifications"
@@ -77,10 +80,10 @@
                 @blur="onBlur"
               />
             </template>
-          </FBaseRadioGroup>
+          </VBaseRadioGroup>
           <BaseCopyInput v-model="formData.CopyText" label="CopyText" />
           <BasePhoneInput v-model="formData.phone" label="phone" />
-          <FBaseDatePicker
+          <VBaseDatePicker
             name="startDate"
             v-model="formData.startDate"
             label="Start Date"
@@ -91,7 +94,7 @@
           />
 
           <!-- End Date -->
-          <FBaseDatePicker
+          <VBaseDatePicker
             name="endDate"
             v-model="formData.endDate"
             label="End Date"
@@ -104,7 +107,7 @@
           />
 
           <!-- Time Picker -->
-          <FBaseTimePicker
+          <VBaseTimePicker
             name="meetingTime"
             v-model="formData.meetingTime"
             label="Meeting Time"
@@ -114,7 +117,7 @@
           />
 
           <!-- Date Range Picker -->
-          <FBaseDatePicker
+          <VBaseDatePicker
             name="range"
             v-model="formData.range"
             label="Date Range"
@@ -122,7 +125,7 @@
             mode="range"
             :rules="[rules.required]"
           />
-          <FBaseTextarea
+          <VBaseTextarea
             name="notes"
             v-model="formData.notes"
             label="Notes"
@@ -131,7 +134,7 @@
             :rules="[rules.required, rules.minLength(10)]"
           />
           <ClientOnly>
-            <FBaseDropzone
+            <VBaseDropzone
               name="photos"
               v-model="formData.photos"
               label="Event Photos"
@@ -162,7 +165,7 @@
             </Button>
           </div>
         </div>
-      </FBaseForm>
+      </VBaseForm>
     </div>
   </div>
 </template>
@@ -198,3 +201,5 @@ watch(
 </script>
 
 <style></style>
+
+```

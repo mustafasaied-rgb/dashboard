@@ -1,3 +1,6 @@
+# Example usage
+
+```vue
 <template>
   <div class="space-y-5 sm:space-y-6">
     <PageBreadcrumb pageTitle="Form Elements" />
@@ -198,3 +201,6 @@ watch(
 </script>
 
 <style></style>
+
+
+```

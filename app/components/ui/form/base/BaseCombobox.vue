@@ -22,6 +22,7 @@
     >
       <template #trigger="{ open: isOpen }">
         <div
+          ref="triggerEl"
           class="ds-input relative !overflow-visible"
           :data-variant="variant"
           :data-size="size"
@@ -277,4 +278,11 @@ function remove(v: Value) {
   }
 }
 const describedById = computed(() => (props.id ? `${props.id}__desc` : undefined))
+const triggerEl = ref<HTMLElement | null>(null)
+
+const elExpsoe = {
+  triggerEl
+}
+defineExpose(elExpsoe)
+export type ElExpsoe = typeof elExpsoe
 </script>

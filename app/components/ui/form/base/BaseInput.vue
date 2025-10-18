@@ -25,6 +25,7 @@
 
       <!-- control -->
       <input
+        ref="inputEl"
         :id="id"
         v-bind="$attrs"
         :type="actualType"
@@ -135,4 +136,14 @@ const actualType = computed(() =>
 
 const describedById = computed(() => (props.id ? `${props.id}__desc` : undefined))
 const onInput = (e: Event) => emit('update:modelValue', (e.target as HTMLInputElement).value)
+
+ 
+
+const inputEl = ref<HTMLInputElement | null>(null) // make sure this exists
+const elExpsoe = {
+  inputEl,
+  focus: () => inputEl.value?.focus()
+}
+defineExpose(elExpsoe)
+export type ElExpsoe = typeof elExpsoe
 </script>

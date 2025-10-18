@@ -140,6 +140,11 @@ function onBrowseClick() {
   if (props.disabled) return
   inputEl.value?.click()
 }
+const elExpsoe = {
+  inputEl,
+}
+defineExpose(elExpsoe)
+export type ElExpsoe = typeof elExpsoe
 </script>
 
 <style scoped>
