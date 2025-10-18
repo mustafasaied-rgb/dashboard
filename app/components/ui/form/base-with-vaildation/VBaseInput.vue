@@ -3,7 +3,7 @@
     <!-- Label -->
     <label
       v-if="label"
-      :for="id"
+      :for="baseId"
       class="ds-label"
       :class="disabled ? 'cursor-not-allowed opacity-60' : ''"
     >
@@ -15,7 +15,7 @@
       class="ds-input"
       :data-variant="variant"
       :data-size="size"
-      :data-status="status"
+      :data-status="effectiveStatus"
       :data-disabled="disabled ? 'true' : 'false'"
     >
       <!-- start adornment (inline, natural width) -->
@@ -25,16 +25,18 @@
 
       <!-- control -->
       <input
-        :id="id"
+        ref="inputEl"
+        :id="baseId"
         v-bind="$attrs"
         :type="actualType"
         :value="modelValue"
         @input="onInput"
-        @blur="$emit('blur', $event)"
+        @blur="onBlur"
         @focus="$emit('focus', $event)"
-        :aria-invalid="status === 'error' ? 'true' : undefined"
-        :aria-describedby="message ? describedById : undefined"
+        :aria-invalid="effectiveStatus === 'error' ? 'true' : undefined"
+        :aria-describedby="effectiveMessage ? describedById : undefined"
         :disabled="disabled"
+        :autocomplete="autocomplete"
         :placeholder="placeholder"
         :readonly="Boolean(readonly)"
         class="ds-control"
@@ -65,23 +67,25 @@
 
     <!-- helper -->
     <p
-      v-if="message"
+      v-if="effectiveMessage"
       :id="describedById"
       class="ds-helper"
       :class="{
-        'ds-helper--error': status === 'error',
-        'ds-helper--success': status === 'success',
-        'ds-helper--default': status === 'default'
+        'ds-helper--error': effectiveStatus === 'error',
+        'ds-helper--success': effectiveStatus === 'success',
+        'ds-helper--default': effectiveStatus === 'default'
       }"
     >
-      {{ message }}
+      {{ effectiveMessage }}
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useSlots } from 'vue'
+import { computed, ref, useSlots, getCurrentInstance } from 'vue'
 import type { InputHTMLAttributes } from 'vue'
+import { useFormField } from '@/validation/useFormField' // <— your composable
+import { ValidateOn } from '@/validation/types' // <— enum
 
 type Size = 'sm' | 'md'
 type Status = 'default' | 'success' | 'error'
@@ -103,7 +107,15 @@ const props = withDefaults(
     required?: boolean
     isBordered?: boolean // add divider on adornments
     revealable?: boolean // password toggle
+    autocomplete?: string
     endClass?: string
+
+    // Validation (internal, via provider)
+    rules?: Array<any> // Rule | LegacyRule
+    validateOn?: ValidateOn
+    realtimeMs?: number
+    nativeMessages?: boolean
+    showSuccess?: boolean
   }>(),
   {
     type: 'text',
@@ -111,7 +123,13 @@ const props = withDefaults(
     status: 'default',
     variant: 'outlined',
     isBordered: false,
-    revealable: false
+    revealable: false,
+
+    // validation defaults
+    validateOn: ValidateOn.Submit,
+    realtimeMs: 150,
+    nativeMessages: false,
+    showSuccess: false
   }
 )
 
@@ -132,7 +150,36 @@ const toggleReveal = () => {
 const actualType = computed(() =>
   props.revealable && props.type === 'password' ? (show.value ? 'text' : 'password') : props.type
 )
+const inst = getCurrentInstance()
+const baseId = computed(() => props.id ?? `${'ui-input'}-${inst?.uid ?? '0'}`)
+const describedById = computed(() => `${baseId.value}__desc`)
 
-const describedById = computed(() => (props.id ? `${props.id}__desc` : undefined))
-const onInput = (e: Event) => emit('update:modelValue', (e.target as HTMLInputElement).value)
+const inputEl = ref<HTMLInputElement | null>(null) // NEW: native el ref
+const effectiveMessage = computed<string | null>(() => props.message ?? field.error.value ?? null)
+
+// v-model proxy (read/write; safe for useFormField.reset())
+const modelProxy = computed({
+  get: () => props.modelValue,
+  set: (v) => emit('update:modelValue', v)
+})
+const field = useFormField(baseId.value, modelProxy, props.rules ?? [], {
+  nativeEl: inputEl,
+  nativeMessages: props.nativeMessages,
+  validateOn: props.validateOn,
+  realtimeMs: props.realtimeMs
+})
+const effectiveStatus = computed<Status>(() => {
+  if (props.status && props.status !== 'default') return props.status
+  if (effectiveMessage.value) return 'error'
+  if (props.showSuccess && field.touched.value && !effectiveMessage.value) return 'success'
+  return 'default'
+})
+function onInput(e: Event) {
+  emit('update:modelValue', (e.target as HTMLInputElement).value)
+  field.onInputValidate() // trigger reactive validation
+}
+function onBlur(e: FocusEvent) {
+  emit('blur', e)
+  field.onBlurValidate() // trigger blur validation
+}
 </script>

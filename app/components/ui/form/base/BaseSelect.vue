@@ -15,7 +15,8 @@
     <div
       :class="[
         'ds-input',
-        'relative' //take full width
+        'relative', //take full width
+        containerClass
       ]"
       :data-variant="variant"
       :data-size="size"
@@ -27,6 +28,7 @@
         :id="id"
         v-model="model"
         :disabled="disabled"
+        @change="$emit('change', $event)"
         :readonly="Boolean(readonly)"
         :aria-invalid="status === 'error' ? 'true' : undefined"
         :aria-describedby="message ? describedById : undefined"
@@ -92,6 +94,7 @@ const props = withDefaults(
     id?: string
     modelValue?: ModelValue
     label?: string
+    containerClass?: string
     placeholder?: string
     options?: Option[]
     size?: Size
@@ -110,7 +113,10 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{ (e: 'update:modelValue', v: ModelValue): void }>()
+const emit = defineEmits<{
+  (e: 'update:modelValue', v: ModelValue): void
+  (e: 'change', ev: Event): void
+}>()
 
 const model = computed({
   get: () => props.modelValue ?? '',

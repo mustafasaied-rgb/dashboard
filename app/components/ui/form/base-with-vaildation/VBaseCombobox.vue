@@ -3,7 +3,7 @@
     <!-- Label -->
     <label
       v-if="label"
-      :for="id"
+      :for="baseId"
       class="ds-label"
       :class="disabled ? 'cursor-not-allowed opacity-60' : ''"
     >
@@ -11,7 +11,7 @@
       <span v-if="required" aria-hidden="true" class="text-error-500">*</span>
     </label>
 
-    <!-- Shell -->
+    <!-- Shell / Trigger -->
     <FloatingWrapper
       v-model="open"
       placement="bottom-start"
@@ -22,24 +22,31 @@
     >
       <template #trigger="{ open: isOpen }">
         <div
+          ref="triggerEl"
+          :id="baseId"
           class="ds-input relative !overflow-visible"
           :data-variant="variant"
           :data-size="size"
-          :data-status="status"
+          :data-status="effectiveStatus"
           :data-disabled="disabled ? 'true' : 'false'"
           data-has-start="false"
           data-has-end="true"
           role="combobox"
+          tabindex="0"
           :aria-expanded="isOpen ? 'true' : 'false'"
           :aria-controls="menuId"
+          :aria-invalid="effectiveStatus === 'error' ? 'true' : undefined"
+          :aria-describedby="effectiveMessage ? describedById : undefined"
+          @blur="onTriggerBlur"
+          @keydown.esc.prevent="open = false"
         >
           <div class="ds-control flex flex-wrap items-center gap-2 pr-9">
-            <!-- placeholder when empty -->
+            <!-- placeholder -->
             <span v-if="!selectedValueList.length" class="text-[var(--ds-ph)]">
               {{ placeholder || 'Select…' }}
             </span>
 
-            <!-- chips -->
+            <!-- chips for multiple -->
             <template v-else-if="mode === 'multiple'">
               <Badge
                 v-for="opt in selectedOptions"
@@ -62,7 +69,7 @@
               </Badge>
             </template>
 
-            <!-- single mode: plain text, no chip -->
+            <!-- single: plain text -->
             <template v-else>
               <span class="truncate text-[var(--ds-text)]">
                 {{ selectedLabel }}
@@ -82,6 +89,7 @@
         </div>
       </template>
 
+      <!-- Menu -->
       <template #floating="{ close }">
         <div
           :id="menuId"
@@ -105,10 +113,10 @@
               role="option"
               :aria-selected="isSelected(opt.value) ? 'true' : 'false'"
               tabindex="0"
-              @click.stop="toggle(opt.value)"
-              @keydown.enter.prevent="toggle(opt.value)"
-              @keydown.space.prevent="toggle(opt.value)"
-              @keydown.esc.prevent="close"
+              @click.stop="toggle(opt.value, close)"
+              @keydown.enter.prevent="toggle(opt.value, close)"
+              @keydown.space.prevent="toggle(opt.value, close)"
+              @keydown.esc.prevent="closeMenu(close)"
             >
               <span
                 v-if="mode === 'multiple'"
@@ -127,41 +135,45 @@
 
     <!-- Helper -->
     <p
-      v-if="message"
+      v-if="effectiveMessage"
       :id="describedById"
       class="ds-helper"
       :class="{
-        'ds-helper--error': status === 'error',
-        'ds-helper--success': status === 'success',
-        'ds-helper--default': status === 'default'
+        'ds-helper--error': effectiveStatus === 'error',
+        'ds-helper--success': effectiveStatus === 'success',
+        'ds-helper--default': effectiveStatus === 'default'
       }"
+      aria-live="polite"
     >
-      {{ message }}
+      {{ effectiveMessage }}
     </p>
   </div>
 </template>
+
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, getCurrentInstance, ref, watch } from 'vue'
 import ChevronDownIcon from '~/components/icons/ChevronDownIcon.vue'
+import { useFormField } from '@/validation/useFormField'
+import { ValidateOn } from '@/validation/types'
 
 type Size = 'sm' | 'md'
 type Status = 'default' | 'success' | 'error'
 type Variant = 'outlined' | 'soft' | 'plain'
 type Value = string | number | Record<string, any>
 type Mode = 'single' | 'multiple'
+type ModelValue = Value | Array<Value> | Record<string, any> | Array<Record<string, any>>
 
 interface Option {
   label: string
   value: Value
 }
-
 type InputOption = string | Option
 
 const props = withDefaults(
   defineProps<{
+    name?: string
     id?: string
-    /** modelValue can be array or single depending on mode */
-    modelValue?: Value | Option | Array<Value | Option>
+    modelValue?: ModelValue
     options?: InputOption[]
     label?: string
     placeholder?: string
@@ -171,10 +183,14 @@ const props = withDefaults(
     message?: string
     disabled?: boolean
     required?: boolean
-    /** When true, emits selected Option objects instead of values */
     returnObject?: boolean
-    /** Selection mode: single or multiple */
     mode?: Mode
+
+    // Validation (same API as VBaseInput)
+    rules?: Array<any>
+    validateOn?: ValidateOn
+    realtimeMs?: number
+    showSuccess?: boolean
   }>(),
   {
     modelValue: () => [],
@@ -183,27 +199,35 @@ const props = withDefaults(
     status: 'default',
     variant: 'outlined',
     returnObject: false,
-    mode: 'multiple'
+    mode: 'multiple',
+    validateOn: ValidateOn.Submit,
+    realtimeMs: 150,
+    showSuccess: false
   }
 )
 
 const emit = defineEmits<{ (e: 'update:modelValue', v: any): void }>()
 
 const open = ref(false)
-const menuId = `ms-${Math.random().toString(36).slice(2)}`
+const root = ref<HTMLElement | null>(null)
+const triggerEl = ref<HTMLElement | null>(null)
 
-/** Normalize options */
+const inst = getCurrentInstance()
+const baseId = computed(() => props.id ?? `${props.name ?? 'ui-combobox'}-${inst?.uid ?? '0'}`)
+const describedById = computed(() => `${baseId.value}__desc`)
+const menuId = `ms-${inst?.uid ?? Math.random().toString(36).slice(2)}`
+
+// normalize options
 const normalizedOptions = computed<Option[]>(() =>
   (props.options ?? []).map((o) => (typeof o === 'string' ? { label: o, value: o } : o))
 )
-
 const optionsMap = computed(() => {
   const m = new Map<Value, Option>()
   for (const o of normalizedOptions.value) m.set(o.value, o)
   return m
 })
 
-/** Normalize model value to array for internal handling */
+// selected (internal) as list of values
 const selectedValueList = computed<Value[]>(() => {
   if (props.mode === 'single') {
     const val = props.modelValue as any
@@ -234,7 +258,29 @@ function isSelected(v: Value) {
   return selectedValueList.value.some((x) => x === v)
 }
 
-/** Emit normalized output depending on mode & returnObject */
+// model proxy for useFormField (we keep the external v-model shape)
+const modelProxy = computed({
+  get: () => props.modelValue,
+  set: (val: any) => emit('update:modelValue', val)
+})
+
+const registryName = computed(() => props.name ?? baseId.value)
+// Pass the trigger element to the form so focusFirstInvalid can focus it
+const field = useFormField(registryName.value, modelProxy as any, props.rules ?? [], {
+  nativeEl: triggerEl as unknown as any,
+  validateOn: props.validateOn,
+  realtimeMs: props.realtimeMs
+})
+
+const effectiveMessage = computed<string | null>(() => props.message ?? field.error.value ?? null)
+const effectiveStatus = computed<Status>(() => {
+  if (props.status && props.status !== 'default') return props.status
+  if (effectiveMessage.value) return 'error'
+  if (props.showSuccess && field.touched.value && !effectiveMessage.value) return 'success'
+  return 'default'
+})
+
+// emit normalized selection
 function emitSelectionFromValues(nextValues: Value[]) {
   if (props.mode === 'single') {
     const v = nextValues[0] ?? null
@@ -254,17 +300,20 @@ function emitSelectionFromValues(nextValues: Value[]) {
   }
 }
 
-function toggle(v: Value) {
+// selection handlers
+function toggle(v: Value, close?: () => void) {
   if (props.disabled) return
   if (props.mode === 'single') {
-    // single mode → replace existing value
     emitSelectionFromValues(isSelected(v) ? [] : [v])
+    field.onInputValidate()
     open.value = false
+    close?.()
     return
   }
   const set = new Set(selectedValueList.value)
   set.has(v) ? set.delete(v) : set.add(v)
   emitSelectionFromValues(Array.from(set))
+  field.onInputValidate()
 }
 
 function remove(v: Value) {
@@ -272,9 +321,25 @@ function remove(v: Value) {
   if (props.mode === 'single') {
     emitSelectionFromValues([])
   } else {
-    const next = selectedValueList.value.filter((x) => x !== v)
-    emitSelectionFromValues(next)
+    emitSelectionFromValues(selectedValueList.value.filter((x) => x !== v))
   }
+  field.onInputValidate()
 }
-const describedById = computed(() => (props.id ? `${props.id}__desc` : undefined))
+
+function closeMenu(close: () => void) {
+  close()
+  open.value = false
+  // treat close like blur: validate on blur modes
+  field.onBlurValidate()
+}
+
+// trigger blur (when the trigger element itself loses focus)
+function onTriggerBlur() {
+  field.onBlurValidate()
+}
+
+// when the popup closes (by outside click), also treat as blur for validation
+watch(open, (isOpen) => {
+  if (!isOpen) field.onBlurValidate()
+})
 </script>

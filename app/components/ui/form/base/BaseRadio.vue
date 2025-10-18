@@ -1,9 +1,5 @@
 <template>
-  <label
-    class="ds-radio"
-    :data-size="size"
-    :data-disabled="disabled ? 'true' : 'false'"
-  >
+  <label class="ds-radio" :data-size="size" :data-disabled="disabled ? 'true' : 'false'">
     <input
       class="ds-radio__input"
       ref="inputEl"
@@ -39,20 +35,24 @@
 
 <script setup lang="ts">
 import { computed, useSlots } from 'vue'
+type MV = string | number | boolean | null
 
 type Size = 'sm' | 'md'
 
-const props = withDefaults(defineProps<{
-  modelValue?: string | number | boolean
-  value: string | number | boolean
-  name?: string
-  label?: string
-  size?: Size
-  disabled?: boolean
-}>(), {
-  size: 'md',
-  modelValue: '',
-})
+const props = withDefaults(
+  defineProps<{
+    modelValue?: MV
+    value: string | number | boolean
+    name?: string
+    label?: string
+    size?: Size
+    disabled?: boolean
+  }>(),
+  {
+    size: 'md',
+    modelValue: ''
+  }
+)
 
 const emit = defineEmits<{ (e: 'update:modelValue', v: string | number | boolean): void }>()
 
