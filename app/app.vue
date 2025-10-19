@@ -15,10 +15,15 @@
 const config = useRuntimeConfig()
 const { locale } = useI18n()
 
-const { fetchPages } = usePages()
-const { settings, fetchSettings } = useWebsiteSettings()
-await fetchSettings()
-await fetchPages()
+const settings = {
+  meta_title_ar: 'لوحه التحكم',
+  meta_title_en: 'Dashboard',
+  meta_description_ar: ' لوحه التحكم وصف',
+  meta_description_en: 'Dashboard description',
+  favicon: '',
+  keywords_ar: '',
+  keywords_en: ''
+}
 
 // ---- i18n SEO head (canonical + hreflang + og:locale + <html lang/dir>) ----
 const i18nHead = useLocaleHead({
@@ -27,14 +32,14 @@ const i18nHead = useLocaleHead({
 })
 
 const staticMetaData = computed(() => ({
-  title: settings?.value?.[`meta_title_${locale.value}`] || 'ASTC',
+  title: settings?.[`meta_title_${locale.value}`] || 'ASTC',
   description:
-    settings?.value?.[`meta_description_${locale.value}`] ||
+    settings?.[`meta_description_${locale.value}`] ||
     'ASTC has been a trusted contractor in Saudi Arabia since 2007, delivering expert-level Project Management, Telecom Engineering, and IT services.',
   type: 'website',
-  image: settings.value?.favicon || `${config?.public?.SITE_URL}/favicon.ico`,
+  image: settings?.favicon || `${config?.public?.SITE_URL}/favicon.ico`,
   keywords:
-    settings?.value?.[`keywords_${locale.value}`] ||
+    settings?.[`keywords_${locale.value}`] ||
     'ASTC, Arabian for Science and Technology Co., Saudi contractor, project management, telecom, IT services',
   author: 'ASTC'
 }))

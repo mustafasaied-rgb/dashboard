@@ -13,7 +13,6 @@
 <script setup lang="ts">
 // import type { SectionCode } from '~/services/pages-section.service'
 
-import HeroSection from '~/pages/(home)/_components/hero-section/HeroSection.vue'
 
 definePageMeta({
   layoutProps: {
