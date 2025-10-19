@@ -53,7 +53,7 @@
       <span
         :class="[
           'ds-adorn ds-adorn--end pointer-events-none justify-center ps-1 pe-3',
-          'absolute end-3 top-1/2 -translate-y-1/2' //take full width
+          'absolute end-0 top-1/2 -translate-y-1/2' //take full width
         ]"
       >
         <ChevronDownIcon />

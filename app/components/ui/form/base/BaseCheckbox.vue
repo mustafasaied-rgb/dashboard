@@ -100,7 +100,10 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{ (e: 'update:modelValue', v: boolean): void }>()
+const emit = defineEmits<{
+  (e: 'update:modelValue', v: boolean): void
+  (e: 'change', value: Event): void
+}>()
 
 const inputEl = ref<HTMLInputElement | null>(null)
 const model = computed({
@@ -122,5 +125,6 @@ const hasLabel = computed(() => hasSlotLabel.value || !!props.label)
 
 const onChange = (e: Event) => {
   model.value = (e.target as HTMLInputElement).checked
+  emit('change', e)
 }
 </script>
