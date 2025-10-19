@@ -5,7 +5,7 @@
       <BasicTableOne />
     </ComponentCard>
     <ComponentCard title="BaseTable1">
-      <BaseTable
+      <BaseTable1
         :rows="rows"
         rowKey="id"
         :searchKeys="['name', 'email', 'project', 'office', 'status']"
@@ -128,7 +128,7 @@
             </div>
           </td>
         </template>
-      </BaseTable>
+      </BaseTable1>
 
       <!-- Selected keys debug (optional) -->
       <!-- <pre class="mt-4 text-xs text-gray-500">Selected: {{ selected }}</pre> -->
