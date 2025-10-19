@@ -12,12 +12,18 @@
           size="sm"
           v-model="pageSize"
           :options="pageSizeOptions.map((i) => ({ label: String(i), value: i }))"
+          @update:modelValue="onPageSizeChange"
         />
         <span class="text-sm text-gray-500 dark:text-gray-400">entries</span>
       </div>
 
       <div class="flex items-center gap-3">
-        <BaseInput v-model="query" :placeholder="searchPlaceholder" size="sm">
+        <BaseInput
+          v-model="query"
+          :placeholder="searchPlaceholder"
+          size="sm"
+          @update:modelValue="onQueryChange"
+        >
           <template #start><SearchIcon /></template>
         </BaseInput>
         <slot name="actions" />
@@ -115,19 +121,21 @@
     <div class="flex flex-col items-center justify-between gap-3 px-4 py-4 sm:flex-row sm:px-5">
       <div class="text-sm text-gray-500 dark:text-gray-400">
         Showing
-        <span class="font-medium text-gray-700 dark:text-gray-300">{{ fromIndex + 1 }}</span>
+        <span class="font-medium text-gray-700 dark:text-gray-300">{{
+          displayTotal ? fromIndex + 1 : 0
+        }}</span>
         to
         <span class="font-medium text-gray-700 dark:text-gray-300">{{ toIndex }}</span>
         of
-        <span class="font-medium text-gray-700 dark:text-gray-300">{{ filteredRows.length }}</span>
+        <span class="font-medium text-gray-700 dark:text-gray-300">{{ displayTotal }}</span>
         entries
       </div>
 
       <Pagination
         :page="page"
-        :total="filteredRows.length"
+        :total="displayTotal"
         :page-size="pageSize"
-        @update:page="(p: number) => (page = p)"
+        @update:page="onPageChange"
       />
     </div>
   </div>
@@ -161,35 +169,66 @@ type Props = {
   selectable?: boolean
   searchKeys?: string[]
   pageSizeOptions?: number[]
-  initialPageSize?: number
   searchPlaceholder?: string
   emptyText?: string
   /** enable row hover effect */
   hoverable?: boolean
   /** optional row class resolver */
   rowClass?: (row: Row) => string | undefined
+
+  /** NEW: server mode */
+  server?: boolean
+  /** NEW: backend total (required in server mode) */
+  total?: number
+
+  /** (optional) controlled values if you want to drive from parent */
+  modelPage?: number
+  modelPageSize?: number
+  modelQuery?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   selectable: true,
   searchKeys: () => [],
   pageSizeOptions: () => [10, 20, 50, 100],
-  initialPageSize: 10,
   searchPlaceholder: 'Search…',
   emptyText: 'No results found',
-  hoverable: true
+  hoverable: true,
+  server: false,
+  total: 0,
+  modelPage: 1,
+  modelPageSize: 10,
+  modelQuery: ''
 })
 
 const emit = defineEmits<{
   (e: 'update:selected', keys: (string | number)[]): void
   (e: 'row:toggle', row: Row, selected: boolean): void
   (e: 'row:click', row: Row): void
+  /* NEW events to talk to backend in server mode */
+  (e: 'update:page', value: number): void
+  (e: 'update:pageSize', value: number): void
+  (e: 'update:query', value: string): void
 }>()
 
-/* search + pagination */
-const query = ref('')
-const page = ref(1)
-const pageSize = ref(props.initialPageSize)
+/* search + pagination (internal state) */
+const page = ref(props.modelPage)
+const pageSize = ref(props.modelPageSize)
+const query = ref(props.modelQuery)
+
+/* keep in sync if parent controls them */
+watch(
+  () => props.modelPage,
+  (v) => v != null && (page.value = v)
+)
+watch(
+  () => props.modelPageSize,
+  (v) => v != null && (pageSize.value = v)
+)
+watch(
+  () => props.modelQuery,
+  (v) => v != null && (query.value = v)
+)
 
 /* computed headers once */
 const normalizedHeaders = computed(() => props.headers ?? [])
@@ -197,8 +236,12 @@ const normalizedHeaders = computed(() => props.headers ?? [])
 /* selection */
 const selectedKeys = ref<Set<string | number>>(new Set())
 
-/* filtering */
+/* --------- FILTERING / PAGING ---------
+   - client mode (server=false): same behavior as before
+   - server mode (server=true): DO NOT filter/paginate locally
+----------------------------------------*/
 const filteredRows = computed(() => {
+  if (props.server) return props.rows
   const q = query.value.trim().toLowerCase()
   if (!q) return props.rows
   const keys = props.searchKeys.length
@@ -213,20 +256,26 @@ const filteredRows = computed(() => {
   )
 })
 
-/* pagination */
-const totalPages = computed(() =>
-  Math.max(1, Math.ceil(filteredRows.value.length / pageSize.value))
-)
-watch([filteredRows, pageSize], () => {
-  if (page.value > totalPages.value) page.value = 1
+/* counts */
+const displayTotal = computed(() => (props.server ? props.total : filteredRows.value.length))
+
+/* pagination math uses displayTotal (server uses backend total) */
+const fromIndex = computed(() => {
+  if (!displayTotal.value) return 0
+  return Math.min((page.value - 1) * pageSize.value, Math.max(0, displayTotal.value - 1))
 })
+const toIndex = computed(() => Math.min(page.value * pageSize.value, displayTotal.value))
 
-const fromIndex = computed(() =>
-  Math.min((page.value - 1) * pageSize.value, Math.max(0, filteredRows.value.length - 1))
+/* rows to render */
+const pagedRows = computed(() =>
+  props.server ? props.rows : filteredRows.value.slice(fromIndex.value, toIndex.value)
 )
-const toIndex = computed(() => Math.min(page.value * pageSize.value, filteredRows.value.length))
 
-const pagedRows = computed(() => filteredRows.value.slice(fromIndex.value, toIndex.value))
+/* when client-side, keep previous guard to prevent out-of-range */
+const totalPages = computed(() => Math.max(1, Math.ceil(displayTotal.value / pageSize.value)))
+watch([filteredRows, pageSize], () => {
+  if (!props.server && page.value > totalPages.value) page.value = 1
+})
 
 /* selection helpers */
 const isSelected = (row: Row) => selectedKeys.value.has(row[props.rowKey])
@@ -256,13 +305,39 @@ function toggleSelectAllPage(e: Event) {
   emit('update:selected', Array.from(selectedKeys.value))
 }
 
-/* footer helpers */
-const colspanComputed = computed(() => normalizedHeaders.value.length + (props.selectable ? 1 : 0))
-
 /* row click */
 function onRowClick(row: Row) {
   emit('row:click', row)
 }
+
+/* ---------- NEW: handlers to notify parent in server mode ---------- */
+const debouncedUpdateQuery = useDebounce((val: string) => emit('update:query', val), 500)
+function onQueryChange(val: string) {
+  if (props.server) {
+    debouncedUpdateQuery(val)
+    // commonly reset to page 1 on page-size change
+    page.value = 1
+    emit('update:page', page.value)
+  }
+}
+function onPageSizeChange(val: number) {
+  if (props.server) {
+    emit('update:pageSize', val)
+    // commonly reset to page 1 on page-size change
+    page.value = 1
+    emit('update:page', page.value)
+  }
+}
+function onPageChange(val: number) {
+  if (props.server) {
+    emit('update:page', val)
+  } else {
+    page.value = val
+  }
+}
+
+/* footer helpers */
+const colspanComputed = computed(() => normalizedHeaders.value.length + (props.selectable ? 1 : 0))
 
 /* expose */
 defineExpose({ clearSelection: () => selectedKeys.value.clear() })
