@@ -27,7 +27,7 @@
         <!-- Surface -->
         <div
           ref="surface"
-          class="no-scrollbar relative mx-auto max-h-svh w-full overflow-y-auto bg-white text-[rgb(var(--foreground))] shadow-[--shadow-theme-lg] transition duration-200 ease-out dark:bg-gray-900 dark:text-[--color-gray-50]"
+          class="no-scrollbar relative mx-auto max-h-svh w-screen overflow-y-auto bg-white text-[rgb(var(--foreground))] shadow-[--shadow-theme-lg] transition duration-200 ease-out dark:bg-gray-900 dark:text-[--color-gray-50]"
           :class="[sizeClass, rounded ? 'rounded-3xl' : '', padded ? 'p-4 sm:p-6' : '']"
           tabindex="-1"
         >
@@ -40,7 +40,7 @@
           <button
             v-if="showDefaultClose"
             type="button"
-            class="absolute end-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-lg text-[--color-gray-600] hover:bg-[--color-gray-100] focus-visible:shadow-[--shadow-focus-ring] focus-visible:outline-none dark:text-[--color-gray-300] dark:hover:bg-white/10"
+            class="absolute end-3 top-3 z-[99999] inline-flex h-9 w-9 items-center justify-center rounded-lg text-[--color-gray-600] hover:bg-[--color-gray-100] focus-visible:shadow-[--shadow-focus-ring] focus-visible:outline-none dark:text-[--color-gray-300] dark:hover:bg-white/10"
             @click="emitClose"
             aria-label="Close"
           >

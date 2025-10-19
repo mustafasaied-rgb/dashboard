@@ -137,19 +137,44 @@
       <BaseModalStatus status="info" BtnText="info" />
       <BaseModalStatus status="warning" BtnText="warning" />
       <BaseModalStatus status="danger" BtnText="danger" />
-     </ComponentCard>
+    </ComponentCard>
+    <ComponentCard title="AsyncModal" class="flex justify-start gap-5">
+      <AsyncModal ref="modalRef" />
+      <Button color="error" @click="onDelete">Open Modal</Button>
+    </ComponentCard>
   </div>
 </template>
 
 <script setup lang="ts">
+import AsyncModal from '@/components/ui/modals/AsyncModal.vue'
+
 definePageMeta({
   layout: 'dashboard'
 })
+
 const modal = reactive({}) as any
 // const onPageChange = (e) => {
 //   console.log('onPageChange--->e', e)
 // }
 watch(modal, (modal) => console.log('modal', modal), { deep: true, immediate: true })
+
+const modalRef = ref<InstanceType<typeof AsyncModal> | null>(null)
+async function onDelete() {
+  const res = await modalRef.value!.open({
+    variant: 'danger',
+    title: 'Delete item?',
+    message: 'This action cannot be undone.',
+    confirmText: 'Delete',
+    cancelText: 'Cancel',
+    showCancel: true
+  })
+
+  if (res.action === 'confirm') {
+    console.log('✅ confirmed')
+  } else {
+    console.log('❌ cancelled/closed')
+  }
+}
 </script>
 
 <style></style>

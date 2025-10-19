@@ -110,7 +110,7 @@ const props = withDefaults(defineProps<Props>(), {
   titleText: undefined,
   description: undefined,
   primaryText: 'Okay, Got It',
-  size: 'sm',
+  size: 'md',
   closeOnBackdrop: true,
   closeOnEsc: true,
   hideCornerClose: true,
