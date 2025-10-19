@@ -47,7 +47,7 @@
       />
       <span
         :class="[
-          'absolute top-1/2 left-1/2 inline-flex h-[40px] w-[40px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#F1F1F1B2] text-2xl text-black transition-colors hover:bg-[#F1F1F1]',
+          'absolute top-1/2 start-1/2 inline-flex h-[40px] w-[40px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#F1F1F1B2] text-2xl text-black transition-colors hover:bg-[#F1F1F1]',
           'lg:h-[80px] lg:w-[80px]'
         ]"
         aria-hidden="true"

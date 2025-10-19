@@ -22,7 +22,7 @@
         disableRemotePlayback
         preload="metadata"
         id="myVideo"
-        class="absolute top-0 left-1/2 -z-10 max-h-screen w-[150%] -translate-x-1/2 xl:w-full"
+        class="absolute top-0 start-1/2 -z-10 max-h-screen w-[150%] -translate-x-1/2 xl:w-full"
       >
         <source :src="main_head" type="video/mp4" />
       </video>

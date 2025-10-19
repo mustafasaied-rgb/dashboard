@@ -11,7 +11,7 @@
         ref="el"
         :id="baseId"
         class="peer"
-        :class="[controlCls, $slots.leading && 'pl-9', $slots.trailing && 'pr-9']"
+        :class="[controlCls, $slots.leading && 'ps-9', $slots.trailing && 'pe-9']"
         :type="type"
         :value="modelValue as any"
         :placeholder="labelPlacement === 'inside' ? ' ' : placeholder"

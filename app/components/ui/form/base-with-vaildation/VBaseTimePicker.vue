@@ -30,7 +30,7 @@
         :disabled="disabled"
         :placeholder="placeholder"
         class="ds-control"
-        :class="[hasStart ? 'pl-3' : 'pl-4', 'pr-3']"
+        :class="[hasStart ? 'ps-3' : 'ps-4', 'pe-3']"
         :aria-invalid="effectiveStatus === 'error' ? 'true' : undefined"
         :aria-describedby="effectiveMessage ? describedById : undefined"
         @on-change="onChange"

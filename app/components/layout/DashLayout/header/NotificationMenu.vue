@@ -9,7 +9,7 @@
       <Button @click="toggle" class="relative" rounded variant="outline" color="gray" size="icon">
         <span
           :class="{ hidden: !notifying, flex: notifying }"
-          class="absolute top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-orange-400"
+          class="absolute top-0.5 end-0 z-1 h-2 w-2 rounded-full bg-orange-400"
         >
           <span
             class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"

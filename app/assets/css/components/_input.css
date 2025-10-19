@@ -353,7 +353,7 @@
 
   /* thumb */
   .ds-switch__thumb {
-    @apply shadow-theme-sm absolute top-0.5 left-0.5 translate-x-0 rounded-full bg-white transition-transform duration-200 ease-linear;
+    @apply shadow-theme-sm absolute top-0.5 start-0.5 translate-x-0 rounded-full bg-white transition-transform duration-200 ease-linear;
   }
 
   /* sizes */

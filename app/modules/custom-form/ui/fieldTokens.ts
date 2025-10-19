@@ -73,10 +73,10 @@ export const TEXTAREA_SIZES: Record<
 export const SELECT_DECORATION = 'appearance-none'
 /** Floating label for native <select> (manual; select has no placeholder) */
 export const FLOATING_SELECT_BASE =
-  'pointer-events-none absolute left-4 text-[var(--cf-placeholder)] transition-all duration-150'
+  'pointer-events-none absolute start-4 text-[var(--cf-placeholder)] transition-all duration-150'
 
 export const FLOATING_SELECT_CENTER = 'top-1/2 -translate-y-1/2'
-export const FLOATING_SELECT_FLOAT  = '-top-3 left-2 bg-[var(--cf-bg-focus)] px-1 text-xs'
+export const FLOATING_SELECT_FLOAT  = '-top-3 start-2 bg-[var(--cf-bg-focus)] px-1 text-xs'
 
 export const DESC = 'mt-1 text-xs text-[var(--cf-desc)]'
 export const ERR = 'mt-1 text-xs text-[var(--cf-err)]'

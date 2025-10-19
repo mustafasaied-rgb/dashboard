@@ -34,7 +34,7 @@
           :aria-expanded="isOpen ? 'true' : 'false'"
           :aria-controls="menuId"
         >
-          <div class="ds-control flex flex-wrap items-center gap-2 pr-9">
+          <div class="ds-control flex flex-wrap items-center gap-2 pe-9">
             <!-- placeholder when empty -->
             <span v-if="!selectedValueList.length" class="text-[var(--ds-ph)]">
               {{ placeholder || 'Select…' }}
@@ -53,7 +53,7 @@
                 <template #end>
                   <button
                     type="button"
-                    class="ml-1 text-[var(--color-gray-500)] hover:text-[var(--color-gray-700)] dark:text-[var(--color-gray-400)] dark:hover:text-[var(--color-gray-300)]"
+                    class="ms-1 text-[var(--color-gray-500)] hover:text-[var(--color-gray-700)] dark:text-[var(--color-gray-400)] dark:hover:text-[var(--color-gray-300)]"
                     aria-label="Remove"
                     @click="remove(opt.value)"
                   >

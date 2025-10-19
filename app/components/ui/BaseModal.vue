@@ -13,7 +13,7 @@
         <!-- Close button OUTSIDE the container -->
         <button
           v-if="showOutsideCloseBtn"
-          class="absolute right-[50px] top-[50px] z-50 text-white transition hover:text-red-300 3xl:text-[28px]"
+          class="absolute end-[50px] top-[50px] z-50 text-white transition hover:text-red-300 3xl:text-[28px]"
           @click="handleCancel"
         >
           ✕

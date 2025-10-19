@@ -6,7 +6,7 @@
       :class="[
         'min-w-0 flex-1 transition-all duration-300 ease-in-out',
         // 'overflow-x-hidden',//disable stikey dash-header
-        isExpanded || isHovered ? 'lg:ml-[290px]' : 'lg:ml-[90px]'
+        isExpanded || isHovered ? 'lg:ms-[290px]' : 'lg:ms-[90px]'
       ]"
     >
       <dash-header />

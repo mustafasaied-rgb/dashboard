@@ -1,13 +1,13 @@
 <template>
   <aside
     :class="[
-      'fixed top-0 left-0 z-[999] mt-16 flex h-screen flex-col border-r border-gray-200 bg-white px-5 text-gray-900 transition-all duration-300 ease-in-out lg:mt-0 dark:border-gray-800 dark:bg-gray-900',
+      'fixed start-0 top-0 z-[999] mt-16 flex h-screen flex-col border-e border-gray-200 bg-white px-5 text-gray-900 transition-all duration-300 ease-in-out lg:mt-0 dark:border-gray-800 dark:bg-gray-900',
       {
         'lg:w-[290px]': isExpanded || isMobileOpen || isHovered,
         'lg:w-[90px]': !isExpanded && !isHovered,
         'w-[290px] translate-x-0': isMobileOpen,
-        '-translate-x-full': !isMobileOpen,
-        'lg:translate-x-0': true
+        '-translate-x-full rtl:translate-x-full': !isMobileOpen,
+        'lg:translate-x-0 lg:rtl:translate-x-0': true
       }
     ]"
     @mouseenter="!isExpanded && (isHovered = true)"
@@ -67,7 +67,7 @@
                   v-show="
                     isSubmenuOpen(groupIndex, index) && (isExpanded || isHovered || isMobileOpen)
                   "
-                  class="mt-2 ml-9 space-y-1"
+                  class="ms-9 mt-2 space-y-1"
                 >
                   <MenuItem
                     v-for="sub in item.subItems"

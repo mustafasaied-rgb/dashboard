@@ -35,8 +35,8 @@
         class="ds-control"
         :class="[
           // small tweak: if there is a start adornment use smaller left padding
-          hasStart ? 'pl-3' : 'pl-4',
-          'pr-3'
+          hasStart ? 'ps-3' : 'ps-4',
+          'pe-3'
         ]"
         @on-ready="onReady"
       />

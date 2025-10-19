@@ -20,7 +20,7 @@
 
       <ChevronDownIcon
         v-if="!collapsed"
-        class="ml-auto h-5 w-5 transition-transform duration-200"
+        class="ms-auto h-5 w-5 transition-transform duration-200"
         :class="[{ 'text-brand-500 rotate-180': isOpen }]"
       />
     </button>

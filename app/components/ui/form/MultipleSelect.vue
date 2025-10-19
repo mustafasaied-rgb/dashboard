@@ -10,12 +10,12 @@
         <div
           v-for="item in selectedItems"
           :key="item.value"
-          class="group flex items-center justify-center h-[30px] rounded-full border-[0.7px] border-transparent bg-gray-100 py-1 pl-2.5 pr-2 text-sm text-gray-800 hover:border-gray-200 dark:bg-gray-800 dark:text-white/90 dark:hover:border-gray-800"
+          class="group flex items-center justify-center h-[30px] rounded-full border-[0.7px] border-transparent bg-gray-100 py-1 ps-2.5 pe-2 text-sm text-gray-800 hover:border-gray-200 dark:bg-gray-800 dark:text-white/90 dark:hover:border-gray-800"
         >
           <span>{{ item.label }}</span>
           <button
             @click.stop="removeItem(item)"
-            class="pl-2 text-gray-500 cursor-pointer group-hover:text-gray-400 dark:text-gray-400"
+            class="ps-2 text-gray-500 cursor-pointer group-hover:text-gray-400 dark:text-gray-400"
             aria-label="Remove item"
           >
             <svg
@@ -37,7 +37,7 @@
         </div>
       </div>
       <svg
-        class="ml-auto"
+        class="ms-auto"
         :class="{ 'transform rotate-180': isOpen }"
         width="20"
         height="20"

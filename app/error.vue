@@ -11,7 +11,7 @@
       disablePictureInPicture
       disableRemotePlayback
       id="myVideo"
-      class="absolute left-1/2 top-0 -z-10 max-h-screen w-[150%] -translate-x-1/2 xl:w-full"
+      class="absolute start-1/2 top-0 -z-10 max-h-screen w-[150%] -translate-x-1/2 xl:w-full"
     >
       <source :src="main_head" type="video/mp4" />
     </video>
@@ -51,7 +51,7 @@
         </button>
       </div>
 
-      <details v-if="processEnvDev" class="mt-[18px] text-left">
+      <details v-if="processEnvDev" class="mt-[18px] text-start">
         <summary>{{ t('error.debug') }}</summary>
         <pre class="whitespace-pre-wrap break-words rounded-lg bg-slate-900/5 p-3 text-xs">{{
           prettyError
