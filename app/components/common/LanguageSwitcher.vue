@@ -1,32 +1,33 @@
 <template>
-  <ClientOnly>
-    <Tabs
-      :dir="'ltr'"
-      :tabs="availableLocales"
-      :modelValue="mapped[locale]"
-      @update:model-value="switchLocale"
-      v-bind="$attrs"
-      :class="['gap-[8.35px]', tabsClass]"
-      :tab-class="['!px-[10px]', tabClass]"
-      :selectedTabClass="selectedTabClass"
-    />
-  </ClientOnly>
+  <Dropdown ref="dropdownRef" placement="bottom-end" :offset="17" :panel-class="'w-[100px]'">
+    <template #trigger="{ open }">
+      <Button rounded variant="outline" size="icon" class="!bg-transparent">
+        <GlobeIcon />
+      </Button>
+    </template>
+
+    <template #default="{ closeFn }">
+      <ul class="flex flex-col gap-1 border-gray-200 dark:border-gray-800">
+        <li
+          v-for="(item, index) in availableLocales"
+          :key="index"
+          @click="
+            () => {
+              switchLocale(item)
+              closeFn()
+            }
+          "
+        >
+          <DropdownItem :is-selected="item.value == locale">
+            {{ item.label }}
+          </DropdownItem>
+        </li>
+      </ul>
+    </template>
+  </Dropdown>
 </template>
 
 <script setup lang="ts">
-import type { Classish } from '~/types/utils'
-withDefaults(
-  defineProps<{
-    tabsClass?: Classish
-    tabClass?: Classish
-    selectedTabClass?: Classish
-  }>(),
-  {
-    tabsClass: '',
-    selectedTabClass: ''
-  }
-)
-
 const { locale, locales, setLocale } = useI18n()
 const isTransitioning = ref(false)
 const transitionDirection = ref('fade')
