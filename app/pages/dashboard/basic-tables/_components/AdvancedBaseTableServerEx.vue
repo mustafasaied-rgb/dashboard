@@ -5,11 +5,11 @@
     :total="total"
     :headers="headers"
     rowKey="id"
-    :modelQuery="'hello'"
+    :query="'hello'"
     @update:query="(q) => console.log('query', q)"
-    :modelPageSize="10"
+    :pageSize="10"
     @update:pageSize="(s) => console.log('pageSize', s)"
-    :modelPage="5"
+    :page="5"
     @update:page="(p) => console.log('page', p)"
   >
     <!-- actions in toolbar -->

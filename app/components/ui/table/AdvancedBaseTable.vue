@@ -12,18 +12,12 @@
           size="sm"
           v-model="pageSize"
           :options="pageSizeOptions.map((i) => ({ label: String(i), value: i }))"
-          @update:modelValue="onPageSizeChange"
         />
         <span class="text-sm text-gray-500 dark:text-gray-400">entries</span>
       </div>
 
       <div class="flex items-center gap-3">
-        <BaseInput
-          v-model="query"
-          :placeholder="searchPlaceholder"
-          size="sm"
-          @update:modelValue="onQueryChange"
-        >
+        <BaseInput v-model="query" :placeholder="searchPlaceholder" size="sm">
           <template #start><SearchIcon /></template>
         </BaseInput>
         <slot name="actions" />
@@ -121,9 +115,9 @@
     <div class="flex flex-col items-center justify-between gap-3 px-4 py-4 sm:flex-row sm:px-5">
       <div class="text-sm text-gray-500 dark:text-gray-400">
         Showing
-        <span class="font-medium text-gray-700 dark:text-gray-300">{{
-          displayTotal ? fromIndex + 1 : 0
-        }}</span>
+        <span class="font-medium text-gray-700 dark:text-gray-300">
+          {{ displayTotal ? fromIndex + 1 : 0 }}
+        </span>
         to
         <span class="font-medium text-gray-700 dark:text-gray-300">{{ toIndex }}</span>
         of
@@ -135,28 +129,24 @@
         :page="page"
         :total="displayTotal"
         :page-size="pageSize"
-        @update:page="onPageChange"
+        @update:page="(p: number) => (page = p)"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import Pagination from '@/components/ui/Pagination.vue'
 
 type Align = 'start' | 'center' | 'end'
 export type TableHeader<Row = Record<string, any>> = {
-  /** field key in row */
   key: keyof Row & string
-  /** text to show in header cell */
   title: string
   width?: string
   align?: Align
-  /** extra classes */
   class?: string
   cellClass?: string
-  /** default formatter for this cell (when no slot provided) */
   formatter?: (value: any, row: Row) => any
 }
 
@@ -171,20 +161,17 @@ type Props = {
   pageSizeOptions?: number[]
   searchPlaceholder?: string
   emptyText?: string
-  /** enable row hover effect */
   hoverable?: boolean
-  /** optional row class resolver */
   rowClass?: (row: Row) => string | undefined
 
-  /** NEW: server mode */
+  /** server mode */
   server?: boolean
-  /** NEW: backend total (required in server mode) */
   total?: number
 
-  /** (optional) controlled values if you want to drive from parent */
-  modelPage?: number
-  modelPageSize?: number
-  modelQuery?: string
+  /** NEW: optionally controlled by parent */
+  page?: number
+  pageSize?: number
+  query?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -196,50 +183,81 @@ const props = withDefaults(defineProps<Props>(), {
   hoverable: true,
   server: false,
   total: 0,
-  modelPage: 1,
-  modelPageSize: 10,
-  modelQuery: ''
+  /** defaults for controlled props (uncontrolled fallback below) */
+  page: undefined,
+  pageSize: undefined,
+  query: undefined
 })
 
 const emit = defineEmits<{
   (e: 'update:selected', keys: (string | number)[]): void
   (e: 'row:toggle', row: Row, selected: boolean): void
   (e: 'row:click', row: Row): void
-  /* NEW events to talk to backend in server mode */
   (e: 'update:page', value: number): void
   (e: 'update:pageSize', value: number): void
   (e: 'update:query', value: string): void
 }>()
 
-/* search + pagination (internal state) */
-const page = ref(props.modelPage)
-const pageSize = ref(props.modelPageSize)
-const query = ref(props.modelQuery)
+/* -------- controlled/uncontrolled pattern -------- */
+const _page = ref<number>(props.page ?? 1)
+const _pageSize = ref<number>(props.pageSize ?? 10)
+const _query = ref<string>(props.query ?? '')
 
-/* keep in sync if parent controls them */
-watch(
-  () => props.modelPage,
-  (v) => v != null && (page.value = v)
-)
-watch(
-  () => props.modelPageSize,
-  (v) => v != null && (pageSize.value = v)
-)
-watch(
-  () => props.modelQuery,
-  (v) => v != null && (query.value = v)
-)
+/* small debounce helper for query emits */
+let _qTimer: number | undefined
+function emitQueryDebounced(val: string, delay = 500) {
+  if (_qTimer) window.clearTimeout(_qTimer)
+  _qTimer = window.setTimeout(() => emit('update:query', val), delay)
+}
 
-/* computed headers once */
+/** page */
+const page = computed<number>({
+  get: () => props.page ?? _page.value,
+  set: (val) => {
+    _page.value = val
+    emit('update:page', val)
+  }
+})
+
+/** pageSize */
+const pageSize = computed<number>({
+  get: () => props.pageSize ?? _pageSize.value,
+  set: (val) => {
+    _pageSize.value = val
+    emit('update:pageSize', val)
+    if (props.server) page.value = 1 // reset on server mode
+  }
+})
+
+/** query */
+const query = computed<string>({
+  get: () => props.query ?? _query.value,
+  set: (val) => {
+    _query.value = val
+    if (props.server) {
+      page.value = 1 // reset page on new search in server mode
+      emitQueryDebounced(val)
+    } else {
+      emit('update:query', val)
+    }
+  }
+})
+
+/* headers */
 const normalizedHeaders = computed(() => props.headers ?? [])
 
 /* selection */
 const selectedKeys = ref<Set<string | number>>(new Set())
+const isSelected = (row: Row) => selectedKeys.value.has(row[props.rowKey])
+function toggleRow(row: Row) {
+  const key = row[props.rowKey]
+  if (selectedKeys.value.has(key)) selectedKeys.value.delete(key)
+  else selectedKeys.value.add(key)
+  emit('row:toggle', row, selectedKeys.value.has(key))
+  emit('update:selected', Array.from(selectedKeys.value))
+}
 
-/* --------- FILTERING / PAGING ---------
-   - client mode (server=false): same behavior as before
-   - server mode (server=true): DO NOT filter/paginate locally
-----------------------------------------*/
+/* filtering (client mode only) */
 const filteredRows = computed(() => {
   if (props.server) return props.rows
   const q = query.value.trim().toLowerCase()
@@ -256,36 +274,28 @@ const filteredRows = computed(() => {
   )
 })
 
-/* counts */
+/* totals */
 const displayTotal = computed(() => (props.server ? props.total : filteredRows.value.length))
 
-/* pagination math uses displayTotal (server uses backend total) */
+/* indices */
 const fromIndex = computed(() => {
   if (!displayTotal.value) return 0
   return Math.min((page.value - 1) * pageSize.value, Math.max(0, displayTotal.value - 1))
 })
 const toIndex = computed(() => Math.min(page.value * pageSize.value, displayTotal.value))
 
-/* rows to render */
+/* page rows */
 const pagedRows = computed(() =>
   props.server ? props.rows : filteredRows.value.slice(fromIndex.value, toIndex.value)
 )
 
-/* when client-side, keep previous guard to prevent out-of-range */
+/* page-bounds guard (client only) */
 const totalPages = computed(() => Math.max(1, Math.ceil(displayTotal.value / pageSize.value)))
 watch([filteredRows, pageSize], () => {
   if (!props.server && page.value > totalPages.value) page.value = 1
 })
 
-/* selection helpers */
-const isSelected = (row: Row) => selectedKeys.value.has(row[props.rowKey])
-function toggleRow(row: Row) {
-  const key = row[props.rowKey]
-  if (selectedKeys.value.has(key)) selectedKeys.value.delete(key)
-  else selectedKeys.value.add(key)
-  emit('row:toggle', row, selectedKeys.value.has(key))
-  emit('update:selected', Array.from(selectedKeys.value))
-}
+/* select all on visible page */
 const allPageSelected = computed(
   () =>
     pagedRows.value.length > 0 &&
@@ -310,35 +320,7 @@ function onRowClick(row: Row) {
   emit('row:click', row)
 }
 
-/* ---------- NEW: handlers to notify parent in server mode ---------- */
-const debouncedUpdateQuery = useDebounce((val: string) => emit('update:query', val), 500)
-function onQueryChange(val: string) {
-  if (props.server) {
-    debouncedUpdateQuery(val)
-    // commonly reset to page 1 on page-size change
-    page.value = 1
-    emit('update:page', page.value)
-  }
-}
-function onPageSizeChange(val: number) {
-  if (props.server) {
-    emit('update:pageSize', val)
-    // commonly reset to page 1 on page-size change
-    page.value = 1
-    emit('update:page', page.value)
-  }
-}
-function onPageChange(val: number) {
-  if (props.server) {
-    emit('update:page', val)
-  } else {
-    page.value = val
-  }
-}
-
-/* footer helpers */
-const colspanComputed = computed(() => normalizedHeaders.value.length + (props.selectable ? 1 : 0))
-
 /* expose */
+const colspanComputed = computed(() => normalizedHeaders.value.length + (props.selectable ? 1 : 0))
 defineExpose({ clearSelection: () => selectedKeys.value.clear() })
 </script>
