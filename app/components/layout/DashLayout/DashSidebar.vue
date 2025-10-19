@@ -172,7 +172,8 @@ const menuGroups = [
           { name: 'Images', path: '/dashboard/images', pro: false },
           { name: 'Videos', path: '/dashboard/videos', pro: false },
           { name: 'Sliders', path: '/dashboard/sliders', pro: false },
-          { name: 'Pagination', path: '/dashboard/pagination', pro: false }
+          { name: 'Pagination', path: '/dashboard/pagination', pro: false },
+          { name: 'Modals', path: '/dashboard/modals', pro: false }
         ]
       },
       {
