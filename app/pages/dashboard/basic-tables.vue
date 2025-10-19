@@ -4,7 +4,7 @@
     <ComponentCard title="Basic Table 1">
       <BasicTableOne />
     </ComponentCard>
-    <ComponentCard title="BaseTable">
+    <ComponentCard title="BaseTable1">
       <BaseTable
         :rows="rows"
         rowKey="id"
