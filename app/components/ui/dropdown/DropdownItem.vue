@@ -18,7 +18,7 @@
     @click="(ev) => emit('click', ev)"
     :class="[
       'group text-theme-sm flex w-full items-center gap-3 rounded-lg px-3 py-2 font-medium hover:bg-gray-100 disabled:opacity-60 dark:hover:bg-white/5',
-      isSelected && 'dark:bg-white/ bg-gray-100',
+      isSelected && 'dark:bg-white/5 bg-gray-100',
       'theme-text-muted hover:theme-text-medium'
     ]"
   >
