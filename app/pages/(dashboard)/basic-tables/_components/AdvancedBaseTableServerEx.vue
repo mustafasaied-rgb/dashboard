@@ -1,5 +1,5 @@
 <template>
-  <AdvancedBaseTable
+  <BaseTable
     server
     :rows="items"
     :total="total"
@@ -90,11 +90,11 @@
         </Button>
       </div>
     </template>
-  </AdvancedBaseTable>
+  </BaseTable>
 </template>
 
 <script setup lang="ts">
-import AdvancedBaseTable, { type TableHeader } from '~/components/ui/table/AdvancedBaseTable.vue'
+import BaseTable, { type TableHeader } from '~/components/ui/table/BaseTable.vue'
 
 
 

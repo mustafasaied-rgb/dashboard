@@ -1,10 +1,11 @@
 <template>
-  <AdvancedBaseTable
+  <BaseTable
     :rows="rows"
     :headers="headers"
+    headerCellVarient="bordered-b"
+    variant="bordered-outer"
     rowKey="id"
-    headerCellVarient="dark"
-    :selectable="true"
+     :selectable="true"
     :searchKeys="['name', 'email', 'position', 'office', 'status']"
     @row:click="(r) => console.log('row click', r)"
     @update:selected="(keys) => (selected = keys)"
@@ -87,11 +88,11 @@
         </Button>
       </div>
     </template>
-  </AdvancedBaseTable>
+  </BaseTable>
 </template>
 
 <script setup lang="ts">
-import AdvancedBaseTable, { type TableHeader } from '~/components/ui/table/AdvancedBaseTable.vue'
+import BaseTable, { type TableHeader } from '~/components/ui/table/BaseTable.vue'
 
 const rows = ref(
   Array.from({ length: 50 }, (_, i) => ({
