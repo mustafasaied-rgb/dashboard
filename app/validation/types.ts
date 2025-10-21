@@ -1,5 +1,3 @@
-
-
 export type RuleContext = {
 form: Record<string, unknown>
 name: string
