@@ -84,7 +84,7 @@
           </div>
         </div>
       </nav>
-      <SidebarWidget v-if="isExpanded || isHovered || isMobileOpen" />
+      <!-- <SidebarWidget v-if="isExpanded || isHovered || isMobileOpen" /> -->
     </div>
   </aside>
 </template>
@@ -111,79 +111,79 @@ const menuGroups = [
   {
     title: 'Menu',
     items: [
-      {
-        icon: GridIcon,
-        name: 'Dashboard',
-        subItems: [{ name: 'Ecommerce', path: '/', pro: false }]
-      },
-      {
-        icon: CalenderIcon,
-        name: 'Calendar',
-        path: '/calendar'
-      },
-      {
-        icon: UserCircleIcon,
-        name: 'User Profile',
-        path: '/profile'
-      },
+      // {
+      //   icon: GridIcon,
+      //   name: 'Dashboard',
+      //   subItems: [{ name: 'Ecommerce', path: '/', pro: false }]
+      // },
+      // {
+      //   icon: CalenderIcon,
+      //   name: 'Calendar',
+      //   path: '/calendar'
+      // },
+      // {
+      //   icon: UserCircleIcon,
+      //   name: 'User Profile',
+      //   path: '/profile'
+      // },
 
-      {
-        name: 'Forms',
-        icon: ListIcon,
-        subItems: [
-          { name: 'Form Elements', path: '/form-elements', pro: false },
-          { name: 'Form Layout', path: '/form-layout', pro: false }
-        ]
-      },
-      {
-        name: 'Tables',
-        icon: TableIcon,
-        subItems: [{ name: 'Basic Tables', path: '/basic-tables', pro: false }]
-      },
-      {
-        name: 'Pages',
-        icon: PageIcon,
-        subItems: [
-          { name: 'Black Page', path: '/blank', pro: false },
-          { name: '404 Page', path: '/error-404', pro: false }
-        ]
-      }
+      // {
+      //   name: 'Forms',
+      //   icon: ListIcon,
+      //   subItems: [
+      //     { name: 'Form Elements', path: '/form-elements', pro: false },
+      //     { name: 'Form Layout', path: '/form-layout', pro: false }
+      //   ]
+      // },
+      // {
+      //   name: 'Tables',
+      //   icon: TableIcon,
+      //   subItems: [{ name: 'Basic Tables', path: '/basic-tables', pro: false }]
+      // },
+      // {
+      //   name: 'Pages',
+      //   icon: PageIcon,
+      //   subItems: [
+      //     { name: 'Black Page', path: '/blank', pro: false },
+      //     { name: '404 Page', path: '/error-404', pro: false }
+      //   ]
+      // }
     ]
   },
   {
     title: 'Others',
     items: [
-      {
-        icon: PieChartIcon,
-        name: 'Charts',
-        subItems: [
-          { name: 'Line Chart', path: '/line-chart', pro: false },
-          { name: 'Bar Chart', path: '/bar-chart', pro: false }
-        ]
-      },
-      {
-        icon: PieChartIcon,
-        name: 'Ui Elements',
-        subItems: [
-          { name: 'Alerts', path: '/alerts', pro: false },
-          { name: 'Avatars', path: '/avatars', pro: false },
-          { name: 'Badge', path: '/badges', pro: false },
-          { name: 'Buttons', path: '/buttons', pro: false },
-          { name: 'Images', path: '/images', pro: false },
-          { name: 'Videos', path: '/videos', pro: false },
-          { name: 'Sliders', path: '/sliders', pro: false },
-          { name: 'Pagination', path: '/pagination', pro: false },
-          { name: 'Modals', path: '/modals', pro: false }
-        ]
-      },
-      {
-        icon: PlugInIcon,
-        name: 'Authentication',
-        subItems: [
-          { name: 'Signin', path: '/auth/signin', pro: false },
-          { name: 'Signup', path: '/auth/signup', pro: false }
-        ]
-      }
+      // {
+      //   icon: PieChartIcon,
+      //   name: 'Charts',
+      //   subItems: [
+      //     { name: 'Line Chart', path: '/line-chart', pro: false },
+      //     { name: 'Bar Chart', path: '/bar-chart', pro: false }
+      //   ]
+      // },
+      // {
+      //   icon: PieChartIcon,
+      //   name: 'Ui Elements',
+      //   subItems: [
+      //     { name: 'Alerts', path: '/alerts', pro: false },
+      //     { name: 'Avatars', path: '/avatars', pro: false },
+      //     { name: 'Badge', path: '/badges', pro: false },
+      //     { name: 'Buttons', path: '/buttons', pro: false },
+      //     { name: 'Images', path: '/images', pro: false },
+      //     { name: 'Videos', path: '/videos', pro: false },
+      //     { name: 'Sliders', path: '/sliders', pro: false },
+      //     { name: 'Pagination', path: '/pagination', pro: false },
+      //     { name: 'Modals', path: '/modals', pro: false }
+      //   ]
+      // },
+      // {
+      //   icon: PlugInIcon,
+      //   name: 'Authentication',
+      //   subItems: [
+      //     { name: 'Signin', path: '/auth/signin', pro: false },
+      //     { name: 'Signup', path: '/auth/signup', pro: false }
+      //   ]
+      // }
     ]
   }
 ]

@@ -38,7 +38,7 @@
             />
           </svg>
         </button>
-        <SearchBar />
+        <!-- <SearchBar /> -->
       </div>
 
       <div
@@ -48,7 +48,7 @@
         <div class="2xsm:gap-3 flex items-center gap-2">
           <LanguageSwitcher />
           <ThemeToggler />
-          <NotificationMenu />
+          <!-- <NotificationMenu /> -->
         </div>
         <UserMenu />
       </div>
