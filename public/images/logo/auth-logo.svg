@@ -1,0 +1,7 @@
+<svg width="231" height="48" viewBox="0 0 231 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dashboard logo">
+  <title>Dashboard</title>
+  <rect x="2.00" y="10.00" width="28.00" height="28.00" rx="5.60" fill="#465FFF"/>
+  <rect x="7.04" y="15.04" width="6.44" height="6.44" rx="0.77" fill="#FFFFFF"/><rect x="18.52" y="15.04" width="6.44" height="6.44" rx="0.77" fill="#FFFFFF"/><rect x="7.04" y="26.52" width="6.44" height="6.44" rx="0.77" fill="#FFFFFF"/><rect x="18.52" y="26.52" width="6.44" height="6.44" rx="0.77" fill="#FFFFFF"/>
+  <text x="46.80" y="32.64" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+        font-size="21.60" font-weight="700" fill="#cacacaff" letter-spacing="0.5">Dashboard</text>
+</svg>

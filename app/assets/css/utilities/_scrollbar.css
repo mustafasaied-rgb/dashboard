@@ -1,0 +1,66 @@
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/*------------------------*/
+.styled-scrollbar {
+  --scrollbar-color: #8e8f91;
+  --scrollbar-hoverd-color: #5d5d5d3d;
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--scrollbar-color) transparent; /* Firefox */
+}
+
+/* Chrome, Edge, Safari */
+.styled-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-button {
+  display: none; /* hide arrow buttons */
+}
+
+.styled-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* hide track */
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color);
+  border-radius: 4px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-hoverd-color);
+  cursor: pointer;
+}
+
+@utility no-scrollbar {
+  /* Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+@utility custom-scrollbar {
+  &::-webkit-scrollbar {
+    @apply size-1.5;
+  }
+
+  &::-webkit-scrollbar-track {
+    @apply rounded-full;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply bg-gray-200 rounded-full dark:bg-gray-700;
+  }
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #344054;
+}

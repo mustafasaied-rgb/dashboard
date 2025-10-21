@@ -1,0 +1,126 @@
+:root {
+  /* ===============================
+     INTENSITY-BASED COLOR SYSTEM — LIGHT
+     Levels: strong → medium → muted → weak → soft
+     =============================== */
+
+  /* BACKGROUND INTENSITIES */
+  --theme-bg-strong: var(--color-gray-100); /* elevated modal, card highlight */
+  --theme-bg-medium: var(--color-gray-50); /* standard card or panel */
+  --theme-bg-muted: var(--color-gray-25); /* section background / subtle area */
+  --theme-bg-weak: var(--color-white); /* base page surface */
+  --theme-bg-soft: color-mix(in oklab, var(--color-white) 50%, transparent);
+
+  /* BORDER INTENSITIES */
+  --theme-border-strong: var(--color-gray-300); /* focus / selected */
+  --theme-border-medium: var(--color-gray-200); /* normal border */
+  --theme-border-muted: var(--color-gray-100); /* subtle divider */
+  --theme-border-weak: var(--color-gray-50); /* light hairline */
+  --theme-border-soft: color-mix(in oklab, var(--color-gray-200) 40%, transparent);
+
+  /* TEXT INTENSITIES */
+  --theme-text-strong: var(--color-gray-800); /* headings, emphasis */
+  --theme-text-medium: var(--color-gray-700); /* body text */
+  --theme-text-muted: var(--color-gray-500); /* secondary text */
+  --theme-text-weak: var(--color-gray-400); /* tertiary, placeholder */
+  --theme-text-soft: color-mix(in oklab, var(--color-gray-800) 60%, transparent);
+}
+
+.dark {
+  /* ===============================
+     INTENSITY-BASED COLOR SYSTEM — DARK
+     Levels: strong → medium → muted → weak → soft
+     =============================== */
+
+  /* BACKGROUND INTENSITIES */
+  --theme-bg-strong: var(--color-gray-950); /* highest elevation */
+  --theme-bg-medium: var(--color-gray-900); /* main app background */
+  --theme-bg-muted: var(--color-gray-850); /* section, neutral panels */
+  --theme-bg-weak: var(--color-gray-800); /* low elevation cards */
+  --theme-bg-soft: color-mix(in oklab, var(--color-gray-900) 50%, transparent);
+
+  /* BORDER INTENSITIES */
+  --theme-border-strong: var(--color-gray-600); /* active/focus */
+  --theme-border-medium: var(--color-gray-700); /* normal */
+  --theme-border-muted: var(--color-gray-800); /* subtle */
+  --theme-border-weak: var(--color-gray-900); /* faint hairline */
+  --theme-border-soft: color-mix(in oklab, var(--color-gray-800) 40%, transparent);
+
+  /* TEXT INTENSITIES */
+  --theme-text-strong: color-mix(
+    in oklab,
+    var(--color-white) 90%,
+    transparent
+  ); /* titles, headings */
+  --theme-text-medium: var(--color-gray-300); /* body */
+  --theme-text-muted: var(--color-gray-400); /* secondary text */
+  --theme-text-weak: var(--color-gray-500); /* subtle text */
+  --theme-text-soft: color-mix(in oklab, var(--color-white) 60%, transparent);
+}
+@layer utilities {
+  /* ===== BACKGROUND ===== */
+  .theme-bg-strong {
+    background-color: var(--theme-bg-strong);
+  }
+  .theme-bg-medium {
+    background-color: var(--theme-bg-medium);
+  }
+  .theme-bg-muted {
+    background-color: var(--theme-bg-muted);
+  }
+  .theme-bg-weak {
+    background-color: var(--theme-bg-weak);
+  }
+  .theme-bg-soft {
+    background-color: var(--theme-bg-soft);
+  }
+
+  /* ===== BORDER ===== */
+  .theme-border-strong {
+    border-color: var(--theme-border-strong);
+  }
+  .theme-border-medium {
+    border-color: var(--theme-border-medium);
+  }
+  .theme-border-muted {
+    border-color: var(--theme-border-muted);
+  }
+  .theme-border-weak {
+    border-color: var(--theme-border-weak);
+  }
+  .theme-border-soft {
+    border-color: var(--theme-border-soft);
+  }
+
+  /* ===== TEXT ===== */
+  .theme-text-strong {
+    color: var(--theme-text-strong);
+  }
+  .theme-text-medium {
+    color: var(--theme-text-medium);
+  }
+  .hover\:theme-text-medium:hover {
+    color: var(--theme-text-medium);
+  }
+
+  .theme-text-muted {
+    color: var(--theme-text-muted);
+  }
+  .theme-text-weak {
+    color: var(--theme-text-weak);
+  }
+  .theme-text-soft {
+    color: var(--theme-text-soft);
+  }
+
+  /* ===== SHORTCUT HELPERS ===== */
+  .theme-bg-transparent {
+    background-color: transparent;
+  }
+  .theme-border-transparent {
+    border-color: transparent;
+  }
+  .theme-text-transparent {
+    color: transparent;
+  }
+}

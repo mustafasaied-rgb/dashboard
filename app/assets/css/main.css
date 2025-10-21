@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+/* -) Tailwind (generate utilities LAST so they win) */
+@import 'tailwindcss';
+
+@import './config/index.css'; /* includes your @custom-variant in _colors.css */
+
+/* 1) Base (element defaults) */
+@import './base/_reset.css';
+@import './base/_root.css';
+@import './base/_typography.css';
+ 
+/* 2) Components (reusable blocks) */
+@import './components/_content-typography.css';
+@import './components/_flatpickr.css';
+@import './components/_input.css';
+@import './components/_apexcharts.css';
+
+/* 4) Extra utilities & animations */
+@import './utilities/_mixins.css';
+@import './utilities/_scrollbar.css';
+@import './utilities/_nav_direction.css';
+@import './utilities/_menu.css';
+@import './utilities/_theme-utilities.css';
+
+@import './animation/_language_transitions.css';
+@import './animation/_navigation_transitions.css';
+@import './animation/_fade_animation.css';

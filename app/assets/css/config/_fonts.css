@@ -1,0 +1,7 @@
+@theme {
+  /* Fonts (maps to font-sans, font-zarid, font-durke, font-roboto) */
+  --font-sans: Outfit, system-ui, sans-serif;
+  --font-roboto: Roboto, system-ui, sans-serif;
+  /* --font-*: initial; */
+  --font-outfit: Outfit, sans-serif;
+}

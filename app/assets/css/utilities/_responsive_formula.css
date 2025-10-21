@@ -1,0 +1,28 @@
+/* k = 100 * (maxSize - minSize) / (maxW - minW)
+c = minSize - (minW / 100) * k
+font-size: clamp(minSizepx, calc(cpx + kvw), maxSizepx); */
+
+/* drop this in a global css file */
+.fluid-type {
+  /* defaults (override these per use) */
+  --min-w: 375; /* px */
+  --max-w: 1280; /* px */
+  --min-size: 52; /* px */
+  --max-size: 90; /* px */
+
+  /* compute slope (k) and intercept (c) */
+  --k: calc(100 * (var(--max-size) - var(--min-size)) / (var(--max-w) - var(--min-w)));
+  --c: calc(var(--min-size) - (var(--min-w) / 100) * var(--k));
+
+  font-size: clamp(
+    calc(var(--min-size) * 1px),
+    calc(var(--c) * 1px + var(--k) * 1vw),
+    calc(var(--max-size) * 1px)
+  );
+}
+/* 
+<h1 class="fluid-type"
+    style="--min-w:375; --max-w:1280; --min-size:52; --max-size:90;">
+  Title
+</h1> 
+*/
