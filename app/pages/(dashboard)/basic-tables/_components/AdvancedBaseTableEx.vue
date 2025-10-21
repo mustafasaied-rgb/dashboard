@@ -3,6 +3,7 @@
     :rows="rows"
     :headers="headers"
     rowKey="id"
+    headerCellVarient="dark"
     :selectable="true"
     :searchKeys="['name', 'email', 'position', 'office', 'status']"
     @row:click="(r) => console.log('row click', r)"
@@ -91,8 +92,6 @@
 
 <script setup lang="ts">
 import AdvancedBaseTable, { type TableHeader } from '~/components/ui/table/AdvancedBaseTable.vue'
-
-
 
 const rows = ref(
   Array.from({ length: 50 }, (_, i) => ({

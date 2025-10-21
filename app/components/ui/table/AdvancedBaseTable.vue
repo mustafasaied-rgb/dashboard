@@ -1,25 +1,25 @@
 <template>
   <div
-    class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
+    :class="[
+      'overflow-hidden rounded-xl bg-white dark:bg-white/[0.03]',
+      variant === 'bordered' && 'border border-gray-200 dark:border-gray-700'
+    ]"
   >
     <!-- Toolbar -->
-    <div class="flex items-center justify-between gap-3 p-4 sm:p-5">
-      <div class="flex items-center gap-2">
-        <label class="text-sm text-gray-500 dark:text-gray-400">Show</label>
-        <BaseSelect
-          containerClass="w-[70px] !p-0 !m-0"
-          variant="outlined"
-          size="sm"
-          v-model="pageSize"
-          :options="pageSizeOptions.map((i) => ({ label: String(i), value: i }))"
-        />
-        <span class="text-sm text-gray-500 dark:text-gray-400">entries</span>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <BaseInput v-model="query" :placeholder="searchPlaceholder" size="sm">
-          <template #start><SearchIcon /></template>
-        </BaseInput>
+    <div
+      v-if="showHeader"
+      :class="['flex flex-wrap items-center justify-between gap-3 p-4 sm:p-5']"
+    >
+      <BaseInput
+        v-if="showSearch"
+        v-model="query"
+        :placeholder="searchPlaceholder"
+        class="max-w-[250px]"
+        size="sm"
+      >
+        <template #start><SearchIcon /></template>
+      </BaseInput>
+      <div class="flex flex-wrap items-center gap-3">
         <slot name="actions" />
       </div>
     </div>
@@ -30,8 +30,21 @@
         <thead>
           <!-- full header override -->
           <slot name="header">
-            <tr class="border-y border-gray-100 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
-              <th v-if="selectable" class="w-10 px-5 py-3 sm:px-6">
+            <tr
+              :class="[
+                'border-y border-gray-100 dark:border-gray-800',
+                headerCellVarient == 'normal' && '',
+                headerCellVarient == 'dark' && 'bg-gray-50 dark:bg-gray-900',
+                variant === 'bordered' && 'border border-gray-200 dark:border-gray-700'
+              ]"
+            >
+              <th
+                v-if="selectable"
+                :class="[
+                  'w-10 px-5 py-3 sm:px-6',
+                  variant === 'bordered' && 'border border-gray-200 dark:border-gray-700'
+                ]"
+              >
                 <BaseCheckbox
                   :indeterminate="somePageSelected"
                   :model-value="allPageSelected"
@@ -47,7 +60,8 @@
                     col.align === 'center' && 'text-center',
                     col.align === 'end' && 'text-right',
                     col.align === 'start' && 'text-start',
-                    col.class
+                    col.class,
+                    variant === 'bordered' && 'border border-gray-200 dark:border-gray-700'
                   ]"
                 >
                   <!-- single header cell override -->
@@ -74,7 +88,13 @@
             ]"
           >
             <!-- selection -->
-            <td v-if="selectable" class="px-5 py-4 sm:px-6">
+            <td
+              v-if="selectable"
+              :class="[
+                'px-5 py-4 sm:px-6',
+                variant === 'bordered' && 'border border-gray-200 dark:border-gray-700'
+              ]"
+            >
               <BaseCheckbox :model-value="isSelected(row)" @change="toggleRow(row)" />
             </td>
 
@@ -85,7 +105,8 @@
                 :class="[
                   col.align === 'center' && 'text-center',
                   col.align === 'end' && 'text-right',
-                  col.cellClass
+                  col.cellClass,
+                  variant === 'bordered' && 'border border-gray-200 dark:border-gray-700'
                 ]"
               >
                 <!-- cell slot by key -->
@@ -112,25 +133,37 @@
     </div>
 
     <!-- Footer -->
-    <div class="flex flex-col items-center justify-between gap-3 px-4 py-4 sm:flex-row sm:px-5">
-      <div class="text-sm text-gray-500 dark:text-gray-400">
-        Showing
-        <span class="font-medium text-gray-700 dark:text-gray-300">
-          {{ displayTotal ? fromIndex + 1 : 0 }}
-        </span>
-        to
-        <span class="font-medium text-gray-700 dark:text-gray-300">{{ toIndex }}</span>
-        of
-        <span class="font-medium text-gray-700 dark:text-gray-300">{{ displayTotal }}</span>
-        entries
+    <div
+      v-if="showPagination && displayTotal > 0"
+      class="flex flex-col-reverse flex-wrap-reverse items-center justify-between gap-3 px-4 py-4 sm:flex-row sm:px-5"
+    >
+      <div class="flex items-center gap-2">
+        <BaseSelect
+          class="!w-fit"
+          containerClass="w-[68px] !p-0 !m-0"
+          variant="outlined"
+          size="sm"
+          v-model="pageSize"
+          :options="pageSizeOptions.map((i) => ({ label: String(i), value: i }))"
+        />
+        <span class="text-sm text-gray-500 dark:text-gray-400">{{
+          $t('pagination.Rows_per_page')
+        }}</span>
       </div>
-
-      <Pagination
-        :page="page"
-        :total="displayTotal"
-        :page-size="pageSize"
-        @update:page="(p: number) => (page = p)"
-      />
+      <div class="fle flex items-center gap-6">
+        <div class="hidden text-sm text-gray-500 sm:block dark:text-gray-400">
+          {{ $t('pagination.page') }}
+          <span class="font-medium text-gray-700 dark:text-gray-300">{{ page }}</span>
+          {{ $t('pagination.of') }}
+          <span class="font-medium text-gray-700 dark:text-gray-300">{{ totalPages }}</span>
+        </div>
+        <Pagination
+          :page="page"
+          :total="displayTotal"
+          :page-size="pageSize"
+          @update:page="(p: number) => (page = p)"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -151,6 +184,8 @@ export type TableHeader<Row = Record<string, any>> = {
 }
 
 type Row = Record<string, any>
+type HeaderCellVarient = 'normal' | 'dark'
+type TableVariant = 'default' | 'bordered'
 
 type Props = {
   rows: Row[]
@@ -162,8 +197,12 @@ type Props = {
   searchPlaceholder?: string
   emptyText?: string
   hoverable?: boolean
+  variant?: TableVariant
   rowClass?: (row: Row) => string | undefined
-
+  headerCellVarient?: HeaderCellVarient
+  showHeader?: boolean
+  showSearch?: boolean
+  showPagination?: boolean
   /** server mode */
   server?: boolean
   total?: number
@@ -183,6 +222,12 @@ const props = withDefaults(defineProps<Props>(), {
   hoverable: true,
   server: false,
   total: 0,
+  headerCellVarient: 'normal',
+  showHeader: true,
+  showSearch: true,
+  showPagination: true,
+  variant: 'default',
+
   /** defaults for controlled props (uncontrolled fallback below) */
   page: undefined,
   pageSize: undefined,

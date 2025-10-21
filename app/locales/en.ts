@@ -1,4 +1,13 @@
 export default {
+  search: 'Search',
+  pagination: {
+    page: 'Page',
+    of: 'of',
+    Rows_per_page: 'Rows per page',
+    next:'Next',
+    previous:'Previous',
+  },
+
   error: {
     404: { title: 'Page not found', desc: 'We couldn’t find the page you’re looking for.' },
     401: { title: 'You need to sign in', desc: 'This page requires authentication.' },
