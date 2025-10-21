@@ -1,5 +1,5 @@
 <template>
-  <Button @click.prevent="toggleTheme" rounded variant="outline" size="icon" class="!bg-transparent">
+  <Button @click.prevent="toggleTheme" rounded variant="outline" size="icon">
     <LightIcon v-if="isDarkMode" />
     <DarkIcon v-else />
   </Button>

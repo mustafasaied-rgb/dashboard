@@ -1,7 +1,7 @@
 <template>
   <Dropdown ref="dropdownRef" placement="bottom-end" :offset="17" :panel-class="'w-[100px]'">
     <template #trigger="{ open }">
-      <Button rounded variant="outline" size="icon" class="!bg-transparent">
+      <Button rounded variant="outline" size="icon">
         <GlobeIcon />
       </Button>
     </template>
