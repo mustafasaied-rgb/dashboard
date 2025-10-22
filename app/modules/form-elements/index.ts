@@ -18,7 +18,9 @@ export default defineNuxtModule<CustomFormModuleOptions>({
 
     if (options.autoImportComponents)
       addComponentsDir({
-        path: resolve('./components'),
+        // path: resolve('./components'),
+        //  only the validated base
+        path: resolve('./components/base'),
         prefix: options.prefix,
         pathPrefix: false
       })
