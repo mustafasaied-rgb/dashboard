@@ -1,5 +1,5 @@
 <template>
-  <BaseDatePicker
+  <UiDatePicker
     ref="inner"
     :id="baseId"
     :modelValue="modelValue"

@@ -37,7 +37,7 @@
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
 import { useFormField } from '~/modules/form-elements/composables/useFormField'
 import { ValidateOn } from '~/modules/form-elements/types'
-import BaseInput from '~/modules/form-elements/components/UI-without-vaildation/UiInput.vue'
+import UiInput from '~/modules/form-elements/components/UI-without-vaildation/UiInput.vue'
 import type { ElExpose } from '~/modules/form-elements/components/UI-without-vaildation/UiInput.vue'
 type Status = 'default' | 'success' | 'error'
 
