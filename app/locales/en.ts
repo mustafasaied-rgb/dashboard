@@ -4,10 +4,20 @@ export default {
     page: 'Page',
     of: 'of',
     Rows_per_page: 'Rows per page',
-    next:'Next',
-    previous:'Previous',
+    next: 'Next',
+    previous: 'Previous'
   },
-
+  validation: {
+    required: 'This field is required',
+    email: 'Enter a valid email',
+    minLength: 'Must be at least {n} characters',
+    maxLength: 'Must be at most {n} characters',
+    pattern: 'Invalid format',
+    phoneDigits: 'Enter a valid phone number',
+    asyncUnique: 'Already taken',
+    maxFiles: 'You can upload up to {limit} file(s)',
+    maxFileSize: 'Each file must be under {limitMB} MB'
+  },
   error: {
     404: { title: 'Page not found', desc: 'We couldn’t find the page you’re looking for.' },
     401: { title: 'You need to sign in', desc: 'This page requires authentication.' },
