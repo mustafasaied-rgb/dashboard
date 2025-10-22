@@ -14,11 +14,11 @@
 
 <script setup lang="ts">
 import { computed, getCurrentInstance, onMounted, ref, shallowRef, useAttrs } from 'vue'
-import BaseSelect from '@/components/ui/form/base/BaseSelect.vue'
-import type { ElExpose } from '@/components/ui/form/base/BaseSelect.vue'
+import BaseSelect from '@/modules/form-elements/components/base/BaseSelect.vue'
+import type { ElExpose } from '@/modules/form-elements/components/base/BaseSelect.vue'
 
-import { useFormField } from '@/validation/useFormField'
-import { ValidateOn } from '@/validation/types'
+import { useFormField } from '~/modules/form-elements/composables/useFormField'
+import { ValidateOn } from '~/modules/form-elements/types'
 type Status = 'default' | 'success' | 'error'
 /** Use a DIFFERENT name and include object case to match BaseSelect */
 type SelectValue = string | number | null | Record<string, any>

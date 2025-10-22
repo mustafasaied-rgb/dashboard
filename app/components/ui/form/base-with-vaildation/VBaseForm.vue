@@ -4,8 +4,8 @@
 
 <script setup lang="ts">
 import { provide, ref } from 'vue'
-import type { Field, ValidateResult } from '~/validation/types'
-import { FKEY } from '~/validation/constants'
+import type { Field, ValidateResult } from '~/modules/form-elements/types'
+import { FKEY } from '~/modules/form-elements/constants'
 
 const fields = new Map<string, Field>()
 const submittedOnce = ref(false)

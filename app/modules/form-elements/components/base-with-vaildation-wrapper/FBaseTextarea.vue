@@ -21,10 +21,10 @@
 
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
-import BaseTextarea from '@/components/ui/form/base/BaseTextarea.vue'
-import type { ElExpose } from '@/components/ui/form/base/BaseTextarea.vue'
-import { useFormField } from '@/validation/useFormField'
-import { ValidateOn } from '@/validation/types'
+import BaseTextarea from '@/modules/form-elements/components/base/BaseTextarea.vue'
+import type { ElExpose } from '@/modules/form-elements/components/base/BaseTextarea.vue'
+import { useFormField } from '~/modules/form-elements/composables/useFormField'
+import { ValidateOn } from '~/modules/form-elements/types'
 
 type Status = 'default' | 'success' | 'error'
 

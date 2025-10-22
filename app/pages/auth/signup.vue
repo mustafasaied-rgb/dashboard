@@ -131,7 +131,7 @@
 
 <script setup lang="ts">
 import type { AppFormExpose } from '~/components/ui/form/base-with-vaildation/VBaseForm.vue'
-import { useInputRules } from '~/validation/useInputRules'
+import { useInputRules } from '~/modules/form-elements/composables/useInputRules'
 definePageMeta({
   layout: 'auth-layout'
 })

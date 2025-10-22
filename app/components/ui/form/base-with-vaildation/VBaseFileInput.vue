@@ -97,8 +97,8 @@
 
 <script setup lang="ts">
 import { ref, computed, getCurrentInstance } from 'vue'
-import { useFormField } from '@/validation/useFormField'
-import { ValidateOn } from '@/validation/types'
+import { useFormField } from '~/modules/form-elements/composables/useFormField'
+import { ValidateOn } from '~/modules/form-elements/types'
 
 type Size = 'sm' | 'md'
 type Status = 'default' | 'success' | 'error'

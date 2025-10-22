@@ -102,8 +102,8 @@
 import { onMounted, onBeforeUnmount, ref, watch, computed, getCurrentInstance } from 'vue'
 import Dropzone from 'dropzone'
 import 'dropzone/dist/dropzone.css'
-import { useFormField } from '@/validation/useFormField'
-import { ValidateOn } from '@/validation/types'
+import { useFormField } from '~/modules/form-elements/composables/useFormField'
+import { ValidateOn } from '~/modules/form-elements/types'
 
 export interface PreviewFile {
   id: string

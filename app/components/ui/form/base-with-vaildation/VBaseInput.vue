@@ -85,8 +85,8 @@
 <script setup lang="ts">
 import { computed, ref, useSlots, getCurrentInstance } from 'vue'
 import type { InputHTMLAttributes } from 'vue'
-import { useFormField } from '@/validation/useFormField' // <— your composable
-import { ValidateOn } from '@/validation/types' // <— enum
+import { useFormField } from '~/modules/form-elements/composables/useFormField' // <— your composable
+import { ValidateOn } from '~/modules/form-elements/types' // <— enum
 
 type Size = 'sm' | 'md'
 type Status = 'default' | 'success' | 'error'

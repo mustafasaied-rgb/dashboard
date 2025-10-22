@@ -13,11 +13,11 @@
 
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
-import BaseCombobox from '@/components/ui/form/base/BaseCombobox.vue'
-import type { ElExpose } from '@/components/ui/form/base/BaseCombobox.vue'
+import BaseCombobox from '@/modules/form-elements/components/base/BaseCombobox.vue'
+import type { ElExpose } from '@/modules/form-elements/components/base/BaseCombobox.vue'
 
-import { useFormField } from '@/validation/useFormField'
-import { ValidateOn } from '@/validation/types'
+import { useFormField } from '~/modules/form-elements/composables/useFormField'
+import { ValidateOn } from '~/modules/form-elements/types'
 
 const props = withDefaults(
   defineProps<{

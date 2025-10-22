@@ -1,5 +1,5 @@
 <template>
-  <BaseTimePicker
+  <BaseDatePicker
     ref="inner"
     :id="baseId"
     :modelValue="modelValue"
@@ -11,52 +11,61 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Validation wrapper for BaseDatePicker.
+ * - Forwards all non-validation attrs/props to BaseDatePicker.
+ * - Uses BaseDatePicker's exposed `nativeEl` (HTMLInputElement) for focus/scroll + native messages.
+ */
+
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
-import BaseTimePicker from '@/components/ui/form/base/BaseTimePicker.vue'
-import type { ElExpose } from '@/components/ui/form/base/BaseTimePicker.vue'
-import { useFormField } from '@/validation/useFormField'
-import { ValidateOn } from '@/validation/types'
+import BaseDatePicker from '@/modules/form-elements/components/base/BaseDatePicker.vue'
+import type { ElExpose } from '@/modules/form-elements/components/base/BaseDatePicker.vue'
+import { useFormField } from '~/modules/form-elements/composables/useFormField'
+import { ValidateOn } from '~/modules/form-elements/types'
 
 type Status = 'default' | 'success' | 'error'
 
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string | Date | null
-    id?: string
-    status?: Status
-    message?: string
+const props = withDefaults(defineProps<{
+  /** v-model */
+  modelValue?: string | Date | null
 
-    rules?: Array<any>
-    validateOn?: ValidateOn
-    realtimeMs?: number
-    nativeMessages?: boolean
-    showSuccess?: boolean
-  }>(),
-  {
-    modelValue: null,
-    status: 'default',
-    message: '',
-    validateOn: ValidateOn.Submit,
-    realtimeMs: 150,
-    nativeMessages: true,
-    showSuccess: false
-  }
-)
+  /** Optional overrides */
+  id?: string
+  status?: Status
+  message?: string
+
+  /** Validation */
+  rules?: Array<any>
+  validateOn?: ValidateOn
+  realtimeMs?: number
+  nativeMessages?: boolean
+  showSuccess?: boolean
+}>(), {
+  modelValue: null,
+  status: 'default',
+  message: '',
+  validateOn: ValidateOn.Submit,
+  realtimeMs: 150,
+  nativeMessages: true, // browser gives decent messages for required date inputs
+  showSuccess: false
+})
 
 const emit = defineEmits<{
   (e: 'update:modelValue', v: string | Date | null): void
+  (e: 'blur', ev: FocusEvent): void
+  (e: 'focus', ev: FocusEvent): void
 }>()
 
-/** forward everything else (label, placeholder, size, variant, disabled, required, bordered*, config, slots…) */
+/** pass-through (label, placeholder, size, variant, disabled, required, borderedStart, borderedEnd, mode, config, slots…) */
 const attrs = useAttrs()
 const passthroughAttrs = computed(() => attrs)
 
 /** stable id */
 const inst = getCurrentInstance()
-const baseId = computed(() => props.id ?? `form-time-${inst?.uid ?? '0'}`)
+const baseId = computed(() => props.id ?? `form-date-${inst?.uid ?? '0'}`)
 
-/** grab exposed native input from base */
+/** access BaseDatePicker's exposed native input */
 const inner = ref<ComponentPublicInstance<ElExpose> | null>(null)
 const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.nativeEl?.value ?? null)
 
@@ -68,7 +77,7 @@ const modelProxy = computed({
 
 /** validation */
 const field = useFormField(baseId.value, modelProxy as any, props.rules ?? [], {
-  nativeEl, // ✅ actual HTMLInputElement
+  nativeEl,                  // ✅ true HTMLInputElement from flatpickr
   nativeMessages: props.nativeMessages,
   validateOn: props.validateOn,
   realtimeMs: props.realtimeMs
@@ -86,15 +95,9 @@ const effectiveStatus = computed<Status>(() => {
   return 'default'
 })
 
-/** on change -> validate */
+/** events */
 function onUpdate(v: any) {
   emit('update:modelValue', v)
   field.onInputValidate()
 }
-
-/** optional expose */
-defineExpose({
-  focus: () => nativeEl.value?.focus(),
-  getNativeEl: () => nativeEl.value
-})
 </script>

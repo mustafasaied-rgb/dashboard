@@ -12,16 +12,16 @@
     </div>
     <div>
       <div class="relative border-t border-gray-200 py-2.5 dark:border-gray-800"></div>
-      <VBaseForm ref="formRef" @submit.prevent="handleSubmit">
+      <FBaseForm ref="formRef" @submit.prevent="handleSubmit">
         <div class="space-y-5">
-          <VBaseInput
+          <FBaseInput
             required
             v-model="formData.email"
             label="Email"
             placeholder="info@gmail.com"
             :rules="[rules.required, rules.email]"
           />
-          <VBaseInput
+          <FBaseInput
             required
             v-model="formData.password"
             label="Password"
@@ -33,7 +33,7 @@
           <BaseCheckbox v-model="formData.keepLoggedIn" label="Keep me logged in" />
           <Button type="submit" class="w-full" color="primary"> Sign In </Button>
         </div>
-      </VBaseForm>
+      </FBaseForm>
       <!-- <div class="mt-5">
         <p class="text-center text-sm font-normal text-gray-700 sm:text-start dark:text-gray-400">
           Don't have an account?
@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import type { AppFormExpose } from '~/components/ui/form/base-with-vaildation/VBaseForm.vue'
-import { useInputRules } from '~/validation/useInputRules'
+import { useInputRules } from '~/modules/form-elements/composables/useInputRules'
 definePageMeta({
   layout: 'auth-layout'
 })

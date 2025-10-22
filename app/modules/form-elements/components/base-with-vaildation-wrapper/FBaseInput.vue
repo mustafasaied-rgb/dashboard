@@ -36,10 +36,10 @@
  */
 
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
- import { useFormField } from '@/validation/useFormField'
-import { ValidateOn } from '@/validation/types'
- import BaseInput from '@/components/ui/form/base/BaseInput.vue'
-import type { ElExpose } from '@/components/ui/form/base/BaseInput.vue'
+ import { useFormField } from '~/modules/form-elements/composables/useFormField'
+import { ValidateOn } from '~/modules/form-elements/types'
+ import BaseInput from '@/modules/form-elements/components/base/BaseInput.vue'
+import type { ElExpose } from '@/modules/form-elements/components/base/BaseInput.vue'
 type Status = 'default' | 'success' | 'error'
 
 const props = withDefaults(

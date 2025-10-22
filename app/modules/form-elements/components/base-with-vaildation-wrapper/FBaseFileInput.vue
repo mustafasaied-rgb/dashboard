@@ -1,5 +1,5 @@
 <template>
-  <BaseDropzone
+  <BaseFileInput
     ref="inner"
     :id="baseId"
     :modelValue="filesProxy"
@@ -7,40 +7,29 @@
     :message="effectiveMessage || message"
     v-bind="passthroughAttrs"
     @update:modelValue="onUpdate"
-    @blur="onBlur"
   />
 </template>
 
 <script setup lang="ts">
 /**
- * Validation wrapper for BaseDropzone (3rd pattern).
- * - Forwards all non-validation props/attrs.
- * - Uses BaseDropzone's exposed `regionEl` (focusable shell) as nativeEl for useFormField.
+ * Validation wrapper for BaseFileInput:
+ * - Forwards all non-validation props/attrs (label, placeholder, buttonLabel, multiple, size, variant, disabled, required…)
+ * - Uses the exposed inputEl (native <input type="file">) for focus/scroll + native messages
+ * - Validates on change and on blur (handled by useFormField based on validateOn)
  */
 
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
-import BaseDropzone from '@/components/ui/form/base/BaseDropzone.vue'
-import type { ElExpose } from '@/components/ui/form/base/BaseDropzone.vue'
-import { useFormField } from '@/validation/useFormField'
-import { ValidateOn } from '@/validation/types'
-
-export interface PreviewFile {
-  id: string
-  src: string | null
-  file?: File
-  originalFile?: File
-  progress?: number
-  isProcessing?: boolean
-  processingProgress?: number
-  alt?: string
-}
+import BaseFileInput from '@/modules/form-elements/components/base/BaseFileInput.vue'
+import type { ElExpose } from '@/modules/form-elements/components/base/BaseFileInput.vue'
+import { useFormField } from '~/modules/form-elements/composables/useFormField'
+import { ValidateOn } from '~/modules/form-elements/types'
 
 type Status = 'default' | 'success' | 'error'
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: PreviewFile[]
+    modelValue?: File[]
     id?: string
 
     // Optional overrides
@@ -60,39 +49,40 @@ const props = withDefaults(
     message: '',
     validateOn: ValidateOn.Submit,
     realtimeMs: 150,
-    nativeMessages: false, // Dropzones aren't native inputs; keep false unless you polyfill
+    nativeMessages: true, // file inputs have good native validity messages
     showSuccess: false
   }
 )
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', v: PreviewFile[]): void
+  (e: 'update:modelValue', v: File[]): void
   (e: 'blur', ev: FocusEvent): void
+  (e: 'focus', ev: FocusEvent): void
 }>()
 
-/** pass-through everything else (accept, multiple, maxFiles, maxFilesizeMB, label, placeholder/message slot, variant, size, disabled, required, useNativePicker, showPreviews, etc.) */
+/** Pass-through everything else to BaseFileInput */
 const attrs = useAttrs()
 const passthroughAttrs = computed(() => attrs)
 
 /** stable id */
 const inst = getCurrentInstance()
-const baseId = computed(() => props.id ?? `form-dropzone-${inst?.uid ?? '0'}`)
+const baseId = computed(() => props.id ?? `form-file-${inst?.uid ?? '0'}`)
 
-/** base expose ref */
+/** ref to the base component (which exposes inputEl: Ref<HTMLInputElement|null>) */
 const inner = ref<ComponentPublicInstance<ElExpose> | null>(null)
 
-/** ✅ provide the actual focusable element to the validator */
-const nativeEl = computed<HTMLDivElement | any | null>(() => inner.value?.regionEl?.value ?? null)
+/** supply the ACTUAL element to the validator (ComputedRef<HTMLInputElement|null>) */
+const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.inputEl?.value ?? null)
 
 /** v-model proxy */
-const filesProxy = computed<PreviewFile[]>({
+const filesProxy = computed<File[]>({
   get: () => props.modelValue || [],
   set: (v) => emit('update:modelValue', [...(v || [])])
 })
 
 /** validation */
 const field = useFormField(baseId.value, filesProxy as any, props.rules ?? [], {
-  nativeEl, // focus/scroll to the dropzone shell
+  nativeEl, // ✅ correct shape for focusing/scrolling to invalid
   nativeMessages: props.nativeMessages,
   validateOn: props.validateOn,
   realtimeMs: props.realtimeMs
@@ -103,6 +93,7 @@ const effectiveMessage = computed<string | null>(() => {
   if (props.message) return props.message
   return field.error.value ?? null
 })
+
 const effectiveStatus = computed<Status>(() => {
   if (props.status && props.status !== 'default') return props.status
   if (effectiveMessage.value) return 'error'
@@ -111,18 +102,8 @@ const effectiveStatus = computed<Status>(() => {
 })
 
 /** events */
-function onUpdate(next: PreviewFile[]) {
+function onUpdate(next: File[]) {
   emit('update:modelValue', next)
   field.onInputValidate()
 }
-function onBlur(e: FocusEvent) {
-  emit('blur', e)
-  field.onBlurValidate()
-}
-
-/** optional: expose focus helper for external forms */
-defineExpose({
-  focus: () => nativeEl.value?.focus(),
-  getNativeEl: () => nativeEl.value
-})
 </script>

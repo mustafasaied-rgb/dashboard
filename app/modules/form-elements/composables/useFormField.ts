@@ -1,7 +1,7 @@
 import { inject, onMounted, onBeforeUnmount, ref, watch, type Ref } from 'vue'
-import { FKEY } from './constants'
-import type { Rule, LegacyRule } from './types'
-import { ValidateOn } from './types'
+import { FKEY } from '../constants'
+import type { Rule, LegacyRule } from '../types'
+import { ValidateOn } from '../types'
 
 type AnyRule = Rule | LegacyRule
 const adaptRule = (r: AnyRule): Rule => (r.length >= 2 ? (r as Rule) : (v) => (r as LegacyRule)(v))
