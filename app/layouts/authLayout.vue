@@ -3,7 +3,7 @@
     <div class="relative flex h-screen w-full flex-col justify-center lg:flex-row dark:bg-gray-900">
       <div class="flex w-full flex-1 flex-col lg:w-1/2">
         <div class="mx-auto w-full max-w-md pt-10">
-          <nuxt-link
+          <!-- <nuxt-link
             to="/"
             class="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
           >
@@ -24,7 +24,7 @@
               />
             </svg>
             Back to dashboard
-          </nuxt-link>
+          </nuxt-link> -->
         </div>
         <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
           <slot />
@@ -37,11 +37,11 @@
           <common-grid-shape />
           <div class="flex max-w-xs flex-col items-center">
             <nuxt-link to="/" class="mb-4 block">
-              <img width="{231}" height="{48}" src="/images/logo/auth-logo.svg" alt="Logo" />
+              <Logo
+                class="flex-row-reverse gap-4"
+                text-class="theme-text-medium text-xl font-bold tracking-wide"
+              />
             </nuxt-link>
-            <p class="text-center text-gray-400 dark:text-white/60">
-              Free and Open-Source Tailwind CSS Admin Dashboard Template
-            </p>
           </div>
         </div>
       </div>

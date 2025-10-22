@@ -1,6 +1,6 @@
 <template>
   <header
-    class="shadow-theme-sm sticky top-0 z-[999] flex w-full border-gray-200  bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900"
+    class="shadow-theme-sm sticky top-0 z-[999] flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900"
   >
     <div class="flex grow flex-col items-center justify-between lg:flex-row lg:px-6">
       <div
@@ -18,7 +18,9 @@
           <CloseMenuIcon v-if="isMobileOpen" />
           <BurgerMenuIcon class="rtl:rotate-180" v-else />
         </button>
-        <HeaderLogo />
+        <NuxtLink to="/" class="lg:hidden">
+          <Logo />
+        </NuxtLink>
         <button
           @click="toggleApplicationMenu"
           class="z-[999] flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 hover:bg-gray-100 lg:hidden dark:text-gray-400 dark:hover:bg-gray-800"

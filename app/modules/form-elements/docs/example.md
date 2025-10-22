@@ -1,13 +1,16 @@
+# Example usage
+
+```vue
 <template>
   <div>
     <div class="mb-5 sm:mb-8">
       <h1
         class="text-title-sm sm:text-title-md mb-2 font-semibold text-gray-800 dark:text-white/90"
       >
-        {{ $t('signIn') }}
+        Sign In
       </h1>
       <p class="text-sm text-gray-500 dark:text-gray-400">
-        {{ $t('signInSubtitle') }}
+        Enter your email and password to sign in!
       </p>
     </div>
     <div>
@@ -49,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import type { AppFormExpose } from '~/modules/form-elements/components/base/with-vaildation-wrapper/BaseForm.vue'
+import type { AppFormExpose } from '~/components/ui/form/base-with-vaildation/VBaseForm.vue'
 import { useInputRules } from '~/modules/form-elements/composables/useInputRules'
 definePageMeta({
   layout: 'auth-layout'
@@ -70,3 +73,4 @@ const handleSubmit = async () => {
 </script>
 
 <style></style>
+```
