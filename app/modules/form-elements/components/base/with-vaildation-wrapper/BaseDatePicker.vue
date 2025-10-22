@@ -67,7 +67,7 @@ const baseId = computed(() => props.id ?? `form-date-${inst?.uid ?? '0'}`)
 
 /** access BaseDatePicker's exposed native input */
 const inner = ref<ComponentPublicInstance<ElExpose> | null>(null)
-const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.nativeEl?.value ?? null)
+const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.nativeEl ?? null)
 
 /** v-model proxy */
 const modelProxy = computed({

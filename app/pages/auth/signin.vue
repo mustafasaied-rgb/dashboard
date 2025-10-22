@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import type { AppFormExpose } from '~/components/ui/form/base-with-vaildation/VBaseForm.vue'
+import type { AppFormExpose } from '~/modules/form-elements/components/base/with-vaildation-wrapper/BaseForm.vue'
 import { useInputRules } from '~/modules/form-elements/composables/useInputRules'
 definePageMeta({
   layout: 'auth-layout'

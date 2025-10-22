@@ -126,6 +126,8 @@ const model = computed({
 
 const describedById = computed(() => (props.id ? `${props.id}__desc` : undefined))
 const selectEl = ref<HTMLSelectElement | null>(null)
-defineExpose({ selectEl })
-export type ElExpose = { selectEl: typeof selectEl }
+defineExpose({
+  selectEl: computed(() => selectEl.value)
+})
+export type ElExpose = { selectEl: HTMLSelectElement }
 </script>

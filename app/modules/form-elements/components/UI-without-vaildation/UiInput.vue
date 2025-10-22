@@ -139,9 +139,11 @@ const actualType = computed(() =>
 const describedById = computed(() => (props.id ? `${props.id}__desc` : undefined))
 const onInput = (e: Event) => emit('update:modelValue', (e.target as HTMLInputElement).value)
 
- 
-
 const inputEl = ref<HTMLInputElement | null>(null)
-defineExpose({ inputEl })
-export type ElExpose = { inputEl: typeof inputEl }
+defineExpose({
+  get nativeEl() {
+    return inputEl.value as HTMLInputElement | null
+  }
+})
+export type ElExpose = { nativeEl: HTMLInputElement }
 </script>

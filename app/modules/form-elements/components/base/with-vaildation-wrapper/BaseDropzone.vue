@@ -20,11 +20,12 @@
 
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
-import UiDropzone from '~/modules/form-elements/components/UI-without-vaildation/UiDropzone.vue'
-import type { ElExpose } from '~/modules/form-elements/components/UI-without-vaildation/UiDropzone.vue'
+import UiDropzone, {
+  type ElExpose,
+  // type UiDropzoneEmits
+} from '~/modules/form-elements/components/UI-without-vaildation/UiDropzone.vue'
 import { useFormField } from '~/modules/form-elements/composables/useFormField'
 import { ValidateOn } from '~/modules/form-elements/types'
-type ChildEmit = InstanceType<typeof UiDropzone>['$emit']
 
 export interface PreviewFile {
   id: string
@@ -66,12 +67,14 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<
-  ChildEmit & {
-    (e: 'update:modelValue', v: PreviewFile[]): void
-    (e: 'blur', ev: FocusEvent): void
-  }
->()
+type UiDropzoneEmits = {
+  (e: 'update:modelValue', v: PreviewFile[]): void
+  (e: 'added', file: File): void
+  (e: 'removed', file: File): void
+  (e: 'error', file: File | null, err: unknown): void
+  (e: 'blur', ev: FocusEvent): void
+}
+const emit = defineEmits<UiDropzoneEmits>()
 
 /** pass-through everything else (accept, multiple, maxFiles, maxFilesizeMB, label, placeholder/message slot, variant, size, disabled, required, useNativePicker, showPreviews, etc.) */
 const attrs = useAttrs()
@@ -85,7 +88,7 @@ const baseId = computed(() => props.id ?? `form-dropzone-${inst?.uid ?? '0'}`)
 const inner = ref<ComponentPublicInstance<ElExpose> | null>(null)
 
 /** ✅ provide the actual focusable element to the validator */
-const nativeEl = computed<HTMLDivElement | any | null>(() => inner.value?.regionEl?.value ?? null)
+const nativeEl = computed<HTMLDivElement | any | null>(() => inner.value?.regionEl ?? null)
 
 /** v-model proxy */
 const filesProxy = computed<PreviewFile[]>({

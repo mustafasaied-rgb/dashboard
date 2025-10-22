@@ -131,14 +131,16 @@ const baseConfig = {
 }
 const computedConfig = computed(() => ({ ...baseConfig, ...props.config }))
 
-
 /** ✅ Expose the real INPUT element used by flatpickr (altInput or input) */
 const nativeEl = shallowRef<HTMLInputElement | null>(null)
 function onReady(_selected: any, _dateStr: string, instance: any) {
   // Prefer altInput when altInput:true, else fallback to the raw input
-  nativeEl.value = (instance?.altInput ?? instance?._input ?? instance?.input) as HTMLInputElement | null
+  nativeEl.value = (instance?.altInput ??
+    instance?._input ??
+    instance?.input) as HTMLInputElement | null
 }
-defineExpose({ nativeEl })
-export type ElExpose = { nativeEl: typeof nativeEl }
+defineExpose({
+  nativeEl: computed(() => nativeEl.value)
+})
+export type ElExpose = { nativeEl: HTMLInputElement }
 </script>
- 

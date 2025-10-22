@@ -28,26 +28,29 @@ import { ValidateOn } from '~/modules/form-elements/types'
 
 type Status = 'default' | 'success' | 'error'
 
-const props = withDefaults(defineProps<{
-  modelValue?: string | null
-  id?: string
-  status?: Status
-  message?: string
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string | null
+    id?: string
+    status?: Status
+    message?: string
 
-  rules?: Array<any>
-  validateOn?: ValidateOn
-  realtimeMs?: number
-  nativeMessages?: boolean
-  showSuccess?: boolean
-}>(), {
-  modelValue: '',
-  status: 'default',
-  message: '',
-  validateOn: ValidateOn.Submit,
-  realtimeMs: 150,
-  nativeMessages: false,
-  showSuccess: false
-})
+    rules?: Array<any>
+    validateOn?: ValidateOn
+    realtimeMs?: number
+    nativeMessages?: boolean
+    showSuccess?: boolean
+  }>(),
+  {
+    modelValue: '',
+    status: 'default',
+    message: '',
+    validateOn: ValidateOn.Submit,
+    realtimeMs: 150,
+    nativeMessages: false,
+    showSuccess: false
+  }
+)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', v: string | null): void
@@ -65,7 +68,7 @@ const baseId = computed(() => props.id ?? `form-textarea-${inst?.uid ?? '0'}`)
 
 /** access BaseTextarea's exposed textarea ref */
 const inner = ref<ComponentPublicInstance<ElExpose> | null>(null)
-const nativeEl = computed<HTMLTextAreaElement | null>(() => inner.value?.inputEl?.value ?? null)
+const nativeEl = computed<HTMLTextAreaElement | null>(() => inner.value?.nativeEl ?? null)
 
 /** v-model proxy */
 const modelProxy = computed({
@@ -75,7 +78,7 @@ const modelProxy = computed({
 
 /** validation */
 const field = useFormField(baseId.value, modelProxy, props.rules ?? [], {
-  nativeEl,              // ✅ real textarea element
+  nativeEl, // ✅ real textarea element
   nativeMessages: props.nativeMessages,
   validateOn: props.validateOn,
   realtimeMs: props.realtimeMs

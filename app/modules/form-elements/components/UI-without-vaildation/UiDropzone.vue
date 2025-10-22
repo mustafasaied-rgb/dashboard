@@ -170,14 +170,14 @@ const props = withDefaults(
     status: 'default'
   }
 )
-
-const emit = defineEmits<{
+export type UiDropzoneEmits = {
   (e: 'update:modelValue', v: PreviewFile[]): void
   (e: 'added', file: File): void
   (e: 'removed', file: File): void
   (e: 'error', file: File | null, err: unknown): void
-  (e: 'blur', ev: FocusEvent): void // ✅ to bubble blur if wrapper listens
-}>()
+  (e: 'blur', ev: FocusEvent): void
+}
+const emit = defineEmits<UiDropzoneEmits>()
 
 /** internal */
 const dropzoneId = `dz-${Math.random().toString(36).slice(2)}`
@@ -311,7 +311,11 @@ onBeforeUnmount(() => {
   for (const f of files.value) revokeIfBlob(f)
   dz?.destroy()
 })
-defineExpose({ regionEl, nativeInput })
+
+defineExpose({
+  regionEl: computed(() => regionEl.value),
+  nativeInput: computed(() => nativeInput.value)
+})
 export type ElExpose = { regionEl: typeof regionEl; nativeInput: typeof nativeInput }
 </script>
 

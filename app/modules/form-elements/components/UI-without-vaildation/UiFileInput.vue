@@ -140,9 +140,11 @@ function onBrowseClick() {
   if (props.disabled) return
   inputEl.value?.click()
 }
- 
- defineExpose({ inputEl })
-export type ElExpose = { inputEl: typeof inputEl }
+
+defineExpose({
+  inputEl: computed(() => inputEl.value)
+})
+export type ElExpose = { inputEl: HTMLInputElement }
 </script>
 
 <style scoped>

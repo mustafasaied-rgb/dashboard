@@ -72,7 +72,7 @@ const baseId = computed(() => props.id ?? `form-file-${inst?.uid ?? '0'}`)
 const inner = ref<ComponentPublicInstance<ElExpose> | null>(null)
 
 /** supply the ACTUAL element to the validator (ComputedRef<HTMLInputElement|null>) */
-const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.inputEl?.value ?? null)
+const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.inputEl ?? null)
 
 /** v-model proxy */
 const filesProxy = computed<File[]>({

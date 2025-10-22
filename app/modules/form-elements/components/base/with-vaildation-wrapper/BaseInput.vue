@@ -92,7 +92,7 @@ const baseId = computed(() => props.id ?? `vinput-${inst?.uid ?? '0'}`)
 
 const inner = ref<ComponentPublicInstance<ElExpose> | null>(null) // We don’t control BaseInput’s internal input ref, but the composable can
 // still validate on events we trigger from here (input/blur).
-const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.inputEl?.value ?? null)
+const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.nativeEl ?? null)
 
 /** v-model proxy */
 const modelProxy = computed({
