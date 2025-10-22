@@ -1,5 +1,5 @@
 <template>
-  <BaseSelect
+  <UiSelect
     ref="inner"
     :id="baseId"
     :modelValue="modelProxy"
@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, onMounted, ref, shallowRef, useAttrs } from 'vue'
-import BaseSelect from '@/modules/form-elements/components/base/BaseSelect.vue'
-import type { ElExpose } from '@/modules/form-elements/components/base/BaseSelect.vue'
+import { computed, getCurrentInstance,  ref, useAttrs } from 'vue'
+import UiSelect from '~/modules/form-elements/components/UI-without-vaildation/UiSelect.vue'
+import type { ElExpose } from '~/modules/form-elements/components/UI-without-vaildation/UiSelect.vue'
 
 import { useFormField } from '~/modules/form-elements/composables/useFormField'
 import { ValidateOn } from '~/modules/form-elements/types'
@@ -57,7 +57,7 @@ const passthroughAttrs = computed(() => attrs)
 
 const inst = getCurrentInstance()
 const baseId = computed(() => props.id ?? `form-select-${inst?.uid ?? '0'}`)
-const inner = ref<(InstanceType<typeof BaseSelect> & Partial<ElExpose>) | null>(null)
+const inner = ref<(InstanceType<typeof UiSelect> & Partial<ElExpose>) | null>(null)
 
 const placeholderPresent = computed<boolean>(() => Boolean((attrs as any)?.placeholder))
 

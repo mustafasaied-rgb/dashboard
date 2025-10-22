@@ -1,6 +1,5 @@
 <template>
-  <!-- We reuse BaseInput as-is and only inject status/message/id -->
-  <BaseInput
+  <UiInput
     ref="inner"
     :id="baseId"
     v-model="modelProxy"
@@ -24,7 +23,7 @@
     <template v-if="$slots.concealIcon" #concealIcon>
       <slot name="concealIcon" />
     </template>
-  </BaseInput>
+  </UiInput>
 </template>
 
 <script setup lang="ts">
@@ -36,10 +35,10 @@
  */
 
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
- import { useFormField } from '~/modules/form-elements/composables/useFormField'
+import { useFormField } from '~/modules/form-elements/composables/useFormField'
 import { ValidateOn } from '~/modules/form-elements/types'
- import BaseInput from '@/modules/form-elements/components/base/BaseInput.vue'
-import type { ElExpose } from '@/modules/form-elements/components/base/BaseInput.vue'
+import BaseInput from '~/modules/form-elements/components/UI-without-vaildation/UiInput.vue'
+import type { ElExpose } from '~/modules/form-elements/components/UI-without-vaildation/UiInput.vue'
 type Status = 'default' | 'success' | 'error'
 
 const props = withDefaults(

@@ -307,6 +307,8 @@
 </template>
 
 <script setup lang="ts">
+import BaseDropzone from '~/modules/form-elements/components/base/with-vaildation-wrapper/BaseDropzone.vue'
+
 const opts = ['hello', 'template', 'development', 'development1']
 const opts1 = [
   { label: 'Marketing', value: 'marketing' },

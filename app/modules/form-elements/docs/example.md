@@ -2,213 +2,75 @@
 
 ```vue
 <template>
-  <CfAppForm
-    ref="formRef"
-    @submit="handleSubmit"
-    class="h-[70vh] max-h-[500px] overflow-y-auto px-[27px] pt-[19px] lg:h-fit lg:max-h-[80vh] lg:px-[40px] lg:pt-[32px]"
-  >
-    <div class="grid grid-cols-1 gap-x-[16px] gap-y-[12px] lg:grid-cols-2 lg:gap-y-[17px]">
-      <CfBaseInput
-        size="xl"
-        id="email"
-        v-model="formData.email"
-        :label="$t('email')"
-        type="email"
-        :rules="[inptRules.email]"
-        required
-        labelPlacement="inside"
-        placeholder="you@example.com"
-      />
-
-      <CfBaseInput
-        size="xl"
-        id="phone"
-        v-model="formData.phone"
-        :label="$t('phone')"
-        type="tel"
-        :rules="[inptRules.required, inptRules.phoneDigits]"
-        inputmode="numeric"
-        maxlength="20"
-        required
-        labelPlacement="inside"
-      />
-
-      <CfBaseInput
-        size="xl"
-        id="name"
-        v-model="formData.name"
-        :rules="[inptRules.required]"
-        :label="$t('name')"
-        required
-        type="text"
-        labelPlacement="inside"
-      />
-
-      <CfBaseInput
-        size="xl"
-        id="positionInCompany"
-        v-model="formData.positionInCompany"
-        :rules="[inptRules.required]"
-        :label="$t('position_in_the_company')"
-        required
-        type="text"
-        labelPlacement="inside"
-      />
-
-      <CfBaseInput
-        size="xl"
-        class="lg:col-span-2"
-        required
-        id="companyName"
-        v-model="formData.companyName"
-        :rules="[inptRules.required]"
-        :label="$t('company_name')"
-        type="text"
-        labelPlacement="inside"
-      />
-
-      <!-- NEW: Select -->
-      <CfBaseSelect
-        size="xl"
-        id="companySize"
-        v-model="formData.companySize"
-        :options="companySizes"
-        :rules="[inptRules.required]"
-        :label="$t('company_size')"
-        placeholder="—"
-        labelPlacement="inside"
-        valueType="string"
-        required
-      />
-
-      <!-- NEW: Textarea -->
-      <CfBaseTextarea
-        size="xl"
-        class="lg:col-span-2"
-        id="message"
-        v-model="formData.message"
-        :label="$t('message')"
-        :rules="[inptRules.required, inptRules.minLength(10)]"
-        labelPlacement="inside"
-        :rows="5"
-        :realtimeMs="120"
-        placeholder=" "
-      />
-    </div>
-
-    <div
-      class="mb-[22.1px] mt-[24.5px] flex flex-col items-center gap-[16.32px] lg:mb-[25px] lg:mt-[38px] lg:gap-[17px]"
-    >
-      <button
-        type="submit"
-        :class="[
-          'w-full max-w-[275px] rounded-3xl bg-[#0D1667] pb-[18.3px] pt-[17.2px] text-center text-[30px] font-[300] leading-[105%] tracking-[0.3px] text-white lg:pb-[19px] lg:pt-[18px]',
-          'disabled:bg-[#DADADA]'
-        ]"
+  <div>
+    <div class="mb-5 sm:mb-8">
+      <h1
+        class="text-title-sm sm:text-title-md mb-2 font-semibold text-gray-800 dark:text-white/90"
       >
-        {{ $t('get_the_files') }} {{ isLoading ? '...' : '' }}
-      </button>
-
-      <button type="button" @click="handelReset">reset</button>
+        Sign In
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        Enter your email and password to sign in!
+      </p>
     </div>
-  </CfAppForm>
+    <div>
+      <div class="relative border-t border-gray-200 py-2.5 dark:border-gray-800"></div>
+      <BaseForm ref="formRef" @submit.prevent="handleSubmit">
+        <div class="space-y-5">
+          <BaseInput
+            required
+            v-model="formData.email"
+            label="Email"
+            placeholder="info@gmail.com"
+            :rules="[rules.required, rules.email]"
+          />
+          <BaseInput
+            required
+            v-model="formData.password"
+            label="Password"
+            type="password"
+            revealable
+            placeholder="Enter your password"
+            :rules="[rules.required]"
+          />
+          <BaseCheckbox v-model="formData.keepLoggedIn" label="Keep me logged in" />
+          <Button type="submit" class="w-full" color="primary"> Sign In </Button>
+        </div>
+      </BaseForm>
+      <!-- <div class="mt-5">
+        <p class="text-center text-sm font-normal text-gray-700 sm:text-start dark:text-gray-400">
+          Don't have an account?
+          <nuxt-link
+            to="/auth/signup"
+            class="text-brand-500 hover:text-brand-600 dark:text-brand-400"
+            >Sign Up</nuxt-link
+          >
+        </p>
+      </div> -->
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import type { AppFormExpose } from '~/modules/custom-form/components/AppForm.vue'
-import { useInputRules } from '~/modules/custom-form/composables/useInputRules'
-const inptRules = useInputRules()
-
-const props = defineProps({
-  open: { type: Boolean },
-  itemId: { type: [String, Number] }
+import type { AppFormExpose } from '~/components/ui/form/base-with-vaildation/VBaseForm.vue'
+import { useInputRules } from '~/modules/form-elements/composables/useInputRules'
+definePageMeta({
+  layout: 'auth-layout'
 })
-const emits = defineEmits(['update:open'])
-const { $toast } = useNuxtApp()
+const rules = useInputRules()
+
 const formRef = ref<AppFormExpose | null>(null)
-
-type FormData = {
-  email: string
-  phone: string
-  name: string
-  positionInCompany: string
-  companyName: string
-  companySize: string | null
-  message: string
-}
-
-const formData = reactive<FormData>({
+const formData = reactive({
   email: '',
-  phone: '',
-  name: '',
-  positionInCompany: '',
-  companyName: '',
-  companySize: null,
-  message: ''
+  password: '',
+  keepLoggedIn: false
 })
-
-const companySizes = [
-  { label: '1–10', value: '1-10' },
-  { label: '11–50', value: '11-50' },
-  { label: '51–200', value: '51-200' },
-  { label: '200+', value: '200+' }
-]
-
-const isLoading = ref(false)
-
-const resetFormData = () =>
-  (Object.keys(formData) as (keyof FormData)[]).forEach(
-    (k) => (formData[k] = (k === 'companySize' ? null : '') as any)
-  )
-
-const { apiFetch } = useApi()
-
-async function handleSubmit() {
+const handleSubmit = async () => {
   const res = await formRef.value?.validate()
   if (!res?.valid) return formRef.value?.focusFirstInvalid(res?.firstInvalidEl || null)
-  if (isLoading.value) return
-  isLoading.value = true
-
-  const payload = {
-    item_id: props?.itemId,
-    full_name: formData?.name,
-    email: formData?.email,
-    phone: formData?.phone,
-    position: formData?.positionInCompany,
-    company_name: formData?.companyName,
-    // Uncomment if your backend accepts them:
-    company_size: formData?.companySize,
-    message: formData?.message
-  }
-
-  try {
-    // const response = await apiFetch('/website/home/request-files', {
-    //   method: 'POST',
-    //   body: payload
-    // })
-    console.log('payload', payload)
-
-    // $toast.success(response?.message, { duration: 4000 })
-    // emits('update:open', false)
-    resetFormData()
-    formRef.value?.resetValidation()
-  } catch (err) {
-    console.error(err)
-    useHandleErrorMsg(err)
-  } finally {
-    isLoading.value = false
-  }
+  console.log('handleSubmit--->formData', formData)
 }
-
-function handelReset() {
-  formRef.value?.reset()
-}
-
-watch(
-  () => props.open,
-  (val) => {
-    if (val) resetFormData()
-  }
-)
 </script>
+
+<style></style>
 ```

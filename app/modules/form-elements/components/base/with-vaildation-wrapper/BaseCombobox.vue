@@ -1,5 +1,5 @@
 <template>
-  <BaseCombobox
+  <UiCombobox
     ref="inner"
     :id="baseId"
     :modelValue="modelProxy"
@@ -13,8 +13,8 @@
 
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
-import BaseCombobox from '@/modules/form-elements/components/base/BaseCombobox.vue'
-import type { ElExpose } from '@/modules/form-elements/components/base/BaseCombobox.vue'
+import UiCombobox from '~/modules/form-elements/components/UI-without-vaildation/UiCombobox.vue'
+import type { ElExpose } from '~/modules/form-elements/components/UI-without-vaildation/UiCombobox.vue'
 
 import { useFormField } from '~/modules/form-elements/composables/useFormField'
 import { ValidateOn } from '~/modules/form-elements/types'
@@ -62,7 +62,7 @@ const passthroughAttrs = computed(() => {
   return out
 })
 
- const inner = ref<(InstanceType<typeof BaseCombobox> & Partial<ElExpose>) | null>(null)
+ const inner = ref<(InstanceType<typeof UiCombobox> & Partial<ElExpose>) | null>(null)
 
 const modelProxy = computed({
   get: () => props.modelValue,

@@ -1,5 +1,5 @@
 <template>
-  <BaseTextarea
+  <BaseDatePicker
     ref="inner"
     :id="baseId"
     :modelValue="modelValue"
@@ -7,86 +7,87 @@
     :message="effectiveMessage || message"
     v-bind="passthroughAttrs"
     @update:modelValue="onUpdate"
-    @blur="onBlur"
-    @focus="$emit('focus', $event)"
   />
 </template>
 
 <script setup lang="ts">
 /**
- * Validation wrapper for BaseTextarea.
- * - Uses BaseTextarea's exposed textarea ref (inputEl) directly.
- * - Forwards all non-validation attrs/props.
+ * Validation wrapper for BaseDatePicker.
+ * - Forwards all non-validation attrs/props to BaseDatePicker.
+ * - Uses BaseDatePicker's exposed `nativeEl` (HTMLInputElement) for focus/scroll + native messages.
  */
 
 import { computed, getCurrentInstance, ref, useAttrs } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
-import BaseTextarea from '@/modules/form-elements/components/base/BaseTextarea.vue'
-import type { ElExpose } from '@/modules/form-elements/components/base/BaseTextarea.vue'
+import UiDatePicker from '~/modules/form-elements/components/UI-without-vaildation/UiDatePicker.vue'
+import type { ElExpose } from '~/modules/form-elements/components/UI-without-vaildation/UiDatePicker.vue'
 import { useFormField } from '~/modules/form-elements/composables/useFormField'
 import { ValidateOn } from '~/modules/form-elements/types'
 
 type Status = 'default' | 'success' | 'error'
 
 const props = withDefaults(defineProps<{
-  modelValue?: string | null
+  /** v-model */
+  modelValue?: string | Date | null
+
+  /** Optional overrides */
   id?: string
   status?: Status
   message?: string
 
+  /** Validation */
   rules?: Array<any>
   validateOn?: ValidateOn
   realtimeMs?: number
   nativeMessages?: boolean
   showSuccess?: boolean
 }>(), {
-  modelValue: '',
+  modelValue: null,
   status: 'default',
   message: '',
   validateOn: ValidateOn.Submit,
   realtimeMs: 150,
-  nativeMessages: false,
+  nativeMessages: true, // browser gives decent messages for required date inputs
   showSuccess: false
 })
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', v: string | null): void
+  (e: 'update:modelValue', v: string | Date | null): void
   (e: 'blur', ev: FocusEvent): void
   (e: 'focus', ev: FocusEvent): void
 }>()
 
-/** pass-through (rows, placeholder, size, variant, label, required, disabled, readonly, resizable, aria-*) */
+/** pass-through (label, placeholder, size, variant, disabled, required, borderedStart, borderedEnd, mode, config, slots…) */
 const attrs = useAttrs()
 const passthroughAttrs = computed(() => attrs)
 
 /** stable id */
 const inst = getCurrentInstance()
-const baseId = computed(() => props.id ?? `form-textarea-${inst?.uid ?? '0'}`)
+const baseId = computed(() => props.id ?? `form-date-${inst?.uid ?? '0'}`)
 
-/** access BaseTextarea's exposed textarea ref */
+/** access BaseDatePicker's exposed native input */
 const inner = ref<ComponentPublicInstance<ElExpose> | null>(null)
-const nativeEl = computed<HTMLTextAreaElement | null>(() => inner.value?.inputEl?.value ?? null)
+const nativeEl = computed<HTMLInputElement | null>(() => inner.value?.nativeEl?.value ?? null)
 
 /** v-model proxy */
 const modelProxy = computed({
   get: () => props.modelValue,
-  set: (v: any) => emit('update:modelValue', v)
+  set: (v) => emit('update:modelValue', v as any)
 })
 
 /** validation */
-const field = useFormField(baseId.value, modelProxy, props.rules ?? [], {
-  nativeEl,              // ✅ real textarea element
+const field = useFormField(baseId.value, modelProxy as any, props.rules ?? [], {
+  nativeEl,                  // ✅ true HTMLInputElement from flatpickr
   nativeMessages: props.nativeMessages,
   validateOn: props.validateOn,
   realtimeMs: props.realtimeMs
 })
 
-/** derive status/message */
+/** derived status/message */
 const effectiveMessage = computed<string | null>(() => {
   if (props.message) return props.message
   return field.error.value ?? null
 })
-
 const effectiveStatus = computed<Status>(() => {
   if (props.status && props.status !== 'default') return props.status
   if (effectiveMessage.value) return 'error'
@@ -95,19 +96,8 @@ const effectiveStatus = computed<Status>(() => {
 })
 
 /** events */
-function onUpdate(v: string) {
+function onUpdate(v: any) {
   emit('update:modelValue', v)
   field.onInputValidate()
 }
-
-function onBlur(e: FocusEvent) {
-  emit('blur', e)
-  field.onBlurValidate()
-}
-
-/** optional: expose focus helper */
-defineExpose({
-  focus: () => nativeEl.value?.focus(),
-  getNativeEl: () => nativeEl.value
-})
 </script>

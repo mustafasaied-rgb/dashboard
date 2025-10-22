@@ -1,5 +1,5 @@
 <template>
-  <BaseInput
+  <UiInput
     type="tel"
     :placeholder="placeholder"
     :modelValue="modelValue"
@@ -10,7 +10,7 @@
   >
     <!-- Country picker in END adornment so BaseInput handles layout -->
     <template #end>
-      <BaseSelect
+      <UiSelect
       containerClass="!ring-0"
         variant="plain"
         v-model="selectedIso"
@@ -19,7 +19,7 @@
         placeholder="Country"
       />
     </template>
-  </BaseInput>
+  </UiInput>
 </template>
 
 <script setup lang="ts">

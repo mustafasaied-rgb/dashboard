@@ -12,16 +12,16 @@
     </div>
     <div>
       <div class="relative border-t border-gray-200 py-2.5 dark:border-gray-800"></div>
-      <FBaseForm ref="formRef" @submit.prevent="handleSubmit">
+      <BaseForm ref="formRef" @submit.prevent="handleSubmit">
         <div class="space-y-5">
-          <FBaseInput
+          <BaseInput
             required
             v-model="formData.email"
             label="Email"
             placeholder="info@gmail.com"
             :rules="[rules.required, rules.email]"
           />
-          <FBaseInput
+          <BaseInput
             required
             v-model="formData.password"
             label="Password"
@@ -33,7 +33,7 @@
           <BaseCheckbox v-model="formData.keepLoggedIn" label="Keep me logged in" />
           <Button type="submit" class="w-full" color="primary"> Sign In </Button>
         </div>
-      </FBaseForm>
+      </BaseForm>
       <!-- <div class="mt-5">
         <p class="text-center text-sm font-normal text-gray-700 sm:text-start dark:text-gray-400">
           Don't have an account?

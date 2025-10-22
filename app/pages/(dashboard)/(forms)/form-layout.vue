@@ -3,7 +3,7 @@
   <div class="space-y-5 sm:space-y-6">
     <PageBreadcrumb pageTitle="Form Elements" />
     <div>
-      <VBaseForm ref="formRef" @submit.prevent="handleSubmit">
+      <BaseForm ref="formRef" @submit.prevent="handleSubmit">
         <div class="space-y-5">
           <VBaseInput
             required
@@ -13,7 +13,7 @@
             :rules="[rules.required, rules.email]"
           />
           <!-- Password -->
-          <VBaseInput
+          <BaseInput
             required
             v-model="formData.password"
             label="Password"
@@ -22,7 +22,7 @@
             placeholder="Enter your password"
             :rules="[rules.required]"
           />
-          <VBaseSelect
+          <BaseSelect
             name="companySize"
             required
             v-model="formData.companySize"
@@ -36,7 +36,7 @@
             ]"
             :rules="[rules.required]"
           />
-          <VBaseCombobox
+          <BaseCombobox
             name="skills"
             v-model="formData.skills"
             label="Skills"
@@ -45,7 +45,7 @@
             required
             :rules="[rules.required]"
           />
-          <VBaseFileInput
+          <BaseFileInput
             required
             name="attachments"
             v-model="formData.attachments"
@@ -54,7 +54,7 @@
             multiple
             :rules="[rules.required, rules.maxFiles(3), rules.maxFileSize(10)]"
           />
-          <VBaseRadioGroup
+          <BaseRadioGroup
             name="notify"
             v-model="formData.notify"
             label="Notifications"
@@ -78,10 +78,10 @@
                 @blur="onBlur"
               />
             </template>
-          </VBaseRadioGroup>
+          </BaseRadioGroup>
           <BaseCopyInput v-model="formData.CopyText" label="CopyText" />
           <BasePhoneInput v-model="formData.phone" label="phone" />
-          <VBaseDatePicker
+          <BaseDatePicker
             name="startDate"
             v-model="formData.startDate"
             label="Start Date"
@@ -92,7 +92,7 @@
           />
 
           <!-- End Date -->
-          <VBaseDatePicker
+          <BaseDatePicker
             name="endDate"
             v-model="formData.endDate"
             label="End Date"
@@ -105,7 +105,7 @@
           />
 
           <!-- Time Picker -->
-          <VBaseTimePicker
+          <BaseTimePicker
             name="meetingTime"
             v-model="formData.meetingTime"
             label="Meeting Time"
@@ -115,7 +115,7 @@
           />
 
           <!-- Date Range Picker -->
-          <VBaseDatePicker
+          <BaseDatePicker
             name="range"
             v-model="formData.range"
             label="Date Range"
@@ -123,7 +123,7 @@
             mode="range"
             :rules="[rules.required]"
           />
-          <VBaseTextarea
+          <BaseTextarea
             name="notes"
             v-model="formData.notes"
             label="Notes"
@@ -132,7 +132,7 @@
             :rules="[rules.required, rules.minLength(10)]"
           />
           <ClientOnly>
-            <VBaseDropzone
+            <BaseDropzone
               name="photos"
               v-model="formData.photos"
               label="Event Photos"
@@ -163,13 +163,14 @@
             </Button>
           </div>
         </div>
-      </VBaseForm>
+      </BaseForm>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { AppFormExpose } from '~/components/ui/form/base-with-vaildation/VBaseForm.vue'
+import BaseDropzone from '~/modules/form-elements/components/base/with-vaildation-wrapper/BaseDropzone.vue'
+import type { AppFormExpose } from '~/modules/form-elements/components/base/with-vaildation-wrapper/BaseForm.vue'
 import { useInputRules } from '~/modules/form-elements/composables/useInputRules'
 
 const skills = ['Vue', 'React', 'Angular', 'TypeScript', 'TailwindCSS']
