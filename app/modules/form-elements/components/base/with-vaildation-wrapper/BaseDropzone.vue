@@ -24,6 +24,7 @@ import UiDropzone from '~/modules/form-elements/components/UI-without-vaildation
 import type { ElExpose } from '~/modules/form-elements/components/UI-without-vaildation/UiDropzone.vue'
 import { useFormField } from '~/modules/form-elements/composables/useFormField'
 import { ValidateOn } from '~/modules/form-elements/types'
+type ChildEmit = InstanceType<typeof UiDropzone>['$emit']
 
 export interface PreviewFile {
   id: string
@@ -65,10 +66,12 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', v: PreviewFile[]): void
-  (e: 'blur', ev: FocusEvent): void
-}>()
+const emit = defineEmits<
+  ChildEmit & {
+    (e: 'update:modelValue', v: PreviewFile[]): void
+    (e: 'blur', ev: FocusEvent): void
+  }
+>()
 
 /** pass-through everything else (accept, multiple, maxFiles, maxFilesizeMB, label, placeholder/message slot, variant, size, disabled, required, useNativePicker, showPreviews, etc.) */
 const attrs = useAttrs()
