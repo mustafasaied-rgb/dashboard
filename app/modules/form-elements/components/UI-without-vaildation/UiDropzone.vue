@@ -49,16 +49,16 @@
               </svg>
             </div>
             <h4 class="text-theme-xl font-semibold text-[var(--ds-text)]">
-              Drag & Drop files here
+               {{ $t('formElements.dropzonePlaceholder') }}
             </h4>
             <p class="mx-auto max-w-[320px] text-sm text-[var(--ds-ph)]">
-              Drop PNG, JPG, WebP, SVG… or
+                 {{ $t('formElements.dropzoneHint') }}
               <button
                 type="button"
                 class="text-brand-500 font-medium underline"
                 @click.stop="openSystemPicker"
               >
-                browse
+                 {{ $t('browse') }}
               </button>
             </p>
           </div>

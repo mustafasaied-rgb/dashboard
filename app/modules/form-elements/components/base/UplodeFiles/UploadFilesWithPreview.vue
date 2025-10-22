@@ -46,7 +46,7 @@
             </slot>
 
             <div class="text-theme-xl font-semibold text-gray-700 dark:text-gray-400">
-              Drag & Drop files here
+              {{ $t('formElements.dropzonePlaceholder') }}
             </div>
 
             <p class="text-sm text-gray-500">
@@ -57,7 +57,7 @@
                 class="text-brand-500 font-medium underline"
                 @click.stop="open()"
               >
-                browse
+                {{ $t('browse') }}
               </button>
             </p>
           </div>

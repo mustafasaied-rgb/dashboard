@@ -1,33 +1,32 @@
- 
 <template>
   <div class="space-y-5 sm:space-y-6">
-    <PageBreadcrumb pageTitle="Form Elements" />
+    <PageBreadcrumb :pageTitle="t('formElements.pageTitle')" />
     <div>
       <BaseForm ref="formRef" @submit.prevent="handleSubmit">
         <div class="space-y-5">
-          <VBaseInput
+          <BaseInput
             required
             v-model="formData.email"
-            label="Email"
-            placeholder="info@gmail.com"
+            :label="t('formElements.emailLable')"
+            :placeholder="'info@mail.com'"
             :rules="[rules.required, rules.email]"
           />
           <!-- Password -->
           <BaseInput
             required
             v-model="formData.password"
-            label="Password"
+            :label="t('formElements.passwordLabel')"
             type="password"
             revealable
-            placeholder="Enter your password"
+            :placeholder="t('formElements.passwordPlaceholder')"
             :rules="[rules.required]"
           />
           <BaseSelect
             name="companySize"
             required
             v-model="formData.companySize"
-            label="Company size"
-            placeholder="—"
+            :label="t('formElements.companySizeLabel')"
+            :placeholder="t('formElements.companySizePlaceholder')"
             :options="[
               { label: '1–10', value: '1-10' },
               { label: '11–50', value: '11-50' },
@@ -39,8 +38,8 @@
           <BaseCombobox
             name="skills"
             v-model="formData.skills"
-            label="Skills"
-            placeholder="Select skills"
+            :label="t('formElements.skillsLabel')"
+            :placeholder="t('formElements.skillsPlaceholder')"
             :options="skills"
             required
             :rules="[rules.required]"
@@ -49,15 +48,15 @@
             required
             name="attachments"
             v-model="formData.attachments"
-            label="Attachments"
-            placeholder="Attach supporting files"
+            :label="t('formElements.attachmentsLabel')"
+            :placeholder="t('formElements.attachmentsPlaceholder')"
             multiple
             :rules="[rules.required, rules.maxFiles(3), rules.maxFileSize(10)]"
           />
           <BaseRadioGroup
             name="notify"
             v-model="formData.notify"
-            label="Notifications"
+            :label="t('formElements.notificationsLabel')"
             :rules="[rules.required]"
           >
             <template #default="{ nameProp, modelValue, onChange, onBlur }">
@@ -65,7 +64,7 @@
                 :name="nameProp"
                 :modelValue="modelValue"
                 :value="true"
-                label="Enabled"
+                :label="t('formElements.enabled')"
                 @update:modelValue="onChange"
                 @blur="onBlur"
               />
@@ -73,19 +72,19 @@
                 :name="nameProp"
                 :modelValue="modelValue"
                 :value="false"
-                label="Disabled"
+                :label="t('formElements.disabled')"
                 @update:modelValue="onChange"
                 @blur="onBlur"
               />
             </template>
           </BaseRadioGroup>
-          <BaseCopyInput v-model="formData.CopyText" label="CopyText" />
-          <BasePhoneInput v-model="formData.phone" label="phone" />
+          <BaseCopyInput v-model="formData.CopyText" :label="t('formElements.copyTextLabel')" />
+          <BasePhoneInput v-model="formData.phone" :label="t('formElements.phone')" />
           <BaseDatePicker
             name="startDate"
             v-model="formData.startDate"
-            label="Start Date"
-            placeholder="Select start date"
+            :label="t('formElements.startDateLabel')"
+            :placeholder="t('formElements.startDatePlaceholder')"
             required
             :rules="[rules.required]"
             :config="{ minDate: 'today' }"
@@ -95,12 +94,12 @@
           <BaseDatePicker
             name="endDate"
             v-model="formData.endDate"
-            label="End Date"
-            placeholder="Select end date"
+            :label="t('formElements.endDateLabel')"
+            :placeholder="t('formElements.endDatePlaceholder')"
             :rules="[
               rules.required,
               (v: string | number | Date) =>
-                new Date(v) > new Date(formData.startDate) || 'End date must be after start date'
+                new Date(v) > new Date(formData.startDate) || t('validation.endDateAfterStart')
             ]"
           />
 
@@ -108,8 +107,8 @@
           <BaseTimePicker
             name="meetingTime"
             v-model="formData.meetingTime"
-            label="Meeting Time"
-            placeholder="Select time"
+            :label="t('formElements.meetingTimeLabel')"
+            :placeholder="t('formElements.meetingTimePlaceholder')"
             :rules="[rules.required]"
             :config="{ time_24hr: false }"
           />
@@ -118,16 +117,16 @@
           <BaseDatePicker
             name="range"
             v-model="formData.range"
-            label="Date Range"
-            placeholder="Select date range"
+            :label="t('formElements.dateRangeLabel')"
+            :placeholder="t('formElements.dateRangePlaceholder')"
             mode="range"
             :rules="[rules.required]"
           />
           <BaseTextarea
             name="notes"
             v-model="formData.notes"
-            label="Notes"
-            placeholder="Add any notes"
+            :label="t('formElements.notesLabel')"
+            :placeholder="t('formElements.notesPlaceholder')"
             :rows="5"
             :rules="[rules.required, rules.minLength(10)]"
           />
@@ -135,21 +134,23 @@
             <BaseDropzone
               name="photos"
               v-model="formData.photos"
-              label="Event Photos"
+              :label="t('formElements.eventPhotosLabel')"
               :rules="[rules.required, rules.maxFiles(5)]"
               :maxFiles="5"
               accept="image/*"
+              :placeholder="t('formElements.dropzonePlaceholder')"
+              :hint="t('formElements.dropzoneHint')"
             />
           </ClientOnly>
           <!-- Checkbox -->
           <div class="flex items-center justify-between">
-            <BaseCheckbox v-model="formData.keepLoggedIn" label="Keep me logged in" />
+            <BaseCheckbox v-model="formData.keepLoggedIn" :label="t('formElements.keepMeLoggedIn')" />
 
             <NuxtLink
               to="/reset-password"
               class="text-brand-500 hover:text-brand-600 dark:text-brand-400 text-sm"
             >
-              Forgot password?
+              {{ t('formElements.forgotPassword') }}
             </NuxtLink>
           </div>
           <!-- Button -->
@@ -159,7 +160,7 @@
               color="primary"
               class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 flex w-full items-center justify-center rounded-lg px-4 py-3 text-sm font-medium text-white transition"
             >
-              Sign In
+              {{ t('common.signIn') }}
             </Button>
           </div>
         </div>
@@ -172,6 +173,9 @@
 import BaseDropzone from '~/modules/form-elements/components/base/with-vaildation-wrapper/BaseDropzone.vue'
 import type { AppFormExpose } from '~/modules/form-elements/components/base/with-vaildation-wrapper/BaseForm.vue'
 import { useInputRules } from '~/modules/form-elements/composables/useInputRules'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const skills = ['Vue', 'React', 'Angular', 'TypeScript', 'TailwindCSS']
 
@@ -183,11 +187,13 @@ const formData = reactive({
   keepLoggedIn: false,
   CopyText: 'fsdsdffdsdfsdsffds'
 }) as any
+
 const handleSubmit = async () => {
   const res = await formRef.value?.validate()
   if (!res?.valid) return formRef.value?.focusFirstInvalid(res?.firstInvalidEl || null)
   console.log('handleSubmit--->formData', formData)
 }
+
 watch(
   formData,
   (formData) => {
@@ -198,5 +204,3 @@ watch(
 </script>
 
 <style></style>
-
- 

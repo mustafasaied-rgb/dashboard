@@ -1,5 +1,8 @@
 export default {
   search: 'البحث',
+  browse: 'استعرض',
+  searchOrTypeCommand: 'ابحث أو اكتب أمرًا...',
+  home: 'الرئيسية',
   pagination: {
     page: 'الصفحة',
     of: 'من',
@@ -17,6 +20,57 @@ export default {
     asyncUnique: 'هذا الإدخال مستخدم بالفعل',
     maxFiles: 'يمكنك رفع حتى {limit} ملف(ات)',
     maxFileSize: 'يجب ألا يزيد حجم كل ملف عن {limitMB} ميغابايت'
+  },
+  formElements: {
+    pageTitle: 'عناصر النموذج',
+    home: 'الرئيسية',
+    passwordLabel: 'كلمة المرور *',
+    passwordPlaceholder: 'أدخل كلمة المرور',
+    emailLable: 'البريد الإلكترونى',
+    companySizeLabel: 'حجم الشركة *',
+    companySizePlaceholder: '—',
+
+    skillsLabel: 'المهارات *',
+    skillsPlaceholder: 'اختر المهارات',
+
+    attachmentsLabel: 'المرفقات *',
+    attachmentsPlaceholder: 'أرفق الملفات الداعمة',
+    noFileChosen: 'لم يتم اختيار أي ملف',
+    chooseFile: 'اختر ملف',
+
+    notificationsLabel: 'الإشعارات',
+
+    copyTextLabel: 'نص النسخ',
+    copy: 'نسخ',
+
+    startDateLabel: 'تاريخ البدء *',
+    startDatePlaceholder: 'اختر تاريخ البدء',
+
+    endDateLabel: 'تاريخ الانتهاء',
+    endDatePlaceholder: 'اختر تاريخ الانتهاء',
+
+    meetingTimeLabel: 'وقت الاجتماع',
+    meetingTimePlaceholder: 'اختر الوقت',
+
+    dateRangeLabel: 'نطاق التاريخ',
+    dateRangePlaceholder: 'اختر نطاق التاريخ',
+
+    notesLabel: 'ملاحظات',
+    notesPlaceholder: 'أضف أي ملاحظات',
+
+    eventPhotosLabel: 'صور الحدث',
+    dropzonePlaceholder: 'اسحب وأفلت الملفات هنا',
+    dropzoneHint: 'قم بإفلات ملفات PNG أو JPG أو WebP أو SVG…',
+
+    forgotPassword: 'هل نسيت كلمة المرور؟',
+
+    enabled: 'مفعل',
+    disabled: 'غير مفعل',
+    keepMeLoggedIn: 'تذكرني',
+    eventPhotosLabel: 'صور الحدث',
+    dropzonePlaceholder: 'اسحب وأفلت الملفات هنا',
+    browse: 'تصفح',
+    dropzoneHint: 'قم بإفلات ملفات PNG أو JPG أو WebP أو SVG '
   },
   error: {
     404: { title: 'الصفحة غير موجودة', desc: 'تعذّر العثور على الصفحة المطلوبة.' },

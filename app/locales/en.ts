@@ -1,5 +1,8 @@
 export default {
   search: 'Search',
+  browse: 'browse',
+  searchOrTypeCommand: 'Search or type command...',
+  home: 'Home',
   pagination: {
     page: 'Page',
     of: 'of',
@@ -17,6 +20,58 @@ export default {
     asyncUnique: 'Already taken',
     maxFiles: 'You can upload up to {limit} file(s)',
     maxFileSize: 'Each file must be under {limitMB} MB'
+  },
+  formElements: {
+    pageTitle: 'Form Elements',
+    home: 'Home',
+    passwordLabel: 'Password *',
+    passwordPlaceholder: 'Enter your password',
+    emailLable: 'Email',
+
+    companySizeLabel: 'Company size *',
+    companySizePlaceholder: '—',
+
+    skillsLabel: 'Skills *',
+    skillsPlaceholder: 'Select skills',
+
+    attachmentsLabel: 'Attachments *',
+    attachmentsPlaceholder: 'Attach supporting files',
+    noFileChosen: 'No file chosen',
+    chooseFile: 'Choose File',
+
+    notificationsLabel: 'Notifications',
+
+    copyTextLabel: 'CopyText',
+    copy: 'Copy',
+
+    startDateLabel: 'Start Date *',
+    startDatePlaceholder: 'Select start date',
+
+    endDateLabel: 'End Date',
+    endDatePlaceholder: 'Select end date',
+
+    meetingTimeLabel: 'Meeting Time',
+    meetingTimePlaceholder: 'Select time',
+
+    dateRangeLabel: 'Date Range',
+    dateRangePlaceholder: 'Select date range',
+
+    notesLabel: 'Notes',
+    notesPlaceholder: 'Add any notes',
+
+    eventPhotosLabel: 'Event Photos',
+    dropzonePlaceholder: 'Drag & Drop files here',
+    dropzoneHint: 'Drop PNG, JPG, WebP, SVG…',
+
+    forgotPassword: 'Forgot password?',
+
+    enabled: 'Enabled',
+    disabled: 'Disabled',
+    keepMeLoggedIn: 'Keep me logged in',
+
+    eventPhotosLabel: 'Event Photos',
+    dropzonePlaceholder: 'Drag & Drop files here',
+    dropzoneHint: 'Drop PNG, JPG, WebP, SVG'
   },
   error: {
     404: { title: 'Page not found', desc: 'We couldn’t find the page you’re looking for.' },

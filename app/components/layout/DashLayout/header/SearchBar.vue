@@ -3,7 +3,7 @@
     <form>
       <BaseInput
         contianerClass="bg-gray-50 border-gray-300/40 dark:border-gray-700/30  dark:bg-gray-900 dark:bg-white/[0.03]"
-        placeholder="Search or type command..."
+        :placeholder="$t('searchOrTypeCommand')"
         size="sm"
       >
         <template #start>

@@ -1,11 +1,12 @@
 <template>
-  <form novalidate v-bind="$attrs"><slot /></form>
+  <form :key="locale" novalidate v-bind="$attrs"><slot /></form>
 </template>
 
 <script setup lang="ts">
 import { provide, ref } from 'vue'
 import type { Field, ValidateResult } from '~/modules/form-elements/types'
 import { FKEY } from '~/modules/form-elements/constants'
+const { locale, t } = useI18n()
 
 const fields = new Map<string, Field>()
 const submittedOnce = ref(false)
