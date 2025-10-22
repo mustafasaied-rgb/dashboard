@@ -4,10 +4,10 @@
       <h1
         class="text-title-sm sm:text-title-md mb-2 font-semibold text-gray-800 dark:text-white/90"
       >
-        Sign In
+        {{ $t('signIn') }}
       </h1>
       <p class="text-sm text-gray-500 dark:text-gray-400">
-        Enter your email and password to sign in!
+        {{ $t('signInSubtitle') }}
       </p>
     </div>
     <div>

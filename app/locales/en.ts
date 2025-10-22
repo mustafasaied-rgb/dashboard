@@ -2,7 +2,10 @@ export default {
   search: 'Search',
   browse: 'browse',
   searchOrTypeCommand: 'Search or type command...',
+  dashboard: 'Dashboard',
   home: 'Home',
+  signIn: 'Sign In',
+  signInSubtitle: 'Enter your email and password to sign in!',
   pagination: {
     page: 'Page',
     of: 'of',

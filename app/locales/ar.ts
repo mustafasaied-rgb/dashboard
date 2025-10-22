@@ -3,6 +3,9 @@ export default {
   browse: 'استعرض',
   searchOrTypeCommand: 'ابحث أو اكتب أمرًا...',
   home: 'الرئيسية',
+  dashboard: 'لوحة التحكم',
+  signIn: 'تسجيل الدخول',
+  signInSubtitle: 'أدخل بريدك الإلكتروني وكلمة المرور لتسجيل الدخول!',
   pagination: {
     page: 'الصفحة',
     of: 'من',
