@@ -1,4 +1,3 @@
-// validation/useInputRules.ts
 import type { Rule } from './types'
 
 export function useInputRules() {

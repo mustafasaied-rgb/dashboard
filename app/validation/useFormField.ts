@@ -1,4 +1,3 @@
-// validation/useFormField.ts
 import { inject, onMounted, onBeforeUnmount, ref, watch, type Ref } from 'vue'
 import { FKEY } from './constants'
 import type { Rule, LegacyRule } from './types'

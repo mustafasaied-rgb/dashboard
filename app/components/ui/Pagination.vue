@@ -26,7 +26,7 @@
       </span>
 
       <span v-if="showPrevText" :class="arrowTextClass">
-        <slot name="prev-text">{{ prevText }}</slot>
+        <slot name="prev-text">{{ prevText || $t('pagination.previous') }}</slot>
       </span>
     </button>
 
@@ -75,7 +75,7 @@
       class="shadow-theme-xs flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 sm:px-3.5 sm:py-2.5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
     >
       <span v-if="showNextText" :class="arrowTextClass">
-        <slot name="next-text">{{ nextText }}</slot>
+        <slot name="next-text">{{ nextText || $t('pagination.next') }}</slot>
       </span>
 
       <span v-if="showNextIcon" class="inline" aria-hidden="true">
@@ -118,8 +118,6 @@ const props = withDefaults(defineProps<Props>(), {
   siblingCount: 1,
   boundaryCount: 1,
   ariaLabel: 'Pagination',
-  prevText: 'Previous',
-  nextText: 'Next',
   arrowMode: 'auto'
 })
 
